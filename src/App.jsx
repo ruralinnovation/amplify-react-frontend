@@ -10,6 +10,8 @@ function App ({ content }) {
   let content_loaded = false;
 
   function addContentToCurrentComponent () {
+      console.log("Welcome to Amplify React app version:", process.env.REACT_APP_VERSION)
+
       if (!content_loaded) {
           // Anything in here is fired on component mount.
           const app_container = document.getElementsByClassName("App")[0];

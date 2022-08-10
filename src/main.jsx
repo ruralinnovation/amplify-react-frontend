@@ -13,19 +13,7 @@ const Amplify = aws_amplify.default;
 const API = aws_amplify.API;
 const graphqlOperation = aws_amplify.graphqlOperation;
 
-try {
-    console.log("Load aws_exports:", aws_exports);
-    Amplify.configure(aws_exports);
-} catch (e) {
-    console.log("aws-amplify did not successfully import:", e);
-    // did it error because node defaults were used?
-    if (e.name === "TypeError") {
-        // @ts-ignore
-        require('aws-amplify').default.configure(aws_exports);
-    } else {
-        throw e;
-    }
-}
+Amplify.configure(aws_exports);
 
 const root_id = 'app';
 const root_container = document.getElementById(root_id);
