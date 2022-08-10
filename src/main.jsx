@@ -1,19 +1,8 @@
-import aws_exports from "./aws-exports";
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
-
-// import Amplify from '@aws-amplify/core/lib-esm';
-// import { API, graphqlOperation } from '@aws-amplify/api/lib-esm';
-// const aws_amplify = require('@aws-amplify/core/src');
-const Amplify = aws_amplify.default;
-const API = aws_amplify.API;
-const graphqlOperation = aws_amplify.graphqlOperation;
-
-Amplify.configure(aws_exports);
 
 const root_id = 'app';
 const root_container = document.getElementById(root_id);
