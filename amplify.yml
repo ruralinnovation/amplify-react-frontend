@@ -6,7 +6,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - echo "REACT_APP_VERSION=1" >> .env
+        - echo "VITE_APP_VERSION=1" >> .env
         - npm run build
   artifacts:
     baseDirectory: /dist
