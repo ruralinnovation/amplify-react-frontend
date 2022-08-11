@@ -1,22 +1,18 @@
 import {Component, useEffect, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
-import FillingSpace from "./components/material-ui/FillingSpace";
 import AbstractingContainersAndItems from "./components/material-ui/AbstractingContainersAndItems";
+import FillingSpace from "./components/material-ui/FillingSpace";
+import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
 
 import aws_config from "./aws-config";
 import * as aws_amplify_core from "@aws-amplify/core";
 import * as aws_amplify_react from "aws-amplify-react";
 const Amplify = aws_amplify_core.Amplify;
+const Authenticator = aws_amplify_react.Authenticator;
+const SignOut = aws_amplify_react.SignOut;
 
 Amplify.configure(aws_config);
-
-window['Amplify'] = Amplify;
-window['Auth'] = aws_amplify_core.Auth;
-window['aws_amplify_react'] = aws_amplify_react;
-
-const Authenticator = aws_amplify_react.Authenticator;
 
 class Header extends Component {
     render() {
@@ -24,8 +20,8 @@ class Header extends Component {
             <div>
                 <header className="App-header">
                     <h1 className="App-title">Amplify React</h1>
+                    <Authenticator />
                 </header>
-                {/*<AmplifySignOut />*/}
             </div>
         )
     }
@@ -66,31 +62,27 @@ function App ({ content }) {
 
   return (
     <div className="App">
-        <Authenticator>
-            <>
-            <Header />
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src="/vite.svg" className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://reactjs.org" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            {/*<AbstractingContainersAndItems />*/}
-            {/*<FillingSpace />*/}
-            {/*<UnderstandingBreakpoints />*/}
-            {/*<div className="card">*/}
-            {/*  <button onClick={() => setCount((count) => count + 1)}>*/}
-            {/*    count is {count}*/}
-            {/*  </button>*/}
-            {/*</div>*/}
-            {/*<p className="read-the-docs">*/}
-            {/*  Click on the Vite and React logos to learn more*/}
-            {/*</p>*/}
-            </>
-        </Authenticator>
+        <Header />
+        <div>
+            <a href="https://vitejs.dev" target="_blank">
+                <img src="/vite.svg" className="logo" alt="Vite logo" />
+            </a>
+            <a href="https://reactjs.org" target="_blank">
+                <img src={reactLogo} className="logo react" alt="React logo" />
+            </a>
+        </div>
+        <h1>Vite + React</h1>
+        {/*<AbstractingContainersAndItems />*/}
+        {/*<FillingSpace />*/}
+        {/*<UnderstandingBreakpoints />*/}
+        {/*<div className="card">*/}
+        {/*  <button onClick={() => setCount((count) => count + 1)}>*/}
+        {/*    count is {count}*/}
+        {/*  </button>*/}
+        {/*</div>*/}
+        {/*<p className="read-the-docs">*/}
+        {/*  Click on the Vite and React logos to learn more*/}
+        {/*</p>*/}
     </div>
   )
 }
