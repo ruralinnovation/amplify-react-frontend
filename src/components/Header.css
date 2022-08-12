@@ -1,0 +1,11 @@
+h1, h2, h3, h4, h5, h6, a, span, li {
+  display: inline-block;
+}
+
+h1 {
+  font-size: 1em;
+}
+
+.App>div>.MuiGrid-root {
+  justify-content: center;
+}
