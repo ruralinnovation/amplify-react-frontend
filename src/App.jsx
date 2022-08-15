@@ -20,7 +20,7 @@ const SignIn = aws_amplify_react.SignIn;
 const SignOut = aws_amplify_react.SignOut;
 
 export class CustomSignIn extends SignIn {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -36,7 +36,6 @@ export class CustomSignIn extends SignIn {
 
     async handleFormSubmission(evt) {
         evt.preventDefault();
-        console.log("Attempting to sign-in ...")
         await this.signIn();
     }
 
@@ -44,11 +43,15 @@ export class CustomSignIn extends SignIn {
         const username = this.state.Username;
         const password = this.state.Password;
 
+        console.log("Attempting to sign-in ...");
+
         try {
             const user = await Auth.signIn(username, password);
             await this.SetUser(user);
             await this.SetAuthState(AuthState.SignedIn);
             console.log("... result:", user);
+
+            super.changeState("signOut")
 
         } catch (err) {
             if (err.code === "UserNotConfirmedException" ||
@@ -73,7 +76,7 @@ export class CustomSignIn extends SignIn {
 
     showComponent (theme) {
         return (
-            <div className="tc pt5">
+            <div className="custom-auth tc pt5">
                 <h2>Sign in to your Account</h2>
                 <div className="pa2">
                     <label htmlFor="username" className="pr3">UserName</label>
@@ -91,10 +94,64 @@ export class CustomSignIn extends SignIn {
                 </div>
                 <div className="pa2">
                     Do not remember password ? <a className="f5 fw6 dark-green   link "
-                                                  onClick={() => this.props.SetAuthState(AuthState.ForgotPassword)}
+                                                  onClick={() => this.SetAuthState(AuthState.ForgotPassword)}
                                                   href="#0">Forgot Password</a>
                 </div>
             </div>
+        )
+    }
+}
+
+export class CustomSignOut extends SignOut {
+    constructor (props) {
+        super(props);
+
+        this.signOut = this.signOut.bind(this);
+        this.handleFormSubmission = this.handleFormSubmission.bind(this);
+        this.SetAuthState = props.SetAuthState;
+        this.SetUser = props.SetUser;
+    }
+
+    async handleFormSubmission(evt) {
+        evt.preventDefault();
+        await this.signOut();
+    }
+
+    async signOut() {
+        console.log("Attempting to sign-out ...");
+
+        Auth.signOut({ global: true })
+            .then(
+                () => {},
+                err => {
+                    if (err.code === "UserNotConfirmedException" ||
+                        err.code === "NotAuthorizedException" ||
+                        err.code === "UserNotFoundException"
+                    ) {
+                        this.setState({
+                            Username : '',
+                            Password : '',
+                            error: `Login failed: ${err.code}`
+                        });
+                    } else {
+                        this.setState({
+                            Username : '',
+                            Password : '',
+                            error: `An error has occurred: ${err.code}`
+                        });
+                        console.error(err);
+                    }
+                }
+            );
+
+
+        await this.SetAuthState(AuthState.SignedOut);
+        await this.SetUser(null);
+    }
+
+    showComponent (theme) {
+        return (
+            <div className="custom-auth custom-sign-out tc pt5"></div>
         )
     }
 }
@@ -103,65 +160,108 @@ class Header extends Component {
     constructor(props) {
         super(props);
 
-        console.log("Header props:", props);
+        this.authState = props.authState;
 
-        const [ GetAuthState, SetAuthState, GetUser, SetUser, GetUserName, SetUserName ] = props.authFunctions;
-        this.GetAuthState = GetAuthState;
-        this.SetAuthState = SetAuthState;
-        this.GetUser = GetUser;
-        this.SetUser = SetUser;
-        this.GetUserNamme = GetUserName;
-        this.SetUserName = SetUserName;
+        // const [ getAuthState, setAuthState ] = props.authFunctions;
+        // this.getAuthState = props.authFunctions[0];
+        // this.setAuthState = props.authFunctions[1];
 
-        console.log("AuthState.SignedIn constant:", AuthState.SignedIn);
+        this.GetUserName = () => {
+            return this.props.authFunctions[0]().sign_up_username;
+        };
 
-        // Auth.currentAuthenticatedUser()
-        //     .then(async User => {
-        //         console.log("(Header) Initial auth state:", User);
-        //
-        //         if (typeof User['userDataKey'] === "string" && typeof User[User['userDataKey']] === "string") {
-        //             await this.SetAuthState(AuthState.SignedIn);
-        //             // [Optional]: add shiny app content
-        //             // addContentToCurrentComponent();
-        //         } else {
-        //             await this.SetAuthState(AuthState.SignedOut);
-        //         }
-        //     });
+        this.SetUserName = (Val) => {
+            this.props.authFunctions[1]({
+                status: this.props.authFunctions[0]().status,
+                user: this.props.authFunctions[0]().user,
+                sign_up_username: Val
+            });
+        };
+
+        this.GetUser = () => {
+            return this.props.authFunctions[0]().user;
+        }
+
+        this.SetUser = (UserVals) => {
+            this.props.authFunctions[1]({
+                status: this.props.authFunctions[0]().status,
+                user: UserVals,
+                sign_up_username: this.props.authFunctions[0]().sign_up_username
+            })
+        }
+
+        this.GetAuthState = () => {
+            return this.props.authFunctions[0]().status;
+        }
+
+        this.SetAuthState = (Val) => {
+            this.props.authFunctions[1]({
+                status: Val,
+                user: this.props.authFunctions[0]().user,
+                sign_up_username: this.props.authFunctions[0]().sign_up_username
+            })
+        }
     }
 
-    // async componentDidMount () {
-    //     try {
-    //         const User = await Auth.currentAuthenticatedUser();
-    //         if(typeof User['userDataKey'] === "string" && typeof User[User['userDataKey']] === "string"){
-    //             await this.SetAuthState(AuthState.SignedOut);
-    //         } else{
-    //             await this.SetAuthState(AuthState.SignedIn);
-    //         }
-    //     } finally {
-    //         console.log("Current auth state:", this.GetAuthState());
-    //     }
-    // }
+    async checkAuthenticatedUser (User) {
+        Auth.currentAuthenticatedUser()
+            .then(
+                async user => {
+                    this.SetUser(user);
+
+                    if (typeof user['attributes'] === "object" && typeof user['signInUserSession'] === "object") {
+                        await this.SetAuthState(AuthState.SignedIn);
+
+                        console.log("(Header) user:", user);
+                        console.log("(Header) Initial auth state:", this.authState);
+                    } else {
+                        await this.SetAuthState(AuthState.SignedOut);
+                    }
+                },
+                async error => {
+                    await this.SetAuthState(AuthState.SignedOut);
+                    console.log("(Header) Initial auth state:", this.authState, error);
+                }
+            );
+    }
+
+    async componentDidMount () {
+        try {
+            await this.checkAuthenticatedUser();
+        } finally {
+            console.log("Current auth state:", this.authState);
+        }
+    }
 
     render() {
         // if (GetAuthState() === AuthState.SignedIn) {
             return (
             <div>
                 <div>Authenticated: {this.GetAuthState()}</div>
-                {(this.GetAuthState() === AuthState.SignedIn) ?
+                {/*{(this.GetAuthState() === AuthState.SignedIn) ?*/}
+                {/*    <header className="App-header">*/}
+                {/*        <h1 className="App-title">Amplify React</h1>*/}
+                {/*        <Authenticator amplifyConfig={aws_config}>*/}
+                {/*            <CustomSignOut*/}
+                {/*                SetAuthState={this.SetAuthState}*/}
+                {/*                SetUser={this.SetUser}*/}
+                {/*            />*/}
+                {/*        </Authenticator>*/}
+                {/*    </header> :*/}
                     <header className="App-header">
                         <h1 className="App-title">Amplify React</h1>
-                        <Authenticator amplifyConfig={aws_config}/>
-                    </header> :
-                    <header className="App-header">
-                        <h1 className="App-title">Amplify React</h1>
-                        <Authenticator hide={[SignIn]} amplifyConfig={aws_config}>
+                        <Authenticator hide={[ SignIn ]} amplifyConfig={aws_config}>
                             <CustomSignIn
+                                SetAuthState={this.SetAuthState}
+                                SetUser={this.SetUser}
+                            />
+                            <CustomSignOut
                                 SetAuthState={this.SetAuthState}
                                 SetUser={this.SetUser}
                             />
                         </Authenticator>
                     </header>
-                }
+                {/*}*/}
             </div>
             )
         // } else {
@@ -209,125 +309,59 @@ function App ({ content }) {
         }, 53, app_container);
     }
 
-    function GetUserName () {
-        return authState.sign_up_username;
-    }
-
-    function SetUserName (Val) {
-        setAuthState({
-            status: authState.status,
-            user: authState.user,
-            sign_up_username: Val
-        });
-    }
-
-    function GetUser () {
-        return authState.user;
-    }
-
-    function SetUser (UserVals) {
-        setAuthState({
-            status: authState.status,
-            user: UserVals,
-            sign_up_username: authState.sign_up_username
-        })
-    }
-
-    function GetAuthState () {
-        return authState.status;
-    }
-
-    async function SetAuthState (Val) {
-        setAuthState({
-            status: Val,
-            user: authState.user,
-            sign_up_username: authState.sign_up_username
-        })
-    }
-
-    async function checkAuthenticatedUser (User) {
-        Auth.currentAuthenticatedUser()
-            .then(
-                async user => {
-                    SetUser(user);
-
-                    if (typeof user['attributes'] === "object" && typeof user['signInUserSession'] === "object") {
-                        await SetAuthState(AuthState.SignedIn);
-                        if (!content_loaded) {
-                            // [Optional]: add shiny app content
-                            addContentToCurrentComponent();
-                        } else {
-                            setContentLoaded(true);
-                        }
-                    } else {
-                        await SetAuthState(AuthState.SignedOut);
-                    }
-
-                    console.log("(App) user:", user);
-                    console.log("(App) Initial auth state:", authState);
-                },
-                async error => {
-                    await SetAuthState(AuthState.SignedOut);
-                    console.log("(App) Initial auth state:", authState, error);
-                }
-            );
-
-        // if (typeof user['userDataKey'] === "string" && typeof user[user['userDataKey']] === "string") {
-        //     await SetAuthState(AuthState.SignedIn);
-        //     if (!content_loaded) {
-        //         // [Optional]: add shiny app content
-        //         addContentToCurrentComponent();
-        //     } else {
-        //         setContentLoaded(true);
-        //     }
-        //     console.log("(App) Initial auth state:", authState);
-        // } else {
-        //     await SetAuthState(AuthState.SignedOut);
-        //     console.log("(App) Initial auth state:", authState);
-        // }
+    function getAuthState () {
+        return authState;
     }
 
     useEffect( () => {
-        checkAuthenticatedUser(authState.user);
 
         if (!content_loaded) {
             console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION, content_loaded);
             console.log("AWS Amplify React:", aws_amplify_react);
-        } else {
-            setContentLoaded(true);
+
+            if (!content_loaded && getAuthState().status === AuthState.SignedIn) {
+                // [Optional]: add shiny app content
+                addContentToCurrentComponent();
+            } else {
+                setContentLoaded(true);
+            }
         }
 
     } , []);
 
-    if (GetAuthState() === AuthState.SignedIn) {
         return (
             <div className="App">
-                <Header authFunctions={ [ GetAuthState, SetAuthState, GetUser, SetUser, GetUserName, SetUserName ] } />
-                <div>
-                    <a href="https://vitejs.dev" target="_blank">
-                        <img src="/vite.svg" className="logo" alt="Vite logo" />
-                    </a>
-                    <a href="https://reactjs.org" target="_blank">
-                        <img src={reactLogo} className="logo react" alt="React logo" />
-                    </a>
-                    <p className="read-the-docs">
-                        Click on the Vite and React logos to learn more
-                    </p>
-                </div>
-                <h1>Vite + React</h1>
-                {/*<AbstractingContainersAndItems />*/}
-                {/*<FillingSpace />*/}
-                {/*<UnderstandingBreakpoints />*/}
-                <ActionButton />
+                {(getAuthState().status === AuthState.SignedIn) ?
+                    <div>Authenticated: {authState.status}<br/>
+                        <Header
+                            authFunctions={[ getAuthState, setAuthState ]}
+                            authState={authState} />
+                        <div>
+                            <a href="https://vitejs.dev" target="_blank">
+                                <img src="/vite.svg" className="logo" alt="Vite logo"/>
+                            </a>
+                            <a href="https://reactjs.org" target="_blank">
+                                <img src={reactLogo} className="logo react" alt="React logo"/>
+                            </a>
+                            <p className="read-the-docs">
+                                Click on the Vite and React logos to learn more
+                            </p>
+                        </div>
+                        <h1>Vite + React</h1>
+                        {/*<AbstractingContainersAndItems />*/}
+                        {/*<FillingSpace />*/}
+                        {/*<UnderstandingBreakpoints />*/}
+                        <ActionButton/>
+                    </div> :
+                    <div>Authenticated: {authState.status}<br/>
+                        <Header
+                            authFunctions={[ getAuthState, setAuthState ]}
+                            authState={authState} />
+                    </div>
+                }
             </div>
         );
-    } else {
-        return (
-            <div className="App">
-                <Header authFunctions={ [ GetAuthState, SetAuthState, GetUser, SetUser, GetUserName, SetUserName ] } />
-            </div>
-        );
-    }
+
 }
 
 export default App;

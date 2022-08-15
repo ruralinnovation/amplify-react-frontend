@@ -9,3 +9,7 @@ h1 {
 .App>div>.MuiGrid-root {
   justify-content: center;
 }
+
+[data-test="greetings-nav-bar"] [data-test="greetings-nav"] * [data-test="sign-out-button"] {
+  display: none;
+}
