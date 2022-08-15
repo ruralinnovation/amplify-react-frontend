@@ -3,12 +3,11 @@ import './index.css';
 import React from 'react';
 import { ReactDOM, createRoot } from 'react-dom/client';
 import App from './App';
-import * as aws_amplify_core from "@aws-amplify/core";
+
 import aws_config from "./aws-config";
+import * as aws_amplify_core from "@aws-amplify/core";
 
-const Amplify = aws_amplify_core.Amplify;
-
-Amplify.configure(aws_config);
+aws_amplify_core.Amplify.configure(aws_config);
 
 const root_id = 'app';
 const root_container = document.getElementById(root_id);

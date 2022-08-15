@@ -10,6 +10,7 @@ h1 {
   justify-content: center;
 }
 
+/* Hide the default Amplify Authenticator SignOut button */
 [data-test="greetings-nav-bar"] [data-test="greetings-nav"] * [data-test="sign-out-button"] {
   display: none;
 }

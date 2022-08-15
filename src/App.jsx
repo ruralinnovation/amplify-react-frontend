@@ -3,7 +3,7 @@ import './App.css';
 import './components/Header.css';
 import reactLogo from './assets/react.svg';
 
-import { Component, useEffect, useState } from 'react';
+import { Component, Fragment, useEffect, useState } from 'react';
 import ActionButton from './components/ActionButton';
 import AbstractingContainersAndItems from "./components/material-ui/AbstractingContainersAndItems";
 import FillingSpace from "./components/material-ui/FillingSpace";
@@ -30,8 +30,7 @@ export class CustomSignIn extends SignIn {
         };
         this.signIn = this.signIn.bind(this);
         this.handleFormSubmission = this.handleFormSubmission.bind(this);
-        this.SetAuthState = props.SetAuthState;
-        this.SetUser = props.SetUser;
+        this.SetAuthenticatedUser = props.SetAuthenticatedUser;
     }
 
     async handleFormSubmission(evt) {
@@ -47,11 +46,12 @@ export class CustomSignIn extends SignIn {
 
         try {
             const user = await Auth.signIn(username, password);
-            await this.SetUser(user);
-            await this.SetAuthState(AuthState.SignedIn);
-            console.log("... result:", user);
-
-            super.changeState("signOut")
+            console.log("Sign-in user:", user);
+            this.SetAuthenticatedUser(user, AuthState.SignedIn)
+                .then(async () => {
+                    console.log("... result:", user);
+                    super.changeState("signOut");
+                });
 
         } catch (err) {
             if (err.code === "UserNotConfirmedException" ||
@@ -94,7 +94,7 @@ export class CustomSignIn extends SignIn {
                 </div>
                 <div className="pa2">
                     Do not remember password ? <a className="f5 fw6 dark-green   link "
-                                                  onClick={() => this.SetAuthState(AuthState.ForgotPassword)}
+                                                  onClick={() => this.SetAuthenticatedUser(null, AuthState.ForgotPassword)}
                                                   href="#0">Forgot Password</a>
                 </div>
             </div>
@@ -108,8 +108,7 @@ export class CustomSignOut extends SignOut {
 
         this.signOut = this.signOut.bind(this);
         this.handleFormSubmission = this.handleFormSubmission.bind(this);
-        this.SetAuthState = props.SetAuthState;
-        this.SetUser = props.SetUser;
+        this.SetAuthenticatedUser = props.SetAuthenticatedUser;
     }
 
     async handleFormSubmission(evt) {
@@ -145,8 +144,7 @@ export class CustomSignOut extends SignOut {
             );
 
 
-        await this.SetAuthState(AuthState.SignedOut);
-        await this.SetUser(null);
+        await this.SetAuthenticatedUser(null, AuthState.SignedOut);
     }
 
     showComponent (theme) {
@@ -160,67 +158,62 @@ class Header extends Component {
     constructor(props) {
         super(props);
 
-        this.authState = props.authState;
+        // const [ authState, setAuthState ] = props.authState;
+        this.getAuthState = () => this.props.authState[0];
+        this.setAuthState = (values) => this.props.authState[1](values);
 
-        // const [ getAuthState, setAuthState ] = props.authFunctions;
-        // this.getAuthState = props.authFunctions[0];
-        // this.setAuthState = props.authFunctions[1];
-
-        this.GetUserName = () => {
-            return this.props.authFunctions[0]().sign_up_username;
-        };
-
-        this.SetUserName = (Val) => {
-            this.props.authFunctions[1]({
-                status: this.props.authFunctions[0]().status,
-                user: this.props.authFunctions[0]().user,
-                sign_up_username: Val
-            });
+        this.GetAuthStatus = () => {
+            setTimeout(() => console.log("GetAuthStatus:", this.props.authState[0]));
+            return this.getAuthState().status;
         };
 
         this.GetUser = () => {
-            return this.props.authFunctions[0]().user;
-        }
+            return this.getAuthState().user;
+        };
 
-        this.SetUser = (UserVals) => {
-            this.props.authFunctions[1]({
-                status: this.props.authFunctions[0]().status,
-                user: UserVals,
-                sign_up_username: this.props.authFunctions[0]().sign_up_username
-            })
-        }
-
-        this.GetAuthState = () => {
-            return this.props.authFunctions[0]().status;
-        }
-
-        this.SetAuthState = (Val) => {
-            this.props.authFunctions[1]({
+        this.SetAuthenticatedUser = async (User, Val) => {
+            console.log("SetAuthenticatedUser:", User);
+            return await this.setAuthState({
                 status: Val,
-                user: this.props.authFunctions[0]().user,
-                sign_up_username: this.props.authFunctions[0]().sign_up_username
+                user: User,
+                sign_up_username: (User !== null &&typeof User['username'] === "string") ?
+                    User['username'] :
+                    this.GetUserName()
             })
-        }
+        };
+
+        this.GetUserName = () => {
+            return this.getAuthState().sign_up_username;
+        };
+
+        this.SetUserName = async (Val) => {
+            return await this.setAuthState({
+                status: this.GetAuthStatus(),
+                user: this.GetUser(),
+                sign_up_username: Val
+            });
+        };
     }
 
-    async checkAuthenticatedUser (User) {
+    async checkAuthenticatedUser () {
         Auth.currentAuthenticatedUser()
             .then(
                 async user => {
-                    this.SetUser(user);
 
                     if (typeof user['attributes'] === "object" && typeof user['signInUserSession'] === "object") {
-                        await this.SetAuthState(AuthState.SignedIn);
+                        await this.SetAuthenticatedUser(user, AuthState.SignedIn);
 
                         console.log("(Header) user:", user);
-                        console.log("(Header) Initial auth state:", this.authState);
+                        console.log("(Header) Initial auth state:", this.getAuthState());
                     } else {
-                        await this.SetAuthState(AuthState.SignedOut);
+                        console.log("ERROR");
+                        await this.SetAuthenticatedUser(null, AuthState.SignedOut);
                     }
                 },
                 async error => {
-                    await this.SetAuthState(AuthState.SignedOut);
-                    console.log("(Header) Initial auth state:", this.authState, error);
+                    console.log("ERROR");
+                    await this.SetAuthenticatedUser(null, AuthState.SignedOut);
+                    console.log("(Header) Initial auth state:", this.getAuthState(), error);
                 }
             );
     }
@@ -229,55 +222,24 @@ class Header extends Component {
         try {
             await this.checkAuthenticatedUser();
         } finally {
-            console.log("Current auth state:", this.authState);
+            console.log("Current auth state:", this.GetAuthStatus());
         }
     }
 
     render() {
-        // if (GetAuthState() === AuthState.SignedIn) {
             return (
             <div>
-                <div>Authenticated: {this.GetAuthState()}</div>
-                {/*{(this.GetAuthState() === AuthState.SignedIn) ?*/}
-                {/*    <header className="App-header">*/}
-                {/*        <h1 className="App-title">Amplify React</h1>*/}
-                {/*        <Authenticator amplifyConfig={aws_config}>*/}
-                {/*            <CustomSignOut*/}
-                {/*                SetAuthState={this.SetAuthState}*/}
-                {/*                SetUser={this.SetUser}*/}
-                {/*            />*/}
-                {/*        </Authenticator>*/}
-                {/*    </header> :*/}
+                <div>Authenticated: {(this.GetAuthStatus() == AuthState.SignedIn)? this.GetAuthStatus() + " as " + this.GetUserName() : this.GetAuthStatus() }</div>
                     <header className="App-header">
                         <h1 className="App-title">Amplify React</h1>
                         <Authenticator hide={[ SignIn ]} amplifyConfig={aws_config}>
-                            <CustomSignIn
-                                SetAuthState={this.SetAuthState}
-                                SetUser={this.SetUser}
-                            />
-                            <CustomSignOut
-                                SetAuthState={this.SetAuthState}
-                                SetUser={this.SetUser}
-                            />
+                            <CustomSignIn SetAuthenticatedUser={this.SetAuthenticatedUser} />
+                            <CustomSignOut SetAuthenticatedUser={this.SetAuthenticatedUser} />
                         </Authenticator>
                     </header>
                 {/*}*/}
             </div>
             )
-        // } else {
-        //     return (
-        //         <div>
-        //             <header className="App-header">
-        //                 <h1 className="App-title">Amplify React</h1>
-        //                 <Authenticator hide={[SignIn]} amplifyConfig={aws_config}>
-        //                     <CustomSignIn
-        //                         SetAuthState={this.SetAuthState}
-        //                     />
-        //                 </Authenticator>
-        //             </header>
-        //         </div>
-        //     )
-        // }
     }
 }
 
@@ -319,7 +281,7 @@ function App ({ content }) {
             console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION, content_loaded);
             console.log("AWS Amplify React:", aws_amplify_react);
 
-            if (!content_loaded && getAuthState().status === AuthState.SignedIn) {
+            if (getAuthState().status === AuthState.SignedIn) {
                 // [Optional]: add shiny app content
                 addContentToCurrentComponent();
             } else {
@@ -332,10 +294,9 @@ function App ({ content }) {
         return (
             <div className="App">
                 {(getAuthState().status === AuthState.SignedIn) ?
-                    <div>Authenticated: {authState.status}<br/>
-                        <Header
-                            authFunctions={[ getAuthState, setAuthState ]}
-                            authState={authState} />
+                    <Fragment>
+                        {/*<div>Authenticated: {getAuthState().status}</div>*/}
+                        <Header authState={[ authState, setAuthState ]} />
                         <div>
                             <a href="https://vitejs.dev" target="_blank">
                                 <img src="/vite.svg" className="logo" alt="Vite logo"/>
@@ -348,16 +309,15 @@ function App ({ content }) {
                             </p>
                         </div>
                         <h1>Vite + React</h1>
-                        {/*<AbstractingContainersAndItems />*/}
-                        {/*<FillingSpace />*/}
-                        {/*<UnderstandingBreakpoints />*/}
                         <ActionButton/>
-                    </div> :
-                    <div>Authenticated: {authState.status}<br/>
-                        <Header
-                            authFunctions={[ getAuthState, setAuthState ]}
-                            authState={authState} />
-                    </div>
+                        <AbstractingContainersAndItems />
+                        <FillingSpace />
+                        <UnderstandingBreakpoints />
+                    </Fragment> :
+                    <Fragment>
+                        {/*<div>Authenticated: {getAuthState().status}</div>*/}
+                        <Header authState={[ authState, setAuthState ]} />
+                    </Fragment>
                 }
             </div>
         );
