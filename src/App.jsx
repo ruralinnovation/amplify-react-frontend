@@ -10,7 +10,6 @@ import FillingSpace from "./components/material-ui/FillingSpace";
 import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
 
 import aws_config from "./aws-config";
-import '@aws-amplify/ui-react/styles.css';
 import * as aws_amplify_react from "aws-amplify-react";
 import { Auth } from "@aws-amplify/auth";
 import { AuthState } from '@aws-amplify/ui-components';
