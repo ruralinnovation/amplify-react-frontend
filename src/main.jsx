@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-const root_id = 'app';
+const root_id = 'react-app';
 const root_container = document.getElementById(root_id);
 const root_content = document.createElement("div");
 const root_init = (evt) => {
@@ -30,8 +30,8 @@ const root_init = (evt) => {
     )
 };
 
-if (typeof shinyjs === 'object') {
-    document.body.addEventListener('cori.apps:render', root_init);
+if (typeof Shiny === 'object') {
+    document.body.addEventListener('cori.apps:init', root_init);
 } else {
     root_init({ preventDefault: () => {} })
 }
