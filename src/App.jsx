@@ -1,4 +1,3 @@
-import '@aws-amplify/ui-react/styles.css';
 import './App.css';
 import './components/Header.css';
 import reactLogo from './assets/react.svg';
