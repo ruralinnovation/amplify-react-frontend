@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
 
+    <!-- Resources provided by Shiny server: -->
+    <!-- headContent() gets defined when UI is built from this template,
+      -- so it's not directly available as a function exported by shiny
+      -->
+    {{ headContent() }}
+
     <script>
         const isBrowser = () => typeof window !== 'undefined';
         const isGlobal = () => typeof global !== 'undefined';
@@ -13,10 +19,33 @@
             var global = window;
             var root = window;
         }
+
+
+        if (typeof Shiny === 'object') {
+          console.log("ShinyJS is loaded");
+
+          $(document).on('shiny:connected', function(evt) {
+              console.log("ShinyJS is connected to the server");
+          });
+
+          $(document).on("shiny:sessioninitialized", (evt) => {
+            console.log(evt);
+
+            const render_trigger = Object.create(evt);
+            render_trigger.target = document.body;
+            render_trigger.target.data = {
+              action: "render",
+              path: ('target' in evt && 'hash' in evt.target ) ?
+                      evt.target.hash :
+                      ""
+            };
+            setTimeout(render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)), 53);
+          });
+        }
     </script>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="react-app"></div>
     <script src="/src/main.jsx" type="module"></script>
   </body>
 </html>

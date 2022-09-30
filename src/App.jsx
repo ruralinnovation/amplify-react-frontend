@@ -5,14 +5,7 @@ import AbstractingContainersAndItems from "./components/material-ui/AbstractingC
 import FillingSpace from "./components/material-ui/FillingSpace";
 import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
 
-import aws_config from "./aws-config";
-import * as aws_amplify_core from "@aws-amplify/core";
-import * as aws_amplify_react from "aws-amplify-react";
-const Amplify = aws_amplify_core.Amplify;
-const Authenticator = aws_amplify_react.Authenticator;
-const SignOut = aws_amplify_react.SignOut;
-
-Amplify.configure(aws_config);
+// import aws_config from "./aws-config";
 
 class Header extends Component {
     render() {
@@ -20,7 +13,6 @@ class Header extends Component {
             <div>
                 <header className="App-header">
                     <h1 className="App-title">Amplify React</h1>
-                    <Authenticator />
                 </header>
             </div>
         )
@@ -32,11 +24,8 @@ function App ({ content }) {
   let content_loaded = false;
 
   function addContentToCurrentComponent () {
-      console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION)
-
-      console.log("Amplify config:", aws_config);
-
-      console.log("AWS Amplify React:", aws_amplify_react);
+      // console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION)
+      // console.log(aws_config);
 
       if (!content_loaded) {
           // Anything in here is fired on component mount.
@@ -72,17 +61,17 @@ function App ({ content }) {
             </a>
         </div>
         <h1>Vite + React</h1>
-        {/*<AbstractingContainersAndItems />*/}
-        {/*<FillingSpace />*/}
-        {/*<UnderstandingBreakpoints />*/}
-        {/*<div className="card">*/}
-        {/*  <button onClick={() => setCount((count) => count + 1)}>*/}
-        {/*    count is {count}*/}
-        {/*  </button>*/}
-        {/*</div>*/}
-        {/*<p className="read-the-docs">*/}
-        {/*  Click on the Vite and React logos to learn more*/}
-        {/*</p>*/}
+        <p className="read-the-docs">
+            Click on the Vite and React logos to learn more
+        </p>
+        <AbstractingContainersAndItems />
+        <FillingSpace />
+        <UnderstandingBreakpoints />
+        <div className="card">
+          <button onClick={() => setCount((count) => count + 1)}>
+            count is {count}
+          </button>
+        </div>
     </div>
   )
 }

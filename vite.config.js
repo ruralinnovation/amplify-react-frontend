@@ -1,14 +1,38 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import copy from '@guanghechen/rollup-plugin-copy';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    build: {
+        rollupOptions: {
+            plugins: [
+                // Copy outputs to templates and www dirs
+                copy({
+                    hook: 'writeBundle',
+                    targets: [
+                        { src: [ './dist/index.html' ], dest: 'src/templates' },
+                        { src: [ './dist/assets' ], dest: 'src/www/' },
+                        { src: [ './public/*' ], dest: 'src/www/' }
+                    ]
+                })
+            ]
+        }
+    },
     external: [
-        "aws_amplify", "aws_amplify_react", "aws_amplify_core",
-        "@aws-amplify/analytics", "@aws-amplify/api", "@aws-amplify/auth", "@aws-amplify/core",
-        "@aws-amplify/interactions", "@aws-amplify/storage", "@aws-amplify/ui", "@aws-amplify/xr",
-        'Buffer', 'CustomEvent', 'HTMLWidgets', "react", 'Shiny', 'shinyjs' ],
+        '@aws-amplify/analytics', '@aws-amplify/api', '@aws-amplify/auth', '@aws-amplify/core', '@aws-amplify/interactions', '@aws-amplify/storage', '@aws-amplify/ui', '@aws-amplify/xr',
+        'aws_amplify', 'aws_amplify_react', 'aws_amplify_core',
+        'Buffer', 'CustomEvent', 'HTMLWidgets', 'react', 'Shiny', 'shiny', 'shinyjs'
+    ],
     plugins: [
+        // // Run before react() or svelte()
+        // copy({
+        //     hook: 'buildStart',
+        //     targets: [
+        //         { src: [ './node_modules/aws-amplify/dist/aws-*' ], dest: 'public/' }
+        //     ]
+        // }),
+
         react()
     ],
     resolve: {
