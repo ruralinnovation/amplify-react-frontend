@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@aws-amplify/core": "^4.7.5",
     "@aws-amplify/ui-components": "~1.7.2",
     "@aws-amplify/ui-react": "^3.5.4",
     "@emotion/react": "^11.9.3",
