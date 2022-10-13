@@ -1,6 +1,8 @@
 import { ApolloProvider, useQuery } from '@apollo/client';
 import { Box, Container } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
+import * as mapboxgl from 'mapbox-gl';
+import * as MapboxWorker from 'mapbox-gl';
 
 import {
   broadband_unserved_blocks_geojson,
@@ -8,17 +10,24 @@ import {
   incumbent_electric_providers_geo_geojson,
 } from '../services/bcatQueries';
 
-import Map, { MapboxGeoJSONFeature } from 'react-map-gl';
-import {Layer, MapboxStyle, Popup,
+import Map from 'react-map-gl';
+import {
+  Layer,
+  MapboxGeoJSONFeature,
+  MapRef, MapLayerMouseEvent, Source,
+  MapboxStyle,
   NavigationControl,
-  FullscreenControl,
+  Popup,
   ScaleControl,
-  GeolocateControl, MapRef, MapLayerMouseEvent, Source, FillLayer, LineLayer } from 'react-map-gl';
+  FullscreenControl,
+  GeolocateControl  } from 'react-map-gl';
 import bbox from '@turf/bbox';
-import ControlPanel from './ControlPanel';
 import MAP_STYLE, { fillLayer, lineLayer } from './MapStyle';
 
+(mapboxgl as any)['workerClass'] = MapboxWorker;
+
 function MapContainer() {
+
   const { loading, error, data } = useQuery(county_broadband_farm_bill_eligibility_geojson, {
     fetchPolicy: 'no-cache',
     variables: {
