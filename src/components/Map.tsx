@@ -2,7 +2,6 @@ import { ApolloProvider, useQuery } from '@apollo/client';
 import { Box, Container } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import * as mapboxgl from 'mapbox-gl';
-import * as MapboxWorker from 'mapbox-gl';
 
 import {
   broadband_unserved_blocks_geojson,
@@ -22,9 +21,13 @@ import {
   FullscreenControl,
   GeolocateControl  } from 'react-map-gl';
 import bbox from '@turf/bbox';
-import MAP_STYLE, { fillLayer, lineLayer } from './MapStyle';
-
-(mapboxgl as any)['workerClass'] = MapboxWorker;
+import { mapStyle, fillLayer, lineLayer } from './MapStyle';
+/* eslint import/no-webpack-loader-syntax: off */
+/* eslint-disable-next-line import/no-webpack-loader-syntax */
+/* eslint-disable @typescript-eslint/no-var-requires */
+// @ts-ignore
+import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+(mapboxgl as any).workerClass = MapboxWorker;
 
 function MapContainer() {
 
@@ -88,9 +91,9 @@ function MapContainer() {
       {data && (
         <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
           <Map
-            mapboxAccessToken="pk.eyJ1IjoibWVyZ2luZ2Z1dHVyZXMiLCJhIjoiY2tpNWhvdGNqMWk0bjJ6bnpmMGt4dm51YyJ9.i4MvF31Xr5fxscllkRx04w"
+            mapboxAccessToken="pk.eyJ1IjoicnVyYWxpbm5vIiwiYSI6ImNqeHl0cW0xODBlMm0zY2x0dXltYzRuazUifQ.zZBovoCHzLIW0wCZveEKzA"
             mapStyle={{
-              ...MAP_STYLE
+              ...mapStyle
             } as MapboxStyle}
             initialViewState={{
               longitude: -86.503,

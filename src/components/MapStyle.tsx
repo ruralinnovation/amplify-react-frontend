@@ -1,12 +1,8 @@
 import type {GeoJSONSourceRaw, FillLayer, LineLayer} from 'react-map-gl';
 
-import MAP_STYLE from '../map-style-basic-v8.json';
+import MAP_STYLE from '../mapbox/styles/ruralinno/ckpsmlgtn1jaq17lm7sni752q/style.json';
 
 // For more information on data-driven styles, see https://www.mapbox.com/help/gl-dds-ref/
-const sfNeighborhoods: GeoJSONSourceRaw = {
-  type: 'geojson',
-  data: 'https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/feature-example-sf.json'
-};
 
 export const fillLayer: FillLayer = {
   id: 'county_broadband_farm_bill_eligibility_fill_layer',
@@ -28,7 +24,7 @@ export const lineLayer: LineLayer = {
 };
 
 // Make a copy of the map style
-export default {
+export const mapStyle = {
   ...MAP_STYLE,
   // sources: {
   //   ...MAP_STYLE.sources,
