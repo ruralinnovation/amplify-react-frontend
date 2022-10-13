@@ -14,6 +14,9 @@ import AppContext, { AppContextPropsType } from './AppContext';
 import { Authenticator } from '@aws-amplify/ui-react';
 // import * as aws_amplify_react from "aws-amplify-react";
 import aws_config from "../aws-config";
+import Map from 'react-map-gl';
+import ControlPanel from '../components/ControlPanel';
+import { Box } from '@mui/material';
 
 // const Authenticator = aws_amplify_react.Authenticator;
 // const SignIn = aws_amplify_react.SignIn;
@@ -123,21 +126,17 @@ function ApiContextProvider(props: { children: any }) {
 
   return (
     <ApiContext.Provider value={state}>
-      <div>
-        Authenticated:<br />
-        {(user && state && ready && apolloClient)? getAuthStatus(state) + " as " + getUserName(user) : "ready: " + ready + ", state: " + getAuthStatus(state) }
-      </div>
       {/*<Authenticator hide={[ SignIn ]} amplifyConfig={aws_config}>*/}
       <Authenticator>
         {({ signOut, user }) => (
           (user && state && ready && apolloClient) ? (
               <main>
-                <h1>Hello {user.username}</h1>
-                <button onClick={signOut}>Sign out</button>
 
                 <ApolloProvider client={apolloClient}>
                   {props.children}
                 </ApolloProvider>
+
+                <ControlPanel signOut={signOut} user={user} />
               </main>
           ) : (
               <div>
@@ -147,6 +146,17 @@ function ApiContextProvider(props: { children: any }) {
           )
       )}
       </Authenticator>
+      <>
+        <br />
+        {
+          (() => {
+            console.log((user && state && ready && apolloClient)?
+              getAuthStatus(state) + " as " + getUserName(user) :
+              "ready: " + ready + ", state: " + getAuthStatus(state)
+            );
+          })()
+        }
+      </>
     </ApiContext.Provider>
   );
 }

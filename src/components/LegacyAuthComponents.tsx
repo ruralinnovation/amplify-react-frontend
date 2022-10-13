@@ -1,4 +1,4 @@
-import aws_config from "../aws-config";
+import aws_config from "../amplifyConfig";
 import * as aws_amplify_core from "@aws-amplify/core";
 import * as aws_amplify_react from "aws-amplify-react";
 import { Auth } from "@aws-amplify/auth";

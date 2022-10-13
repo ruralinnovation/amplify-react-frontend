@@ -17,7 +17,6 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@aws-amplify/auth": "^3.4.34",
-    "@aws-amplify/core": "^4.7.5",
     "@aws-amplify/ui-components": "~1.7.2",
     "@aws-amplify/ui-react": "^3.5.4",
     "@emotion/react": "^11.9.3",
@@ -32,7 +31,7 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "aws-amplify": "^4.3.26",
-    "aws-amplify-react": "~5.1.9",
+    "aws-amplify-react": "^5.1.9",
     "graphql": "^16.5.0",
     "install": "^0.13.0",
     "mapbox-gl": "^2.9.1",
