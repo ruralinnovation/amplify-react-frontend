@@ -1,4 +1,4 @@
-import type {GeoJSONSourceRaw, FillLayer, LineLayer} from 'react-map-gl';
+import type { FillLayer, LineLayer } from 'react-map-gl';
 
 import MAP_STYLE from '../mapbox/styles/ruralinno/ckpsmlgtn1jaq17lm7sni752q/style.json';
 

@@ -1,7 +1,6 @@
-import { ApolloProvider, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Box, Container } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
-import * as mapboxgl from 'mapbox-gl';
 
 import {
   broadband_unserved_blocks_geojson,
@@ -25,7 +24,7 @@ import { mapStyle, fillLayer, lineLayer } from './MapStyle';
 // /* eslint import/no-webpack-loader-syntax: off */
 // /* eslint-disable-next-line import/no-webpack-loader-syntax */
 // /* eslint-disable @typescript-eslint/no-var-requires */
-// // @ts-ignore
+// /* @ts-ignore */
 // import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
 // (mapboxgl as any).workerClass = MapboxWorker;
 
