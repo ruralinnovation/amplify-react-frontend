@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import '@aws-amplify/ui-react/styles.css';
+// import '@aws-amplify/ui-react/styles.css';
 import './App.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ContextProvider from './contexts/ContextProvider';

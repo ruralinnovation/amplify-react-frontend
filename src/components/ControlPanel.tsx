@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useContext } from 'react';
-import SignOut from 'aws-amplify-react';
 
 function ControlPanel(props: { signOut: any, user: any }) {
   const signOut = props.signOut;
@@ -8,10 +6,15 @@ function ControlPanel(props: { signOut: any, user: any }) {
 
   return (
     <div className="control-panel">
-      {(signOut !== null && user !== null) ? (
+      {(user !== null) ? (
         <div>
           <h1>Hello, {user.username}</h1>
-          <button onClick={signOut}>Sign out</button>
+          {(signOut !== null) ? (
+            <button onClick={signOut}>Sign out</button>
+            ) : (
+            <button>No Auth Controls</button>
+            )
+          }
         </div>
       ) : (
         <div></div>
