@@ -21,12 +21,13 @@ import {
   GeolocateControl  } from 'react-map-gl';
 import bbox from '@turf/bbox';
 import { mapStyle, fillLayer, lineLayer } from './MapStyle';
-// /* eslint import/no-webpack-loader-syntax: off */
-// /* eslint-disable-next-line import/no-webpack-loader-syntax */
-// /* eslint-disable @typescript-eslint/no-var-requires */
-// /* @ts-ignore */
-// import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
-// (mapboxgl as any).workerClass = MapboxWorker;
+/* eslint import/no-webpack-loader-syntax: off */
+/* eslint-disable-next-line import/no-webpack-loader-syntax */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* @ts-ignore */
+import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+import mapboxgl from "mapbox-gl";
+(mapboxgl as any).workerClass = MapboxWorker;
 
 function MapContainer() {
 

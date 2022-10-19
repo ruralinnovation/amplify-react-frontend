@@ -49,5 +49,8 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "worker-loader": "^3.0.8"
   }
 }
