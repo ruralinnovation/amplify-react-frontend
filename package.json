@@ -44,9 +44,9 @@
     ]
   },
   "scripts": {
-    "postinstall": "npm install --legacy-peer-deps --no-save \"@aws-amplify/ui-react\"@latest \"@emotion/react\" \"@material-ui/core\" \"@mui/material\"",
-    "start": "react-scripts start",
     "build": "react-scripts build",
+    "postinstall": "npm install --legacy-peer-deps --no-save \"@aws-amplify/auth\"@latest \"@aws-amplify/ui-react\"@latest \"@emotion/react\" \"@material-ui/core\" \"@mui/material\"",
+    "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   }
