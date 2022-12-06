@@ -8,8 +8,6 @@ options(`usethis.protocol` = "ssh")
 include("modules/library.R")
 include("modules/global.R")
 
-export_shinyapps_fonts()
-
 # Create Shiny app ----
 shinyApp(
 
