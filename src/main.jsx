@@ -33,5 +33,6 @@ const root_init = (evt) => {
 if (typeof Shiny === 'object') {
     document.body.addEventListener('cori.apps:init', root_init);
 } else {
+    document.body.childNodes.forEach(n => ("data" in n && n.data.match(/headContent/) !== null) ? document.body.removeChild(n) : true);
     root_init({ preventDefault: () => {} })
 }
