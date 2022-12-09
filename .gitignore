@@ -6,6 +6,7 @@
 *.Rproj*
 renv/lib*
 rsconnect
+Rplots*
 
 # History files
 .Rhistory
