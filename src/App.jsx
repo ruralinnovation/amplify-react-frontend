@@ -102,7 +102,7 @@ function App ({ content }) {
     async function onSliderChange(input) {
         console.log("what?");
 
-        return axios.get(`http://localhost:5174/__api__/hist-raw`,
+        return axios.get(`${import.meta.env.VITE_API_BACKEND}/__api__/hist-raw`,
             {
                 params: {
                     bins: input,

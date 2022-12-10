@@ -378,7 +378,8 @@ while (!no_error) tryCatch(
           file_path <- stringr::str_replace_all(req$PATH_INFO, "/www", "")
           cat(paste0(file_path, "\n"))
 
-          httr_target <- httr::GET(paste0("http://", req$REMOTE_ADDR, ":", shiny_port, file_path))
+          # httr_target <- httr::GET(paste0("http://", req$REMOTE_ADDR, ":", shiny_port, file_path))
+          httr_target <- httr::GET(paste0("http://127.0.0.1:", shiny_port, file_path))
           # httr_result <- httr::content(httr_target, as = "raw")
           httr_result <- httr::content(httr_target, as = "text", encoding ="UTF-8")
           # print(httr_result)
