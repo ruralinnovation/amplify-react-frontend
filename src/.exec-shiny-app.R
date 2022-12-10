@@ -263,4 +263,5 @@ while (!no_error) tryCatch(
       else quit(save = "no", status = 1, runLast = FALSE)
 
   },
-  finally = "Shiny app terminated.")
+  finally = "Shiny app terminated."
+)
