@@ -4,7 +4,7 @@ frontend:
     preBuild:
       commands:
 #        - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY}
-        - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true'
+        - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
         - npm ci
     build:
       commands:
