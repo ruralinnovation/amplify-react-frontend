@@ -1,0 +1,13 @@
+*Rproj*
+.ebextensions/
+.elasticbeanstalk/
+amplify/
+build/
+dist/
+lib/
+logs/
+node_modules/
+packrat/library/
+renv/library/
+rsconnect/
+shinymaptool/

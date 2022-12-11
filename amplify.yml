@@ -3,10 +3,13 @@ frontend:
   phases:
     preBuild:
       commands:
+#        - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY}
+        - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true'
         - npm ci
     build:
       commands:
         - echo "VITE_APP_VERSION=1" >> .env
+        - echo "VITE_API_BACKEND=${API_BACKEND}" >> .env
         - echo "VITE_USER_POOL_ID=${USER_POOL_ID}" >> .env
         - echo "VITE_USER_POOL_CLIENT_ID=${USER_POOL_CLIENT_ID}" >> .env
         - echo "VITE_IDENTITY_POOL_ID=${IDENTITY_POOL_ID}" >> .env
