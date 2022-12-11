@@ -1,4 +1,4 @@
-FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
+#FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
 FROM docker.io/coriverse/shinyapps:latest as run
 
 ENV APP_NAME=frontend
@@ -12,8 +12,8 @@ WORKDIR /srv/shiny-server
 RUN bash -c "if ! [[ -d $APP_NAME ]]; then mkdir $APP_NAME; fi"
 
 ## COPY app files from previous build to /srv/shiny-server/<app-name>
-COPY --from=previous  /root/.cache/  /root/.cache/
-COPY --from=previous /srv/shiny-server/$APP_NAME /srv/shiny-server/$APP_NAME
+#COPY --from=previous  /root/.cache/  /root/.cache/
+#COPY --from=previous /srv/shiny-server/$APP_NAME /srv/shiny-server/$APP_NAME
 #COPY --from=previous /srv/shiny-server/$APP_NAME/app.R /srv/shiny-server/$APP_NAME/app.R
 #COPY --from=previous /srv/shiny-server/$APP_NAME/modules /srv/shiny-server/$APP_NAME/modules/
 #COPY --from=previous /srv/shiny-server/$APP_NAME/renv /srv/shiny-server/$APP_NAME/renv/
@@ -27,15 +27,15 @@ RUN echo $(ls -lA ./*/*)
 COPY data ./data/
 
 #COPY .Renviron .Renviron
-#COPY renv.lock renv.lock
-#COPY renv/activate.R renv/activate.R
-#COPY renv/settings.dcf renv/settings.dcf
+COPY renv.lock renv.lock
+COPY renv/activate.R renv/activate.R
+COPY renv/settings.dcf renv/settings.dcf
 
-#RUN apt update -y && \
-#    apt purge -y ca-certificates-java && apt install -y ca-certificates-java && \
-#    apt install -y ca-certificates libgdal-dev libharfbuzz-dev libfribidi-dev \
-#    libprotobuf-dev libv8-dev protobuf-compiler libudunits2-dev procps libsodium-dev && \
-#    update-ca-certificates -f -v
+RUN apt update -y && \
+    apt purge -y ca-certificates-java && apt install -y ca-certificates-java && \
+    apt install -y ca-certificates libgdal-dev libharfbuzz-dev libfribidi-dev \
+    libprotobuf-dev libv8-dev protobuf-compiler libudunits2-dev procps libsodium-dev && \
+    update-ca-certificates -f -v
 
 RUN Rscript -e '\
     version; \
