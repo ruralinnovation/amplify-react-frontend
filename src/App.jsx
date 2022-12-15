@@ -1,9 +1,14 @@
-import {Component, useEffect, useState} from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import {Component, useEffect, useState} from 'react';
+import reactLogo from './assets/react.svg';
+
+import './App.css';
 import AbstractingContainersAndItems from "./components/material-ui/AbstractingContainersAndItems";
 import FillingSpace from "./components/material-ui/FillingSpace";
 import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
+
+import MyComponent from 'components/MyComponent.class';
+import UserProfile from 'components/UserProfile.class';
+import * as UserProfile from 'components/UserProfile.create-react-class';
 
 import axios from 'axios';
 import { debounce } from 'lodash';
