@@ -14,3 +14,5 @@ class MyComponent extends React.Component {
     saveUserInput () {}
     updateScore () {}
 }
+
+export default MyComponent;
