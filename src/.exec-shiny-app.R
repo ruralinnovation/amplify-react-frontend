@@ -1,4 +1,4 @@
-#!Rscript
+#!/usr/bin/env Rscript
 # Title     : Execute Shiny App
 # Objective : Initialize and run Shiny app as defined by local app.R or server.R/ui.R
 # Created by: John Hall

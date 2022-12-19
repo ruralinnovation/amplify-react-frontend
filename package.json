@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "dependencies": {
     "axios": "^1.2.1",
+    "create-react-class": "^15.7.0",
     "d3": "3.5.17",
     "d3-color": "^3.1.0",
     "lodash": "^4.17.21",
@@ -24,7 +25,7 @@
     "vite": "^3.0.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "VITE_API_BACKEND=http://127.0.0.1:5174 vite",
     "build": "vite build",
     "patch": "patch-package",
     "postinstall": "npm run patch && npm install --legacy-peer-deps --no-save \"@material-ui/core\"@\"^4.12.4\"",
