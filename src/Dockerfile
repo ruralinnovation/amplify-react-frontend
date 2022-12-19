@@ -1,4 +1,3 @@
-#FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
 FROM docker.io/rocker/shiny-verse:latest as base
 
 ARG gh_token
@@ -29,19 +28,32 @@ RUN Rscript -e '\
 
 RUN mkdir -p /srv/shiny-server/data
 RUN chmod -R ga+rw /srv/shiny-server/*
+RUN chmod +x /srv/shiny-server/.exec-shiny-app.R
 
+#CMD /usr/bin/bash
+#CMD /usr/bin/shiny-server
+CMD /srv/shiny-server/.exec-shiny-app.R
+
+#FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
 FROM docker.io/rocker/shiny-verse:latest as app
 
 ENV APP_NAME=frontend
 
-RUN echo ${GITHUB_PAT}
+COPY --from=base /root/.cache/  /root/.cache/
+#COPY --from=previous /root/.cache/  /root/.cache/
+COPY --from=base /srv/shiny-server /srv/shiny-server
+#COPY --from=previous /srv/shiny-server /srv/shiny-server
 
 WORKDIR /srv/shiny-server
 
-COPY --from=base  /root/.cache/  /root/.cache/
-COPY --from=base /srv/shiny-server /srv/shiny-server
+RUN bash -c "if ! [[ -d $APP_NAME ]]; \
+    then mkdir $APP_NAME && \
+    cp -r .Rprofile $APP_NAME/ && \
+    cp -r renv* $APP_NAME/; \
+    fi \
+"
 
-RUN bash -c "if ! [[ -d $APP_NAME ]]; then mkdir $APP_NAME; fi"
+WORKDIR /srv/shiny-server/$APP_NAME
 
 ## COPY app files from previous build to /srv/shiny-server/<app-name>
 #COPY --from=previous  /root/.cache/  /root/.cache/
@@ -52,9 +64,7 @@ RUN bash -c "if ! [[ -d $APP_NAME ]]; then mkdir $APP_NAME; fi"
 #COPY --from=previous /srv/shiny-server/$APP_NAME/templates /srv/shiny-server/$APP_NAME/templates/
 #COPY --from=previous /srv/shiny-server/$APP_NAME/www /srv/shiny-server/$APP_NAME/www/
 
-WORKDIR /srv/shiny-server/$APP_NAME
-
-RUN echo $(ls -lA ./*)
+RUN echo $(ls -lA)
 
 COPY data ./data/
 
@@ -71,10 +81,11 @@ COPY www www/
 COPY README.md README.md
 
 RUN chmod -R ga+rw /srv/shiny-server/$APP_NAME
+RUN chmod +x /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
 
 #CMD /usr/bin/bash
 #CMD /usr/bin/shiny-server
-CMD .exec-shiny-app.R
+#CMD /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
 
 ENTRYPOINT [ "Rscript", ".exec-shiny-app.R", "3000" ]
 
