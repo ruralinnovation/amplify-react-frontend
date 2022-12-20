@@ -32,7 +32,7 @@ RUN chmod +x /srv/shiny-server/.exec-shiny-app.R
 
 #CMD /usr/bin/bash
 #CMD /usr/bin/shiny-server
-CMD /srv/shiny-server/.exec-shiny-app.R
+#CMD /srv/shiny-server/.exec-shiny-app.R
 
 #FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
 FROM docker.io/rocker/shiny-verse:latest as app
@@ -90,9 +90,9 @@ RUN bash -c "if [[ -e .env.local ]]; \
 "
 #CMD /usr/bin/bash
 #CMD /usr/bin/shiny-server
-#CMD /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
+CMD /srv/shiny-server/$APP_NAME/.exec-shiny-app.R 3000
 
-ENTRYPOINT [ "Rscript", ".exec-shiny-app.R", "3000" ]
+ENTRYPOINT [ "Rscript" ]
 
 EXPOSE 3000
 EXPOSE 3838
