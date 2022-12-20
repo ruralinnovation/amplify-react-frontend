@@ -83,6 +83,11 @@ COPY README.md README.md
 RUN chmod -R ga+rw /srv/shiny-server/$APP_NAME
 RUN chmod +x /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
 
+# Remove the local environment vars from this build
+RUN bash -c "if [[ -e .env.local ]]; \
+    then mv .env.local .env.local.bak; \
+    fi \
+"
 #CMD /usr/bin/bash
 #CMD /usr/bin/shiny-server
 #CMD /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
