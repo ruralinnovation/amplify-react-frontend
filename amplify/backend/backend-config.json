@@ -23,8 +23,8 @@
         }
       ],
       "environmentMap": {
-        "cpu": "1024",
-        "memory": "4096"
+        "cpu": 1024,
+        "memory": 4096
       },
       "mutableParametersState": {},
       "exposedContainer": {
