@@ -1,1 +1,37 @@
-{}
+{
+  "hosting": {
+    "ElasticContainer": {
+      "resourceName": "site",
+      "service": "ElasticContainer",
+      "providerPlugin": "awscloudformation",
+      "domain": "frontend.ruralopportunitymap.us",
+      "restrictAccess": false,
+      "category": "hosting",
+      "categoryPolicies": [],
+      "dependsOn": [
+        {
+          "category": "",
+          "resourceName": "NetworkStack",
+          "attributes": [
+            "ClusterName",
+            "VpcId",
+            "VpcCidrBlock",
+            "SubnetIds",
+            "VpcLinkId",
+            "CloudMapNamespaceId"
+          ]
+        }
+      ],
+      "deploymentMechanism": "FULLY_MANAGED",
+      "environmentMap": {},
+      "mutableParametersState": {},
+      "exposedContainer": {
+        "name": "api",
+        "port": 3000
+      },
+      "output": {},
+      "hostedZoneId": "Z3RWVYE3ORUBKA",
+      "iamAccessUnavailable": true
+    }
+  }
+}

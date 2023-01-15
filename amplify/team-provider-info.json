@@ -9,7 +9,16 @@
       "UnauthRoleName": "amplify-amplifyfrontend-devel-103227-unauthRole",
       "StackName": "amplify-amplifyfrontend-devel-103227",
       "StackId": "arn:aws:cloudformation:us-east-1:312512371189:stack/amplify-amplifyfrontend-devel-103227/012a7960-878e-11ed-86c4-0e545c4cf269",
-      "AmplifyAppId": "dne8f868omkyd"
+      "AmplifyAppId": "dne8f868omkyd",
+      "NetworkStackS3Url": "https://s3.amazonaws.com/amplify-amplifyfrontend-devel-103227-deployment/amplify-cfn-templates/networkingStackTemplate.json"
+    },
+    "categories": {
+      "hosting": {
+        "ElasticContainer": {
+          "domain": "frontend.ruralopportunitymap.us",
+          "restrictAccess": false
+        }
+      }
     }
   }
 }
