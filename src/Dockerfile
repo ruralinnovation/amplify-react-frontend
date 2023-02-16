@@ -43,7 +43,7 @@
 
 
 FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
-FROM docker.io/rocker/shiny-verse:latest as app
+FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:latest as app
 #FROM 312512371189.dkr.ecr.us-east-1.amazonaws.com/coriverse/shinyapps:amplify-frontend as previous
 #FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:latest as app
 

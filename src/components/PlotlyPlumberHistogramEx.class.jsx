@@ -24,7 +24,7 @@ class PlotlyPlumberExample extends React.Component {
     async onSliderChange(input) {
         console.log("what?");
 
-        return axios.get(`${import.meta.env.VITE_API_BACKEND}/__api__/hist-raw`,
+        return axios.get(`${import.meta.env.VITE_AMP_BACKEND_API}/__api__/hist-raw`,
             {
                 params: {
                     bins: input,

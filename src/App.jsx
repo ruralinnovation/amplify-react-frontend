@@ -5,11 +5,6 @@ import reactLogo from './assets/react.svg';
 
 import './App.css';
 import AccessibleTable from "./components/AccessibleTable.class";
-import AbstractingContainersAndItems from "./components/material-ui/AbstractingContainersAndItems";
-import FillingSpace from "./components/material-ui/FillingSpace";
-import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
-
-import axios from 'axios';
 
 import MyComponent from './components/beginning-reactjs-foundations/MyComponent.class';
 import Foo from './components/beginning-reactjs-foundations/Foo.class';
@@ -17,6 +12,10 @@ import { FooWithoutBind } from './components/beginning-reactjs-foundations/Foo.c
 import PlotlyPlumberHistogramEx from './components/PlotlyPlumberHistogramEx.class';
 import UserProfileClass from './components/beginning-reactjs-foundations/UserProfile.class';
 import UserProfileCreateReactClass from './components/beginning-reactjs-foundations/UserProfile.create-react-class';
+
+import AbstractingContainersAndItems from "./components/material-ui/AbstractingContainersAndItems";
+import FillingSpace from "./components/material-ui/FillingSpace";
+import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
 
 // import aws_config from "./aws-config";
 
@@ -80,15 +79,6 @@ class Header extends Component {
 
 function App ({ content }) {
     let content_loaded = false;
-    // const [state, setState] = useState({
-    //     rawdata: [
-    //         {
-    //             y: null,
-    //             x: null,
-    //             type: 'bar'
-    //         }
-    //     ]
-    // });
 
     const [windowWidth, setWidth]   = useState(0);
     const [windowHeight, setHeight] = useState(0);
@@ -175,15 +165,19 @@ function App ({ content }) {
         <div className="App">
             <Header />
 
+            {/*<FooWithoutBind />*/}
+
+            {/*<Foo />*/}
+
             <PlotlyPlumberHistogramEx windowWidth={windowWidth} />
 
             <AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />
 
-            <AbstractingContainersAndItems />
+            {/*<AbstractingContainersAndItems />*/}
 
-            <FillingSpace />
+            {/*<FillingSpace />*/}
 
-            <UnderstandingBreakpoints />
+            {/*<UnderstandingBreakpoints />*/}
 
         </div>
     )

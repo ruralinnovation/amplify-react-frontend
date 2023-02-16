@@ -18,8 +18,8 @@ to install dependencies.
 For local development, copy the `.env` file to a file called
 `.env.development.local`. Update the value for the environment variables
 in `.env.development.local` as needed (for instance, change
-`VITE_API_BACKEND=https://frontend.ruralopportunitymap.us` to
-`VITE_API_BACKEND=http://127.0.0.1:5174` in order for the local
+`VITE_AMP_BACKEND_API=https://frontend.ruralopportunitymap.us` to
+`VITE_AMP_BACKEND_API=http://127.0.0.1:5174` in order for the local
 development frontend to connect to the local backend server).
 
 If you plan on developing/deploying an `R` backend that utilizes Plumber

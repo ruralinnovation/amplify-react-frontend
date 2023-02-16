@@ -3754,8 +3754,8 @@ var apps = (function (exports) {
 
 	function add_css$4() {
 		var style = element("style");
-		style.id = "svelte-dsjiep-style";
-		style.textContent = ".modal-frame.svelte-dsjiep{display:block;pointer-events:none;visibility:hidden}.modal-frame.shown.svelte-dsjiep{pointer-events:visible;visibility:visible}.modal-overlay.svelte-dsjiep{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0, 0, 0, 0.5);z-index:10;display:flex;flex-direction:column;justify-content:center}.modal-container.svelte-dsjiep{position:relative;background-color:transparent;top:1vh;left:5vw;width:90vw;height:90vh;max-height:620px;overflow:hidden;overflow-y:auto}main.svelte-dsjiep{height:100%;padding:0.5rem;overflow:auto}";
+		style.id = "svelte-gbczwt-style";
+		style.textContent = ".modal-frame.svelte-gbczwt{display:block;pointer-events:none;visibility:hidden}.modal-frame.shown.svelte-gbczwt{pointer-events:visible;visibility:visible}.modal-overlay.svelte-gbczwt{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0, 0, 0, 0.5);z-index:10;display:flex;flex-direction:column;justify-content:center}.modal-container.svelte-gbczwt{position:relative;background-color:transparent;top:1vh;left:5vw;width:90vw;height:90vh;max-height:620px;overflow:hidden}main.svelte-gbczwt{height:100%;padding:0.5rem;overflow:auto}";
 		append(document_1$4.head, style);
 	}
 
@@ -3797,11 +3797,11 @@ var apps = (function (exports) {
 				this.h();
 			},
 			h() {
-				attr(main, "class", "svelte-dsjiep");
-				attr(div0, "class", "modal-container svelte-dsjiep");
-				attr(div1, "class", "modal-overlay svelte-dsjiep");
+				attr(main, "class", "svelte-gbczwt");
+				attr(div0, "class", "modal-container svelte-gbczwt");
+				attr(div1, "class", "modal-overlay svelte-gbczwt");
 				attr(div1, "data-close", "");
-				attr(div2, "class", "modal-frame svelte-dsjiep");
+				attr(div2, "class", "modal-frame svelte-gbczwt");
 				toggle_class(div2, "shown", !!/*show*/ ctx[0]);
 			},
 			m(target, anchor) {
@@ -3902,7 +3902,7 @@ var apps = (function (exports) {
 	class Modal extends SvelteComponent {
 		constructor(options) {
 			super();
-			if (!document_1$4.getElementById("svelte-dsjiep-style")) add_css$4();
+			if (!document_1$4.getElementById("svelte-gbczwt-style")) add_css$4();
 			init(this, options, instance$4, create_fragment$4, safe_not_equal, { show: 0 });
 		}
 	}
@@ -8927,6 +8927,7 @@ var apps = (function (exports) {
 	  })();
 	}
 
+	var shiny_wake_time = 59999;
 	var appsId = "apps";
 	var appsElement = document.getElementById(appsId);
 	var main = // Check if element with id exists in DOM
@@ -9164,27 +9165,13 @@ var apps = (function (exports) {
 	}() : [];
 
 	(function () {
-	  // (appsElement.constructor.name === 'HTMLElement' ||
-	  //     appsElement.constructor.name === 'HTMLBodyElement' ||
-	  //     appsElement.constructor.name === 'HTMLDivElement'
-	  // ) ?
-	  //     console.log(appsElement, appsElement.innerHTML) :
-	  //     console.log(`Element with id ${appsId} not found.`);
-	  //
-	  // (sidebarAppElement.constructor.name === 'HTMLElement' ||
-	  //     sidebarAppElement.constructor.name === 'HTMLDivElement'
-	  // )?
-	  //     console.log(sidebarAppElement, sidebarAppElement.innerHTML) :
-	  //     console.log(`Element with id ${sidebarAppId} not found`);
-	  //
-	  // console.log('DrawLogoTest elements', drawLogoTestElements);
 	  // Wait a ~ sec to start wake timer
 	  setTimeout(function () {
-	    console.log("Send input to shiny");
+	    console.log("Send input to shiny server every ~ " + Math.round(shiny_wake_time / 1000) + " seconds to let it know the client is still active");
 	    setInterval(function () {
 	      // if (!shiny_module_handler_set) {
 	      setInput("wake", Math.random()); // }
-	    }, 533);
+	    }, shiny_wake_time);
 	  }, 1533);
 	})();
 
