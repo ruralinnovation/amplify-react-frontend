@@ -19,37 +19,43 @@ import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBrea
 
 // import aws_config from "./aws-config";
 
-function createData(
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-) {
-    return { name, calories, fat, carbs, protein };
-}
+import BusinessSearch from './modules/fullstack-graphql-book/src/components/BusinessSearch';
+import {
+    gql,
+    useQuery
+} from "@apollo/client";
 
-const table_columns = [
-    "name",
-    "calories",
-    "fat",
-    "carbs",
-    "protein"
-];
-
-const table_labels = {
-    "name": "Dessert (100g serving)",
-    "calories": "Calories",
-    "fat": "Fat (g)",
-    "carbs": "Carbs (g)",
-    "protein": "Protein (g)"
-};
-
-const table_rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-];
+// function createData(
+//     name,
+//     calories,
+//     fat,
+//     carbs,
+//     protein,
+// ) {
+//     return { name, calories, fat, carbs, protein };
+// }
+//
+// const table_columns = [
+//     "name",
+//     "calories",
+//     "fat",
+//     "carbs",
+//     "protein"
+// ];
+//
+// const table_labels = {
+//     "name": "Dessert (100g serving)",
+//     "calories": "Calories",
+//     "fat": "Fat (g)",
+//     "carbs": "Carbs (g)",
+//     "protein": "Protein (g)"
+// };
+//
+// const table_rows = [
+//     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+//     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+//     createData('Eclair', 262, 16.0, 24, 6.0),
+// ];
 
 class Header extends Component {
     render() {
@@ -78,6 +84,7 @@ class Header extends Component {
 }
 
 function App ({ content }) {
+
     let content_loaded = false;
 
     const [windowWidth, setWidth]   = useState(0);
@@ -119,12 +126,12 @@ function App ({ content }) {
             const app_content = (typeof content === 'function') ?
                 content() :
                 { childNodes: [] };
-            console.log(app_first_child);
-            console.log(app_content.childNodes);
+            // console.log(app_first_child);
+            // console.log(app_content.childNodes);
             setTimeout((container) => {
                 // container.append(app_content.childNodes);
                 app_content.childNodes.forEach(c => {
-                    console.log(c);
+                    // console.log(c);
                     container.insertBefore(c, app_first_child)
                 });
             }, 53, app_container);
@@ -134,7 +141,7 @@ function App ({ content }) {
 
     useEffect( addContentToCurrentComponent , []);
 
-    function updateDimensions () {
+    function updateWindowDimensions () {
         if (!!window &&
             window.hasOwnProperty("innerWidth") &&
             window.hasOwnProperty("innerHeight")
@@ -156,22 +163,18 @@ function App ({ content }) {
     }
 
     useEffect(() => {
-        window.addEventListener("load", updateDimensions);
-        window.addEventListener("resize", updateDimensions);
-        return () => window.removeEventListener("resize", updateDimensions);
+        window.addEventListener("load", updateWindowDimensions);
+        window.addEventListener("resize", updateWindowDimensions);
+        return () => window.removeEventListener("resize", updateWindowDimensions);
     }, []);
 
     return (
         <div className="App">
-            <Header />
+            {/*<Header />*/}
 
             {/*<FooWithoutBind />*/}
 
             {/*<Foo />*/}
-
-            <PlotlyPlumberHistogramEx windowWidth={windowWidth} />
-
-            <AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />
 
             {/*<AbstractingContainersAndItems />*/}
 
@@ -179,8 +182,14 @@ function App ({ content }) {
 
             {/*<UnderstandingBreakpoints />*/}
 
+            {/*<AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />*/}
+
+            <BusinessSearch />
+
+            <PlotlyPlumberHistogramEx windowWidth={windowWidth} />
+
         </div>
     )
 }
 
-export default App
+export default App;

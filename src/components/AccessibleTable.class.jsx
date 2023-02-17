@@ -1,3 +1,4 @@
+import React from "react";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -5,7 +6,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import React from "react";
 
 class AccessibleTable extends React.Component {
 
@@ -39,8 +39,7 @@ class AccessibleTable extends React.Component {
     }
 
     render () {
-        return (<>
-            <h3>Accessible Table</h3>
+        return (
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} aria-label="caption table">
                     <caption>A basic table example with a caption</caption>
@@ -48,8 +47,8 @@ class AccessibleTable extends React.Component {
                         <TableRow>
                             {this.columns.map((col) =>
                                 (col.toString == "name") ?
-                                    <TableCell key={col.toString()}>{this.getLabel(col)}</TableCell> :
-                                    <TableCell align="right" key={col.toString()}>{this.getLabel(col)}</TableCell>
+                                <TableCell key={col.toString()}>{this.getLabel(col)}</TableCell> :
+                                <TableCell align="right" key={col.toString()}>{this.getLabel(col)}</TableCell>
                             )}
                         </TableRow>
                     </TableHead>
@@ -65,7 +64,6 @@ class AccessibleTable extends React.Component {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </>
         );
     }
 }

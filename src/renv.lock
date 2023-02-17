@@ -1638,6 +1638,35 @@
         "xtable"
       ]
     },
+    "shinyjs": {
+      "Package": "shinyjs",
+      "Version": "2.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "802e4786b353a4bb27116957558548d5",
+      "Requirements": [
+        "digest",
+        "jsonlite",
+        "shiny"
+      ]
+    },
+    "shinylogs": {
+      "Package": "shinylogs",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a2425d913d852b5401628405d3767965",
+      "Requirements": [
+        "anytime",
+        "bit64",
+        "data.table",
+        "digest",
+        "htmltools",
+        "jsonlite",
+        "nanotime",
+        "shiny"
+      ]
+    },
     "sodium": {
       "Package": "sodium",
       "Version": "1.2.1",

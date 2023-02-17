@@ -5,10 +5,11 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import axios from "axios";
 
-class PlotlyPlumberExample extends React.Component {
+class PlotlyPlumberHistogramEx extends React.Component {
     constructor (props) {
         super(props);
         this.windowWidth = props.windowWidth;
+
         this.onSliderChange = this.onSliderChange.bind(this);
         this.state = {
             rawdata: [
@@ -19,6 +20,10 @@ class PlotlyPlumberExample extends React.Component {
                 }
             ]
         };
+    }
+
+    static defaultProps = {
+        windowWidth: 1024
     }
 
     async onSliderChange(input) {
@@ -113,4 +118,4 @@ class PlotlyPlumberExample extends React.Component {
     }
 }
 
-export default PlotlyPlumberExample;
+export default PlotlyPlumberHistogramEx;

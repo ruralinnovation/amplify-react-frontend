@@ -1,4 +1,6 @@
-#FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse as base
+##FROM docker.io/rocker/shiny-verse:4.2.1 as base
+##FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:4.2.1 as base
+#FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:latest as base
 #
 #ARG gh_token
 #ENV GITHUB_TOKEN=$gh_token
@@ -38,16 +40,16 @@
 #RUN chmod +x /srv/shiny-server/.exec-shiny-app.R
 #
 ##CMD /usr/bin/bash
-##CMD /usr/bin/shiny-server
-#CMD /srv/shiny-server/.exec-shiny-app.R
+#CMD /usr/bin/shiny-server
 
 
-FROM docker.io/coriverse/shinyapps:amplify-frontend as previous
+#FROM docker.io/coriverse/shinyapps:amplify-bcat-alpha as previous
+FROM 312512371189.dkr.ecr.us-east-1.amazonaws.com/coriverse/shinyapps:amplify-bcat-alpha as previous
+#FROM docker.io/rocker/shiny-verse:4.2.1 as app
+#FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:4.2.1 as app
 FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:latest as app
-#FROM 312512371189.dkr.ecr.us-east-1.amazonaws.com/coriverse/shinyapps:amplify-frontend as previous
-#FROM public.ecr.aws/l2v0f2h3/rocker/shiny-verse:latest as app
 
-ENV APP_NAME=frontend
+ENV APP_NAME=bcat-alpha
 
 ARG gh_token
 ENV GITHUB_PAT=$gh_token
@@ -68,16 +70,16 @@ RUN bash -c "if ! [[ -d $APP_NAME ]]; \
 
 WORKDIR /srv/shiny-server/$APP_NAME
 
-## COPY app files from previous build to /srv/shiny-server/<app-name>
-#COPY --from=previous /srv/shiny-server/$APP_NAME /srv/shiny-server/$APP_NAME
+### Copy app files from previous build to /srv/shiny-server/<app-name>
+##COPY --from=previous /srv/shiny-server/$APP_NAME /srv/shiny-server/$APP_NAME
 #COPY --from=previous /srv/shiny-server/$APP_NAME/app.R /srv/shiny-server/$APP_NAME/app.R
 #COPY --from=previous /srv/shiny-server/$APP_NAME/data /srv/shiny-server/$APP_NAME/data/
 #COPY --from=previous /srv/shiny-server/$APP_NAME/modules /srv/shiny-server/$APP_NAME/modules/
-COPY --from=previous /srv/shiny-server/$APP_NAME/renv /srv/shiny-server/$APP_NAME/renv/
-COPY --from=previous /srv/shiny-server/$APP_NAME/templates /srv/shiny-server/$APP_NAME/templates/
-COPY --from=previous /srv/shiny-server/$APP_NAME/www /srv/shiny-server/$APP_NAME/www/
+#COPY --from=previous /srv/shiny-server/$APP_NAME/renv /srv/shiny-server/$APP_NAME/renv/
+#COPY --from=previous /srv/shiny-server/$APP_NAME/templates /srv/shiny-server/$APP_NAME/templates/
+#COPY --from=previous /srv/shiny-server/$APP_NAME/www /srv/shiny-server/$APP_NAME/www/
 
-RUN echo $(ls -lA)
+RUN echo $(ls -A)
 
 COPY data ./data/
 
@@ -100,6 +102,9 @@ COPY README.md README.md
 
 RUN chmod -R ga+rw /srv/shiny-server/$APP_NAME
 RUN chmod +x /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
+
+# Install dependency updates
+RUN bash -c "/srv/shiny-server/$APP_NAME/.exec-shiny-app.R install ."
 
 # Remove the local environment vars from this build
 RUN bash -c "if [[ -e .env.local ]]; \
