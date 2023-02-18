@@ -19,43 +19,37 @@ import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBrea
 
 // import aws_config from "./aws-config";
 
-import BusinessSearch from './modules/fullstack-graphql-book/src/components/BusinessSearch';
-import {
-    gql,
-    useQuery
-} from "@apollo/client";
+function createData(
+    name,
+    calories,
+    fat,
+    carbs,
+    protein,
+) {
+    return { name, calories, fat, carbs, protein };
+}
 
-// function createData(
-//     name,
-//     calories,
-//     fat,
-//     carbs,
-//     protein,
-// ) {
-//     return { name, calories, fat, carbs, protein };
-// }
-//
-// const table_columns = [
-//     "name",
-//     "calories",
-//     "fat",
-//     "carbs",
-//     "protein"
-// ];
-//
-// const table_labels = {
-//     "name": "Dessert (100g serving)",
-//     "calories": "Calories",
-//     "fat": "Fat (g)",
-//     "carbs": "Carbs (g)",
-//     "protein": "Protein (g)"
-// };
-//
-// const table_rows = [
-//     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//     createData('Eclair', 262, 16.0, 24, 6.0),
-// ];
+const table_columns = [
+    "name",
+    "calories",
+    "fat",
+    "carbs",
+    "protein"
+];
+
+const table_labels = {
+    "name": "Dessert (100g serving)",
+    "calories": "Calories",
+    "fat": "Fat (g)",
+    "carbs": "Carbs (g)",
+    "protein": "Protein (g)"
+};
+
+const table_rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+];
 
 class Header extends Component {
     render() {
@@ -182,9 +176,7 @@ function App ({ content }) {
 
             {/*<UnderstandingBreakpoints />*/}
 
-            {/*<AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />*/}
-
-            <BusinessSearch />
+            <AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />
 
             <PlotlyPlumberHistogramEx windowWidth={windowWidth} />
 

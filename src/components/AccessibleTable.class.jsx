@@ -42,7 +42,7 @@ class AccessibleTable extends React.Component {
         return (
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} aria-label="caption table">
-                    <caption>A basic table example with a caption</caption>
+                    {/*<caption>A basic table example with a caption</caption>*/}
                     <TableHead>
                         <TableRow>
                             {this.columns.map((col) =>

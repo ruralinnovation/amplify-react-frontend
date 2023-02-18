@@ -8,24 +8,12 @@ import {
     InMemoryCache
 } from "@apollo/client";
 
-import { setMarkedBusinesses } from "./modules/fullstack-graphql-book/src/components/markedBusinesses";
-
 const
     client = new ApolloClient(
     {
         uri: import.meta.env.VITE_GRAPHQL_LOCAL_API,
         cache: new InMemoryCache({
-            typePolicies: {
-                Business: {
-                    fields: {
-                        businessMarked: {
-                            read(_, { readField }) {
-                                return setMarkedBusinesses().includes(readField("businessId"));
-                            },
-                        },
-                    },
-                },
-            },
+            // typePolicies: { ... }
         }),
         // link: new HttpLink({ uri: `${import.meta.env.VITE_GRAPHQL_LOCAL_API}/', fetch })
     }),
@@ -50,9 +38,9 @@ const
         const root = createRoot(root_container);
         root.render(
             <React.StrictMode>
-                <ApolloProvider client={client}>
+                {/*<ApolloProvider client={client}>*/}
                     <App content={ () => root_content } />
-                </ApolloProvider>
+                {/*</ApolloProvider>*/}
             </React.StrictMode>
         )
 
