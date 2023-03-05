@@ -1,11 +1,11 @@
 import React from "react";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { Table } from "@mui/material";
+import { TableBody } from "@mui/material";
+import { TableCell } from "@mui/material";
+import { TableContainer } from "@mui/material";
+import { TableHead } from "@mui/material";
+import { TableRow } from "@mui/material";
+import { Paper } from "@mui/material";
 
 class AccessibleTable extends React.Component {
 
@@ -14,6 +14,27 @@ class AccessibleTable extends React.Component {
         this.columns = props.columns;
         this.labels = props.labels;
         this.rows = props.rows;
+    }
+
+    /** componentDidUpdate() hook explained in https://www.youtube.com/watch?v=0o_6gztfG8c
+     *
+     * @param prevProps
+     * @param prevState
+     * @param snapshot
+     */
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        console.log("AccessibleTable prevProps:", prevProps);
+
+        if (prevProps !== this.props) {
+            console.log("Props have changed:", this.props);
+            this.columns = this.props.columns;
+            this.labels = this.props.labels;
+            this.rows = this.props.rows;
+            this.forceUpdate(); // <- !
+        } else {
+            console.log("Props are the same:", this.props)
+        }
+
     }
 
     getLabel (col) {

@@ -6,13 +6,13 @@
     <link href="/vite.svg" rel="icon" type="image/svg+xml" />
     <title>Vite + React</title>
 
+    <link href="src/bundle.css" rel="stylesheet" type="text/css" />
+
     <!-- Resources provided by Shiny server: -->
     <!-- headContent() gets defined when UI is built from this template,
       -- so it's not directly available as a function exported by shiny
       -->
     {{ headContent() }}
-
-    <link href="src/bundle.css" rel="stylesheet" type="text/css" />
 
     <script src="src/bundle.js" type="module"></script>
 
@@ -27,8 +27,9 @@
         if (typeof Shiny === 'object') {
           console.log("ShinyJS is loaded");
 
-          $(document).on('shiny:connected', function(evt) {
-              console.log("ShinyJS is connected to the server");
+          $(document).on('shiny:connected', (evt) => {
+            console.log(evt);
+            console.log("ShinyJS is connected to the server");
           });
 
           $(document).on("shiny:sessioninitialized", (evt) => {
@@ -42,7 +43,10 @@
                       evt.target.hash :
                       ""
             };
-            setTimeout(render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)), 53);
+            setTimeout(() =>
+                render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)),
+                53
+            );
           });
         }
     </script>

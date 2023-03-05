@@ -2,21 +2,10 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {
-    ApolloClient,
-    ApolloProvider,
-    InMemoryCache
-} from "@apollo/client";
+
+import ApolloGraphQLProvider from "./modules/fullstack-graphql-book/src/components/ApolloGraphQLProvider";
 
 const
-    client = new ApolloClient(
-    {
-        uri: import.meta.env.VITE_GRAPHQL_LOCAL_API,
-        cache: new InMemoryCache({
-            // typePolicies: { ... }
-        }),
-        // link: new HttpLink({ uri: `${import.meta.env.VITE_GRAPHQL_LOCAL_API}/', fetch })
-    }),
     root_id = 'react-app',
     root_container = document.getElementById(root_id),
     root_content = document.createElement("div"),
@@ -38,9 +27,9 @@ const
         const root = createRoot(root_container);
         root.render(
             <React.StrictMode>
-                {/*<ApolloProvider client={client}>*/}
+                <ApolloGraphQLProvider>
                     <App content={ () => root_content } />
-                {/*</ApolloProvider>*/}
+                </ApolloGraphQLProvider>
             </React.StrictMode>
         )
 

@@ -6,13 +6,13 @@
     <link href="/vite.svg" rel="icon" type="image/svg+xml" />
     <title>Vite + React</title>
 
+    
+
     <!-- Resources provided by Shiny server: -->
     <!-- headContent() gets defined when UI is built from this template,
       -- so it's not directly available as a function exported by shiny
       -->
     {{ headContent() }}
-
-    
 
     
 
@@ -27,8 +27,9 @@
         if (typeof Shiny === 'object') {
           console.log("ShinyJS is loaded");
 
-          $(document).on('shiny:connected', function(evt) {
-              console.log("ShinyJS is connected to the server");
+          $(document).on('shiny:connected', (evt) => {
+            console.log(evt);
+            console.log("ShinyJS is connected to the server");
           });
 
           $(document).on("shiny:sessioninitialized", (evt) => {
@@ -42,12 +43,15 @@
                       evt.target.hash :
                       ""
             };
-            setTimeout(render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)), 53);
+            setTimeout(() =>
+                render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)),
+                53
+            );
           });
         }
     </script>
-    <script type="module" crossorigin src="/assets/index-7e33d273.js"></script>
-    <link rel="stylesheet" href="/assets/index-9cb14824.css">
+    <script type="module" crossorigin src="/assets/index-df718f18.js"></script>
+    <link rel="stylesheet" href="/assets/index-6400b21d.css">
   </head>
   <body>
 
