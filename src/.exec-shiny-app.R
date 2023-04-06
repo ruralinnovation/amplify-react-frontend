@@ -14,11 +14,6 @@ library("websocket")
 library("withr")
 library("R6")
 
-if (as.numeric(version$major) == 3 && as.numeric(version$minor) >= 5) {
-  options(repos = list(MRAN = "https://mran.microsoft.com/snapshot/2020-04-24", CRAN = "http://cran.rstudio.com/"))
-  options(buildtools.check = list(function (action) { TRUE })[[1]])
-}
-
 args <- commandArgs(trailingOnly = TRUE)
 appDir <- getwd()
 local_lib <- .libPaths()[1]

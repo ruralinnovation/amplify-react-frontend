@@ -1,5 +1,6 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+// import { createRoot } from 'react-dom/client';
+import { render } from "react-dom";
 import './index.css';
 import App from './App';
 
@@ -24,14 +25,23 @@ const
             }
         }
 
-        const root = createRoot(root_container);
-        root.render(
+        // const root = createRoot(root_container);
+        // root.render(
+        //     <React.StrictMode>
+        //         <ApolloGraphQLProvider>
+        //             <App content={ () => root_content } />
+        //         </ApolloGraphQLProvider>
+        //     </React.StrictMode>
+        // );
+
+        render(
             <React.StrictMode>
                 <ApolloGraphQLProvider>
                     <App content={ () => root_content } />
                 </ApolloGraphQLProvider>
-            </React.StrictMode>
-        )
+            </React.StrictMode>,
+            root_container
+        );
 
         root_container.style.opacity = "1.0";
     };
