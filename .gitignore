@@ -6,7 +6,8 @@ fullstack-graphql-book
 .R*
 *.Rproj*
 renv/lib*
-rsconnect
+renv/library
+renv/staging
 Rplots*
 
 # History files
@@ -60,8 +61,13 @@ vignettes/*.pdf
 
 build
 dist
+fullstack-graphql-book
 logs
 node_modules
+packrat/lib*
+src/renv/lib*
+src/renv/sta*
+src/data
 
 */backend/hosting/
 

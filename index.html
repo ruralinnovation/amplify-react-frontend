@@ -6,15 +6,19 @@
     <link href="/vite.svg" rel="icon" type="image/svg+xml" />
     <title>Vite + React</title>
 
-    <link href="src/bundle.css" rel="stylesheet" type="text/css" />
+    <!--[if lte IE 8]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <link href="src/bundle.css"  rel="stylesheet" type="text/css" />
 
     <!-- Resources provided by Shiny server: -->
     <!-- headContent() gets defined when UI is built from this template,
       -- so it's not directly available as a function exported by shiny
       -->
-    {{ headContent() }}
+    {{ headContent() }}{{ use_tracking() }}
 
-    <script src="src/bundle.js" type="module"></script>
+    <link href="src/styles.css"  rel="stylesheet" type="text/css" />
 
     <script>
         const isBrowser = () => typeof window !== 'undefined';
@@ -27,9 +31,8 @@
         if (typeof Shiny === 'object') {
           console.log("ShinyJS is loaded");
 
-          $(document).on('shiny:connected', (evt) => {
-            console.log(evt);
-            console.log("ShinyJS is connected to the server");
+          $(document).on('shiny:connected', function(evt) {
+              console.log("ShinyJS is connected to the server");
           });
 
           $(document).on("shiny:sessioninitialized", (evt) => {
@@ -43,10 +46,7 @@
                       evt.target.hash :
                       ""
             };
-            setTimeout(() =>
-                render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)),
-                53
-            );
+            setTimeout(render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)), 53);
           });
         }
     </script>
@@ -68,6 +68,7 @@
 
     </div>
 
+    <script src="src/bundle.js" type="module"></script>
     <script src="src/main.jsx" type="module"></script>
 
   </body>

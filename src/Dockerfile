@@ -51,6 +51,9 @@ ENV APP_NAME=frontend
 ARG gh_token
 ENV GITHUB_PAT=$gh_token
 
+RUN apt update -y && \
+    apt install -y ca-certificates libgdal-dev libharfbuzz-dev libfribidi-dev libv8-dev libjq-dev
+
 #COPY --from=base /root/.cache/  /root/.cache/
 COPY --from=previous /root/.cache/  /root/.cache/
 #COPY --from=base /srv/shiny-server /srv/shiny-server
@@ -91,6 +94,10 @@ RUN bash -c "sed $'s/\r$//' .exec-shiny-app.R.bak > .exec-shiny-app.R && \
     chmod +x .exec-shiny-app.R; \
 "
 
+## Install dependency updates
+# RUN Rscript -e 'install.packages("devtools"); devtools::install_version("rlang", version = "1.1.0")'
+RUN bash -c "/srv/shiny-server/$APP_NAME/.exec-shiny-app.R install ."
+
 COPY app.R app.R
 COPY data data/
 COPY modules modules/
@@ -101,10 +108,7 @@ COPY README.md README.md
 RUN chmod -R ga+rw /srv/shiny-server/$APP_NAME
 RUN chmod +x /srv/shiny-server/$APP_NAME/.exec-shiny-app.R
 
-# Install dependency updates
-RUN bash -c "/srv/shiny-server/$APP_NAME/.exec-shiny-app.R install ."
-
-# Remove the local environment vars from this build
+## Remove the local environment vars from this build
 RUN bash -c "if [[ -e .env.local ]]; \
     then mv .env.local .env.local.bak; \
     fi \
