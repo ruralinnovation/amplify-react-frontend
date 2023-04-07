@@ -48,10 +48,6 @@
     "patch": "patch-package",
     "postinstall": "npm run patch && npm install --legacy-peer-deps --no-save nodemon ts-node typescript && echo \"setwd('src');\n  source('renv/activate.R')\n\" > .Rprofile && Rscript -e 'renv::restore(clean = FALSE)'",
     "start": "cd src && Rscript .exec-shiny-app.R . 5174",
-    "start:docker": "docker run -p 3000:3000 --rm docker.io/coriverse/shinyapps:amplify-frontend",
-    "start:pg-graphql": "npm run start:pg-graphql -w src/modules/fullstack-graphql-book"
-  },
-  "workspaces": [
-    "src/modules/fullstack-graphql-book"
-  ]
+    "start:docker": "docker run -p 3000:3000 --rm docker.io/coriverse/shinyapps:amplify-frontend"
+  }
 }

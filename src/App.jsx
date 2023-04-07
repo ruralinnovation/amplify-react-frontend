@@ -2,10 +2,6 @@
 
 import { Component, useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { ThemeProvider } from "@mui/material";
-import { createTheme } from "@mui/material";
 
 import './App.css';
 import AccessibleTable from "./components/AccessibleTable.class";
@@ -21,33 +17,7 @@ import AbstractingContainersAndItems from "./components/material-ui/AbstractingC
 import FillingSpace from "./components/material-ui/FillingSpace";
 import UnderstandingBreakpoints from "./components/material-ui/UnderstandingBreakpoints";
 
-import PostsFeed from "./modules/fullstack-graphql-book/src/components/PostsFeed";
-
 // import aws_config from "./aws-config";
-
-const cache = createCache({
-    key: 'css',
-    prepend: true,
-});
-
-const theme_colors = createTheme({
-    palette: {
-        primary: {
-            main: '#0052cc',
-        },
-        secondary: {
-            main: '#edf2ff',
-        },
-    },
-});
-
-const theme = createTheme(theme_colors, {
-    palette: {
-        info: {
-            main: theme_colors.palette.secondary.main,
-        },
-    },
-});
 
 function createData(
     name,
@@ -111,9 +81,9 @@ function App ({ content }) {
 
     let content_loaded = false;
 
-    const [ windowWidth, setWidth ]   = useState(0);
-    const [ windowHeight, setHeight ] = useState(0);
-    const [ windowRatio, setRatio ] = useState(0);
+    const [windowWidth, setWidth]   = useState(0);
+    const [windowHeight, setHeight] = useState(0);
+    const [windowRatio, setRatio] = useState(0);
 
     (function init () {
         // Check access to react/vite environment variables
@@ -194,28 +164,21 @@ function App ({ content }) {
 
     return (
         <div className="App">
-            <CacheProvider value={cache}>
-                <ThemeProvider theme={theme}>
-                    {/*<Header />*/}
+            {/*<Header />*/}
 
-                    {/*<FooWithoutBind />*/}
+            {/*<FooWithoutBind />*/}
 
-                    {/*<Foo />*/}
+            {/*<Foo />*/}
 
-                    {/*<AbstractingContainersAndItems />*/}
+            {/*<AbstractingContainersAndItems />*/}
 
-                    {/*<FillingSpace />*/}
+            {/*<FillingSpace />*/}
 
-                    {/*<UnderstandingBreakpoints />*/}
+            {/*<UnderstandingBreakpoints />*/}
 
-                    {/*<AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />*/}
+            <AccessibleTable columns={table_columns} labels={table_labels} rows={table_rows} />
 
-                    {/*<PlotlyPlumberHistogramEx windowWidth={windowWidth} />*/}
-
-                    <PostsFeed />
-
-                </ThemeProvider>
-            </CacheProvider>
+            <PlotlyPlumberHistogramEx windowWidth={windowWidth} />
 
         </div>
     )

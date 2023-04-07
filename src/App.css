@@ -94,7 +94,3 @@ a:hover {
 .App>div>.MuiGrid-root {
   justify-content: center;
 }
-
-.App * .MuiTableContainer-root {
-  margin: 2em auto;
-}
