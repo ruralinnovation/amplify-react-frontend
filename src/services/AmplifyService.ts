@@ -24,7 +24,8 @@ export default abstract class AmplifyService {
   }
 
   public static configure() {
-    Amplify.configure(aws_config);
+    console.log("Amplify configure: ", aws_config);
+    const config = Amplify.configure(aws_config);
     return(aws_config);
   }
 

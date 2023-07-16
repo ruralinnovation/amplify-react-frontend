@@ -1,57 +1,140 @@
 {
   "name": "frontend",
-  "version": "0.1.0",
   "private": true,
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "version": "0.0.1",
   "dependencies": {
-    "@apollo/client": "^3.7.0",
-    "@emotion/styled": "^11.9.3",
-    "@mui/icons-material": "^5.8.4",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@turf/bbox": "^6.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.11.41",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
-    "aws-amplify": "^4.3.39",
-    "graphql": "^16.5.0",
-    "install": "^0.13.0",
-    "mapbox-gl": "^2.9.1",
-    "npm": "^8.12.2",
-    "react": "^18.0.2",
-    "react-dom": "^18.0.2",
-    "react-map-gl": "^7.0.16",
-    "react-scripts": "^5.0.1",
-    "typescript": "^4.7.4",
-    "web-vitals": "^2.1.4"
+    "@apollo/client": "^3.7.8",
+    "@aws-amplify/notifications": "^1.1.2",
+    "@aws-amplify/ui-react": "^4.6.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.11.16",
+    "@mui/styles": "^5.11.16",
+    "amazon-cognito-identity-js": "^6.2.0",
+    "aws-amplify": "^5.1.2",
+    "axios": "^1.2.1",
+    "create-react-class": "^15.7.0",
+    "d3": "3.5.17",
+    "d3-color": "^3.1.0",
+    "graphql": "^16.6.0",
+    "lodash": "^4.17.21",
+    "mapbox-gl": "^2.15.0",
+    "plotly.js": "1.58.4",
+    "rc-slider": "^10.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-map-gl": "^7.1.2",
+    "react-plotly.js": "^2.6.0",
+    "web-vitals": "^3.4.0"
   },
   "devDependencies": {
+    "@guanghechen/rollup-plugin-copy": "^2.0.0-alpha.2",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
+    "@vitejs/plugin-react": "^3.0.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.14.54",
+    "patch-package": "^6.5.0",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-web-worker-loader": "^1.6.1",
+    "ts-node": "^10.9.1",
+    "vite": "^4.0.4",
     "worker-loader": "^3.0.8"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,vue}",
+      "!src/modules/*.js",
+      "!src/plugins/*.js",
+      "!src/renv/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/build",
+      "<rootDir>/dist",
+      "<rootDir>/node_modules",
+      "<rootDir>/src/modules",
+      "<rootDir>/src/renv",
+      "<rootDir>\\build",
+      "<rootDir>\\dist",
+      "<rootDir>\\node_modules",
+      "<rootDir>\\src\\modules",
+      "<rootDir>\\src\\renv"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "modulePathIgnorePatterns": [
+      "build",
+      "dist",
+      "node_modules",
+      "modules",
+      "renv",
+      "/build/",
+      "/dist/",
+      "/node_modules/",
+      "/modules/",
+      "/renv/",
+      "<rootDir>/build",
+      "<rootDir>/dist",
+      "<rootDir>/node_modules",
+      "<rootDir>/src/modules",
+      "<rootDir>/src/renv",
+      "<rootDir>\\build",
+      "<rootDir>\\dist",
+      "<rootDir>\\node_modules",
+      "<rootDir>\\src\\modules",
+      "<rootDir>\\src\\renv"
+    ],
+    "testPathIgnorePatterns": [
+      "build",
+      "dist",
+      "node_modules",
+      "modules",
+      "renv",
+      "/build/",
+      "/dist/",
+      "/node_modules/",
+      "/modules/",
+      "/renv/",
+      "<rootDir>/build",
+      "<rootDir>/dist",
+      "<rootDir>/node_modules",
+      "<rootDir>/src/modules",
+      "<rootDir>/src/renv",
+      "<rootDir>\\build",
+      "<rootDir>\\dist",
+      "<rootDir>\\node_modules",
+      "<rootDir>\\src\\modules",
+      "<rootDir>\\src\\renv"
+    ],
+    "verbose": true
   },
   "scripts": {
-    "build": "react-scripts build",
-    "postinstall": "npm install --legacy-peer-deps --no-save \"@aws-amplify/auth\"@latest \"@aws-amplify/notifications\"@latest \"@aws-amplify/ui-react\"@latest \"@emotion/react\" \"@material-ui/core\" \"@mui/material\"",
-    "start": "react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  }
+    "build": "vite build",
+    "build:dev": "cross-env VITE_API_BACKEND=http://127.0.0.1:5174 VITE_COGNITO_REDIRECT_SIGNIN=http://localhost:5174 VITE_COGNITO_REDIRECT_SIGNOUT=http://localhost:5174/ vite build -m development",
+    "build:docker": "docker build -f src/Dockerfile --build-arg gh_token=$GITHUB_PAT --progress=plain --target app -t docker.io/coriverse/shinyapps:amplify-frontend src",
+    "deploy": "npm run deploy:docker && amplify publish",
+    "deploy:docker": "npm run build && npm run build:docker && docker push docker.io/coriverse/shinyapps:amplify-frontend",
+    "dev": "cross-env VITE_API_BACKEND=http://127.0.0.1:5174 vite",
+    "dev:docker": "npm run build:docker && docker run -it --entrypoint Rscript -p 3838:3838 -p 5174:5174 --rm docker.io/coriverse/shinyapps:amplify-frontend /srv/shiny-server/frontend/.exec-shiny-app.R . 5174",
+    "dev:linux": "npm run build:dev && npm run start & npm run dev",
+    "dev:windows": "npm run build:dev && npm run start:windows && npm run dev",
+    "docker": "npm run build && npm run build:docker && npm run start:docker",
+    "patch": "patch-package",
+    "postinstall": "npm run patch && npm install --legacy-peer-deps --no-save nodemon ts-node typescript && npm run postinstall:R",
+    "postinstall:R": "echo \"Do you want to activate renv for this project? [Y, n]\"; read input;\n if [[ $input == \"Y\" || $input == \"y\" ]]; then\n   npm run postinstall:renv;\n else\n   npm run postinstall:r;\n fi",
+    "postinstall:renv": "bash -lc \"if command -v Rscript > /dev/null; then echo 'setwd(\\\"src\\\"); source(\\\"renv/activate.R\\\");' > .Rprofile && Rscript -e 'renv::restore(clean = FALSE)'; fi\"",
+    "postinstall:r": "bash -lc \"if command -v Rscript > /dev/null; then Rscript -e \\\"install.packages(c('remotes')); remotes::install_github('ruralinnovation/cori.apps'); remotes::install_github('ruralinnovation/coriverse');\\\"; fi\"",
+    "start": "cd src && Rscript .exec-shiny-app.R . 5174",
+    "start:docker": "docker run -p 3000:3000 --rm docker.io/coriverse/shinyapps:amplify-frontend",
+    "start:windows": "start npm run dev:docker",
+    "start:pg-graphql": "npm run start:pg-graphql -w src/modules/fullstack-graphql-book",
+    "test": "jest --no-cache"
+  },
+  "workspaces": [
+    "src/modules/fullstack-graphql-book"
+  ]
 }

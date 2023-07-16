@@ -2,11 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Box, Container } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  broadband_unserved_blocks_geojson,
-  county_broadband_farm_bill_eligibility_geojson,
-  incumbent_electric_providers_geo_geojson,
-} from '../services/bcatQueries';
+import county_summary_geojson from '../services/bcatQueries';
 
 import Map from 'react-map-gl';
 import {
@@ -25,16 +21,17 @@ import { mapStyle, fillLayer, lineLayer } from './MapStyle';
 /* eslint-disable-next-line import/no-webpack-loader-syntax */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* @ts-ignore */
-import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+// import MapboxWorker from 'worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker';
+import MapboxWorker from 'mapbox-gl/dist/mapbox-gl-csp-worker?worker';
 import mapboxgl from "mapbox-gl";
-(mapboxgl as any).workerClass = MapboxWorker;
+// (mapboxgl as any).workerClass = new MapboxWorker();
 
 function MapContainer() {
 
-  const { loading, error, data } = useQuery(county_broadband_farm_bill_eligibility_geojson, {
+  const { loading, error, data } = useQuery(county_summary_geojson, {
     fetchPolicy: 'no-cache',
     variables: {
-      state_abbr: 'TN',
+      "geoid_co": "47047",
       skipCache: true,
     },
   });
@@ -105,10 +102,12 @@ function MapContainer() {
             ref={mapRef}
             style={{ width: '100%', height: '100vh' }}
           >
-            <Source type="geojson" id="test" data={data.county_broadband_farm_bill_eligibility_geojson}>
-              <Layer {...fillLayer} />
-              <Layer {...lineLayer} />
-            </Source>
+            {(!!data && data.hasOwnProperty("county_summary_geojson")) && (
+              <Source type="geojson" id="test" data={data.county_summary_geojson}>
+                <Layer {...fillLayer} />
+                <Layer {...lineLayer} />
+              </Source>
+            )}
             {/* {data.incumbent_electric_providers_geo_geojson.features.map((feature: any, i: number) => {
               return (
                 <Source key={`f-${i + 1}}`} type="geojson" id={`f-${i + 1}}`} data={feature}>
