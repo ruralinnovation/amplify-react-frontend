@@ -5,17 +5,12 @@ frontend:
       commands:
         - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
         - npm ci
-#        - npm install --legacy-peer-deps
     build:
       commands:
-        - echo "REACT_APP_APP_VERSION=1" >> .env
-        - echo "REACT_APP_USER_POOL_ID=${USER_POOL_ID}" >> .env
-        - echo "REACT_APP_USER_POOL_CLIENT_ID=${USER_POOL_CLIENT_ID}" >> .env
-        - echo "REACT_APP_IDENTITY_POOL_ID=${IDENTITY_POOL_ID}" >> .env
-        - echo "REACT_APP_REGION=${REGION}" >> .env
+        - echo $(cat .env)
         - npm run build
   artifacts:
-    baseDirectory: build
+    baseDirectory: dist
     files:
       - '**/*'
   cache:
