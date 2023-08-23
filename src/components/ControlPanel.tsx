@@ -8,7 +8,7 @@ function ControlPanel(props: { signOut: any, user: any }) {
     <div className="control-panel">
       {(user !== null) ? (
         <div>
-          <h1>Hello, {user.username}</h1>
+          <h5>{user.username}</h5>
           {(signOut !== null) ? (
             <button onClick={signOut}>Sign out</button>
             ) : (

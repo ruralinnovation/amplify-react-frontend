@@ -7,6 +7,7 @@ import county_summary_geojson from '../services/bcatQueries';
 import Map from 'react-map-gl';
 import {
   Layer,
+// @ts-ignore
   MapboxGeoJSONFeature,
   MapRef, MapLayerMouseEvent, Source,
   MapboxStyle,
