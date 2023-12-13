@@ -1,17 +1,33 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 *.env
 *.idea
+*.run
+**/*.backup
+**/*.bak
+**/.idea
+**/node_modules
+**/spec
+**/swagger/dist
+
+.Rhistory
+.Rprofile
+.Rproj.user
+*.Rproj
 
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
 
-# testing
-/coverage
+# next.js
+/.next/
+/out/
 
 # production
 /build
+
+# testing
+/coverage
 
 # misc
 .DS_Store
@@ -19,7 +35,22 @@
 .env.development.local
 .env.test.local
 .env.production.local
+*.pem
 
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+*.bak
+
