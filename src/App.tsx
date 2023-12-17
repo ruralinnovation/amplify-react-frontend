@@ -4,7 +4,7 @@ import '@aws-amplify/ui-react/styles.css';
 import './App.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ContextProvider from './contexts/ContextProvider';
-import ApiContextProvider from './contexts/ApiContextProvider';
+import ApiContextProvider from "@cori-risi/cori.data.api";
 import MapContainer from './components/Map';
 import aws_config from "./amplifyConfig";
 

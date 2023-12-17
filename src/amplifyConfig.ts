@@ -17,7 +17,7 @@ export const aws_config = {
     "oauth": {
       "domain": "https://authcori.auth.us-east-1.amazoncognito.com",
       "scope": [ "phone", "email", "profile", "openid", "aws.cognito.signin.user.admin" ],
-      "redirectSignIn": "http://localhost:3000/",
+      "redirectSignIn": "http://localhost:3000",
       "redirectSignOut": "http://localhost:3000/",
       "responseType": "code", // or "token", note that REFRESH token will only be generated when the responseType is code
     }
