@@ -1,0 +1,124 @@
+{
+  "aws_project_region": "us-east-1",
+  "aws_user_pools_id": "us-east-1_QeA4600FA",
+  "aws_user_pools_web_client_id": "5eusi16g0o2q1g1rr5ehgudodm",
+  "aws_cognito_domain": "authcori.auth.us-east-1.amazoncognito.com",
+  "aws_cognito_region": "us-east-1",
+  "aws_cognito_identity_pool_id": "us-east-1:2194a76a-fa3d-4c33-999e-e3c4b2b049ee",
+  "aws_cognito_signup_attributes": [
+    "EMAIL"
+  ],
+  "aws_cognito_username_attributes": [
+    "EMAIL"
+  ],
+  "aws_cognito_verification_mechanisms": [
+    "EMAIL"
+  ],
+  "aws_cognito_password_protection_settings": {
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [
+      "REQUIRES_NUMBERS",
+      "REQUIRES_LOWERCASE",
+      "REQUIRES_UPPERCASE",
+      "REQUIRES_SYMBOLS"
+    ]
+  },
+  "aws_appsync_graphqlEndpoint": "https://bdkxhfgus5dztobic7gvn5ymue.appsync-api.us-east-1.amazonaws.com/graphql",
+  "aws_appsync_region": "us-east-1",
+  "aws_appsync_apiKey": "da2-yexc3mow25fc3amaendi4vscuq",
+  "aws_appsync_authenticationType": "API_KEY",
+  "aws_appsync_additionalAuthenticationTypes": "AMAZON_COGNITO_USER_POOLS,AWS_IAM",
+  "modelIntrospection": {
+    "version": 1,
+    "models": {
+      "Todo": {
+        "name": "Todo",
+        "fields": {
+          "id": {
+            "name": "id",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "content": {
+            "name": "content",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "owner": {
+            "name": "owner",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "createdAt": {
+            "name": "createdAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": true,
+            "attributes": []
+          },
+          "updatedAt": {
+            "name": "updatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": true,
+            "attributes": []
+          }
+        },
+        "syncable": true,
+        "pluralName": "Todos",
+        "attributes": [
+          {
+            "type": "model",
+            "properties": {}
+          },
+          {
+            "type": "key",
+            "properties": {
+              "fields": [
+                "id"
+              ]
+            }
+          },
+          {
+            "type": "auth",
+            "properties": {
+              "rules": [
+                {
+                  "provider": "userPools",
+                  "ownerField": "owner",
+                  "allow": "owner",
+                  "identityClaim": "cognito:username",
+                  "operations": [
+                    "create",
+                    "update",
+                    "delete",
+                    "read"
+                  ]
+                },
+                {
+                  "allow": "public",
+                  "operations": [
+                    "read"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "primaryKeyInfo": {
+          "isCustomPrimaryKey": false,
+          "primaryKeyFieldName": "id",
+          "sortKeyFieldNames": []
+        }
+      }
+    },
+    "enums": {},
+    "nonModels": {}
+  }
+}
