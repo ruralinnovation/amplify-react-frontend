@@ -1,56 +1,25 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-*.env
-*.idea
-*.run
-**/*.backup
-**/*.bak
-**/.idea
-**/node_modules
-**/spec
-**/swagger/dist
-
-.Rhistory
-.Rprofile
-.Rproj.user
-*.Rproj
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# testing
-/coverage
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-*.pem
-
-# debug
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# local env files
-.env*.local
+build
+node_modules
+dist
+dist-ssr
+*.local
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-*.bak
-
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

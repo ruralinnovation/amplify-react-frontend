@@ -1,9 +1,10 @@
 {
   "aws_project_region": "us-east-1",
-  "aws_user_pools_id": "us-east-1_ogVQdOb1o",
-  "aws_user_pools_web_client_id": "373oa01rqpprpugsubmckv1n85",
+  "aws_user_pools_id": "us-east-1_QeA4600FA",
+  "aws_user_pools_web_client_id": "5eusi16g0o2q1g1rr5ehgudodm",
+  "aws_cognito_domain": "authcori.auth.us-east-1.amazoncognito.com",
   "aws_cognito_region": "us-east-1",
-  "aws_cognito_identity_pool_id": "us-east-1:303cfb42-77e8-471e-a662-7c786a269e47",
+  "aws_cognito_identity_pool_id": "us-east-1:2194a76a-fa3d-4c33-999e-e3c4b2b049ee",
   "aws_cognito_signup_attributes": [
     "EMAIL"
   ],

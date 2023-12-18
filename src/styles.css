@@ -1,0 +1,306 @@
+body {
+    display: flex;
+    flex-direction: column;
+    font-size: 12pt;
+    margin: 0;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+/** Dashboard Styles */
+
+body>div.dashboard {
+    margin-top: 44px;
+    width: 100%;
+    height: calc(100vh - 44px);
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+div.dashboard.flex {
+    display: flex !important;
+}
+
+div.dashboard.flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+div.dashboard #react-app {
+    max-height: calc(100vh - 126px);
+    overflow: visible;
+    transition: opacity ease-in 1500ms;
+    opacity: 0.0;
+}
+
+div.dashboard * .bg-gray-400 {
+    --bg-opacity: 1 !important;
+    background-color: #cbd5e0 !important;
+    /*background-color: rgba(203,213,224,var(--bg-opacity)) !important;*/
+}
+
+div.dashboard * .bg-gray-500 {
+    --bg-opacity: 1 !important;
+    background-color: #a0aec0 !important;
+    /*background-color: rgba(160,174,192,var(--bg-opacity)) !important;*/
+}
+
+div.dashboard .ml-auto {
+    margin-left: auto !important;
+}
+
+div.dashboard .mr-auto {
+    margin-right: auto !important;
+}
+
+div.dashboard * .collapsable-panel-control {
+    position: fixed;
+    top: 70px;
+    right: 1.5em;
+    float: right;
+    margin: 12px;
+    color: aquamarine;
+    border-radius: 6px;
+    z-index: 1000;
+}
+
+a.collapsable-panel-control {
+    display: none;
+}
+
+.collapsable-panel-control.show {
+    display: block;
+}
+
+*.collapsable-panel-control button {
+    font-family: TT Hoves Light, Montserrat, sans-serif;
+    background-color: #26535c;
+    color: #fff;
+}
+
+.controls {
+    min-width: 144px !important;
+    width: max-content;
+    text-align: center;
+}
+
+.controls * button,
+.controls #auth-control button,
+.controls #data-download-link button ,
+.controls #print-config button,
+.controls #print-exec button {
+    width: auto;
+    margin: 1px;
+    text-align: center;
+}
+
+.controls #info {
+    min-width: 120px;
+}
+
+.controls #info .legend {
+    min-width: 120px;
+}
+
+.controls #info .legend .entry {
+    margin: 12px 8px;
+}
+
+.w-1\/2 {
+    width: 50%;
+    flex-basis: auto;
+    flex-grow: 1;
+}
+
+@media (max-width: 960px) {
+    .w-1\/2 {
+        width: 100% !important;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+.collapsed.w-1\/2 {
+    max-width: 0;
+    width: 0 !important;
+}
+
+.collapsed.w-1\/2.collapse-horizontal {
+    min-width: 0;
+    width: 51%; /* <= special handling for 1/2-screen flex child */
+    overflow: hidden;
+}
+
+div.content-container {
+    min-width: 49.99vw; /* <= special handling for 1/2-screen flex child */
+    min-height: calc(100vh - 92px);
+    /*border: 2px solid #000;*/
+    padding: 3px 33px;
+    text-align: center;
+}
+
+/* On mobile screens right collapsible panel is bumped down below */
+@media (max-width: 960px) {
+    .collapsed.w-1\/2.collapse-horizontal {
+        width: 100%;
+    }
+    div.content-container {
+        min-width: 100vw;
+    }
+}
+
+#sidebar #about.modal-content {
+    padding: 20px;
+}
+
+#about.modal-content {
+    padding: 20px;
+}
+
+#about.modal-content .row {
+    max-width: 75vh;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#map {
+    position: relative;
+    height: 100%;
+}
+
+.mapboxgl-map {
+    width: calc(100vw - 32px) !important;
+    max-width: 100% !important;
+}
+
+.mapboxgl-canvas-container {
+    position: relative;
+    min-height: 360px;
+    height: 100%;
+}
+
+.mapboxgl-canvas-container .mapboxgl-canvas {
+    top: 0;
+    right: 0px;
+}
+
+body * #tool-title-help i.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body * #tool-title-help .glyphicon::before,
+body * #tool-title-help [class*=" glyphicon-"]::before,
+body * #tool-title-help [class^="glyphicon-"]::before {
+    -webkit-font-feature-settings: normal;
+    font-feature-settings: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: inline-block;
+    font-family: bootstrap-icons !important;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400 !important;
+    line-height: 1;
+    text-transform: none;
+    vertical-align: -.125em;
+}
+
+body * #tool-title-help i.glyphicon.glyphicon-question-sign::before {
+    content: "\f505";
+}
+
+@font-face {
+    font-family: "bootstrap-icons";
+    font-display: block;
+    src:
+            url("https://cori-risi-apps.s3.amazonaws.com/fonts/bootstrap-icons.woff2") format("woff2"),
+            url("https://cori-risi-apps.s3.amazonaws.com/fonts/bootstrap-icons.woff") format("woff");
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output {
+    width: 40vw !important;
+    height: calc(100vh - 160px) !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 960px) {
+    .geocontainer.shiny-map-tool.shiny-bound-output {
+        min-width: calc(100vw - 84px) !important;
+        width: calc(100vw - 84px) !important;
+        max-width: 100% !important;
+    }
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output aside.controls {
+    position: absolute;
+    top: 2px;
+    right: 24px;
+    min-width: 250px;
+    max-width: 250px;
+    overflow-wrap: break-word;
+    z-index: 1000;
+    text-align: left;
+    background: transparent !important;
+    border: transparent !important;
+    box-shadow: transparent 0 0 0 0 !important;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output aside.controls.right.toolbox {
+    min-width: 360px !important;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output aside.controls .box-button button {
+    font-family: TT Hoves Light,Montserrat,sans-serif;
+    background-color: #26535c;
+    color: #fff;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output aside.controls * #legend.layer-legend * {
+    text-align: left;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output #basemap-menu {
+    background-color: rgba(0,0,0,.25);
+    bottom: 0;
+    color: #f0f8ff;
+    margin: 0;
+    max-height: 56px;
+    padding: 1em 2rem 3em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 0 !important;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output #basemap-menu label {
+    display: inline;
+}
+
+.geocontainer.shiny-map-tool.shiny-bound-output #deck-canvas {
+    max-height: 0px !important;
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='29' height='29' viewBox='0 0 29 29' xmlns='http://www.w3.org/2000/svg' fill='%23333'%3E%3Cpath d='M10.5 14l4-8 4 8h-8z' fill='%23F00'/%3E%3Cpath d='M10.5 16l4 8 4-8h-8z' fill='%23ccc'/%3E%3C/svg%3E");
+}
