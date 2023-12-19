@@ -1,11 +1,11 @@
 version: 1
-backend:
-  phases:
-    build:
-      commands:
-        - nvm use 18
-        - npm ci
-        - npx amplify generate config --branch main --app-id "${BACKEND_APPID}"
+#backend:
+#  phases:
+#    build:
+#      commands:
+#        - nvm use 18
+#        - npm ci
+#        - npx amplify generate config --branch main --app-id "${BACKEND_APPID}"
 frontend:
   phases:
     preBuild:
