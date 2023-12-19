@@ -12,7 +12,6 @@ import '@aws-amplify/ui-react/styles.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import './App.css';
-import {WithAuthenticatorOptions} from "@aws-amplify/ui-react/dist/types/components/Authenticator/withAuthenticator";
 
 function SignOutButton() {
     const { signOut } = useAuthenticator();
