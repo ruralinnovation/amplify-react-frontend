@@ -15,7 +15,7 @@ import './App.css';
 
 function SignOutButton() {
     const { signOut } = useAuthenticator();
-    return <Button flex title="Sign Out" onClick={signOut}>Sign Out</Button>;
+    return <Button title="Sign Out" onClick={signOut}>Sign Out</Button>;
 }
 
 function App({ content }: { content: () => HTMLElement }): JSX.Element {
