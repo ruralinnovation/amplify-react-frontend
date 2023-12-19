@@ -28,6 +28,7 @@ div.dashboard.flex-wrap {
 }
 
 div.dashboard #react-app {
+    width: 100%;
     max-height: calc(100vh - 126px);
     overflow: visible;
     transition: opacity ease-in 1500ms;

@@ -54,7 +54,7 @@
   color: var( --amplify-components-button-primary-color );
 }
 
-.amplify-button--primary:hover {
+.amplify-button:hover, .amplify-button--primary:hover {
   --amplify-internal-button-background-color: var( --amplify-components-button-primary-hover-background-color );
   --amplify-internal-button-border-color: var( --amplify-components-button-primary-hover-border-color );
   --amplify-internal-button-color: var( --amplify-components-button-primary-hover-color );
@@ -62,5 +62,18 @@
   --amplify-components-button-primary-color: #FFFFFF;
   --amplify-internal-button-border-color: #07353F;
   --amplify-internal-button-background-color: #07353F;
+}
+
+.amplify-sign-out {
+  float: right;
+  margin-top: -66px;
+  margin-right: 56px;
+}
+
+@media (max-height: 859px) {
+  .amplify-sign-out {
+    margin-top: -6px;
+    margin-right: 6px;
+  }
 }
 

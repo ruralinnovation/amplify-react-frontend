@@ -5,12 +5,19 @@ import {
     Heading,
     Image,
     Text,
-    withAuthenticator
-} from "@aws-amplify/ui-react";
+    withAuthenticator,
+    useAuthenticator
+} from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import './App.css';
+import {WithAuthenticatorOptions} from "@aws-amplify/ui-react/dist/types/components/Authenticator/withAuthenticator";
+
+function SignOutButton() {
+    const { signOut } = useAuthenticator();
+    return <Button flex title="Sign Out" onClick={signOut}>Sign Out</Button>;
+}
 
 function App({ content }: { content: () => HTMLElement }): JSX.Element {
     let content_loaded = false;
@@ -83,9 +90,8 @@ function App({ content }: { content: () => HTMLElement }): JSX.Element {
 
   return (
       <>
+          <div className={"amplify-sign-out"}><SignOutButton /></div>
           <h1 style={{textAlign: "center"}}>Vite + React + TS</h1>
-          <br />
-          <br />
           <br />
           <Flex
               direction={{ base: 'column', large: 'row' }}
@@ -137,4 +143,6 @@ function App({ content }: { content: () => HTMLElement }): JSX.Element {
 }
 
 // export default App;
-export default withAuthenticator(App);
+export default withAuthenticator(App, {
+    loginMechanisms: ['username']
+});
