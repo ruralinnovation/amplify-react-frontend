@@ -221,10 +221,12 @@ function ControlPanel (props) {
                 <div className="controls" style={open ? {
                     maxWidth: "min-content",
                     paddingLeft: "56px",
-                    paddingRight: "56px"
+                    paddingRight: "56px",
+                    overflow: "scroll"
                 } : {
                     maxWidth: "0px",
-                    padding: "0px"
+                    padding: "0px",
+                    overflow: "hidden"
                 }}>
     
                     {/*<h5>{*/}
