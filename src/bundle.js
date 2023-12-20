@@ -2109,10 +2109,6 @@ var apps = (function (exports) {
 		let a12;
 		let t33;
 		let header_class_value;
-		let t34;
-		let br0;
-		let t35;
-		let br1;
 		let current;
 		let mounted;
 		let dispose;
@@ -2209,10 +2205,6 @@ var apps = (function (exports) {
 				li12 = element("li");
 				a12 = element("a");
 				t33 = text$2("Newsletter");
-				t34 = space();
-				br0 = element("br");
-				t35 = space();
-				br1 = element("br");
 				this.h();
 			},
 			l(nodes) {
@@ -2485,10 +2477,6 @@ var apps = (function (exports) {
 				div6_nodes.forEach(detach);
 				div7_nodes.forEach(detach);
 				header_nodes.forEach(detach);
-				t34 = claim_space(nodes);
-				br0 = claim_element(nodes, "BR", { class: true });
-				t35 = claim_space(nodes);
-				br1 = claim_element(nodes, "BR", { class: true });
 				this.h();
 			},
 			h() {
@@ -2643,8 +2631,6 @@ var apps = (function (exports) {
 				set_style(header, "max-height", "108px");
 				set_style(header, "height", "75px");
 				set_style(header, "z-index", "1");
-				attr(br0, "class", "svelte-1b03s4v");
-				attr(br1, "class", "svelte-1b03s4v");
 			},
 			m(target, anchor) {
 				insert(target, header, anchor);
@@ -2736,10 +2722,6 @@ var apps = (function (exports) {
 				append(ul2, li12);
 				append(li12, a12);
 				append(a12, t33);
-				insert(target, t34, anchor);
-				insert(target, br0, anchor);
-				insert(target, t35, anchor);
-				insert(target, br1, anchor);
 				current = true;
 
 				if (!mounted) {
@@ -2813,10 +2795,6 @@ var apps = (function (exports) {
 			d(detaching) {
 				if (detaching) detach(header);
 				if (if_block) if_block.d();
-				if (detaching) detach(t34);
-				if (detaching) detach(br0);
-				if (detaching) detach(t35);
-				if (detaching) detach(br1);
 				mounted = false;
 				dispose();
 			}
@@ -5063,10 +5041,6 @@ var apps = (function (exports) {
 		let div2_class_value;
 		let div3_class_value;
 		let header_class_value;
-		let t2;
-		let br0;
-		let t3;
-		let br1;
 		let current;
 		let if_block = !!/*logo_visible*/ ctx[3] && create_if_block_1$1(ctx);
 		let each_value = /*nav_links*/ ctx[0];
@@ -5095,10 +5069,6 @@ var apps = (function (exports) {
 					each_blocks[i].c();
 				}
 
-				t2 = space();
-				br0 = element("br");
-				t3 = space();
-				br1 = element("br");
 				this.h();
 			},
 			l(nodes) {
@@ -5159,10 +5129,6 @@ var apps = (function (exports) {
 				div2_nodes.forEach(detach);
 				div3_nodes.forEach(detach);
 				header_nodes.forEach(detach);
-				t2 = claim_space(nodes);
-				br0 = claim_element(nodes, "BR", { class: true });
-				t3 = claim_space(nodes);
-				br1 = claim_element(nodes, "BR", { class: true });
 				this.h();
 			},
 			h() {
@@ -5214,8 +5180,6 @@ var apps = (function (exports) {
 				set_style(header, "max-height", "108px");
 				set_style(header, "height", "75px");
 				set_style(header, "z-index", "1");
-				attr(br0, "class", "svelte-1gtv7y5");
-				attr(br1, "class", "svelte-1gtv7y5");
 			},
 			m(target, anchor) {
 				insert(target, header, anchor);
@@ -5235,10 +5199,6 @@ var apps = (function (exports) {
 					each_blocks[i].m(ul, null);
 				}
 
-				insert(target, t2, anchor);
-				insert(target, br0, anchor);
-				insert(target, t3, anchor);
-				insert(target, br1, anchor);
 				current = true;
 			},
 			p(ctx, [dirty]) {
@@ -5331,10 +5291,6 @@ var apps = (function (exports) {
 				if (detaching) detach(header);
 				if (if_block) if_block.d();
 				destroy_each(each_blocks, detaching);
-				if (detaching) detach(t2);
-				if (detaching) detach(br0);
-				if (detaching) detach(t3);
-				if (detaching) detach(br1);
 			}
 		};
 	}
@@ -6613,10 +6569,6 @@ var apps = (function (exports) {
 		let div2_class_value;
 		let div3_class_value;
 		let header_class_value;
-		let t2;
-		let br0;
-		let t3;
-		let br1;
 		let current;
 		let if_block = !!/*logo_visible*/ ctx[3] && create_if_block_1(ctx);
 		let each_value = /*nav_links*/ ctx[0];
@@ -6645,10 +6597,6 @@ var apps = (function (exports) {
 					each_blocks[i].c();
 				}
 
-				t2 = space();
-				br0 = element("br");
-				t3 = space();
-				br1 = element("br");
 				this.h();
 			},
 			l(nodes) {
@@ -6709,10 +6657,6 @@ var apps = (function (exports) {
 				div2_nodes.forEach(detach);
 				div3_nodes.forEach(detach);
 				header_nodes.forEach(detach);
-				t2 = claim_space(nodes);
-				br0 = claim_element(nodes, "BR", { class: true });
-				t3 = claim_space(nodes);
-				br1 = claim_element(nodes, "BR", { class: true });
 				this.h();
 			},
 			h() {
@@ -6764,8 +6708,6 @@ var apps = (function (exports) {
 				set_style(header, "max-height", "108px");
 				set_style(header, "height", "75px");
 				set_style(header, "z-index", "1");
-				attr(br0, "class", "svelte-b5k00g");
-				attr(br1, "class", "svelte-b5k00g");
 			},
 			m(target, anchor) {
 				insert(target, header, anchor);
@@ -6785,10 +6727,6 @@ var apps = (function (exports) {
 					each_blocks[i].m(ul, null);
 				}
 
-				insert(target, t2, anchor);
-				insert(target, br0, anchor);
-				insert(target, t3, anchor);
-				insert(target, br1, anchor);
 				current = true;
 			},
 			p(ctx, [dirty]) {
@@ -6881,10 +6819,6 @@ var apps = (function (exports) {
 				if (detaching) detach(header);
 				if (if_block) if_block.d();
 				destroy_each(each_blocks, detaching);
-				if (detaching) detach(t2);
-				if (detaching) detach(br0);
-				if (detaching) detach(t3);
-				if (detaching) detach(br1);
 			}
 		};
 	}
@@ -7273,8 +7207,8 @@ var apps = (function (exports) {
 		onMount(() => {
 			document.addEventListener("keydown", function (evt) {
 				const kbEvent = evt || window["event"]; // cross-browser shenanigans
-				console.log(kbEvent);
 
+				// console.log(kbEvent);
 				// if (kbEvent['ctrlKey'] || kbEvent['shiftKey']) {
 				if (new Date().getTime() - sinceLastMovementEvent > 66) {
 					if (kbEvent["keyCode"] === 27) {
@@ -7710,10 +7644,11 @@ var apps = (function (exports) {
 				const kbEvent = evt || window["event"]; // cross-browser shenanigans
 
 				// console.log(kbEvent);
-				if (kbEvent["keyCode"] === 32) {
-					// spacebar
-					kbEvent.preventDefault();
-				} else if (kbEvent["ctrlKey"] || kbEvent["shiftKey"]) {
+				// if (kbEvent['keyCode'] === 32) { // spacebar
+				//     kbEvent.preventDefault();
+				//
+				/* } else */
+				if (kbEvent["ctrlKey"] || kbEvent["shiftKey"]) {
 					if (new Date().getTime() - sinceKeyEvent > 66) {
 						if (kbEvent["keyCode"] === 73) {
 							// I/i
@@ -7723,7 +7658,7 @@ var apps = (function (exports) {
 							kbEvent.preventDefault();
 						}
 					}
-				} else ; // console.log('Keyboard Event: ', kbEvent['keyCode']);
+				} // console.log('Keyboard Event: ', kbEvent['keyCode']);
 
 				return true;
 			});

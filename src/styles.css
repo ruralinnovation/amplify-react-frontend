@@ -11,12 +11,17 @@ body {
 /** Dashboard Styles */
 
 body>div.dashboard {
-    margin-top: 44px;
     width: 100%;
     height: calc(100vh - 44px);
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+}
+
+@media (max-height: 859px) {
+    div.dashboard {
+        margin-top: 44px;
+    }
 }
 
 div.dashboard.flex {
@@ -78,34 +83,6 @@ a.collapsable-panel-control {
     font-family: TT Hoves Light, Montserrat, sans-serif;
     background-color: #26535c;
     color: #fff;
-}
-
-.controls {
-    min-width: 144px !important;
-    width: max-content;
-    text-align: center;
-}
-
-.controls * button,
-.controls #auth-control button,
-.controls #data-download-link button ,
-.controls #print-config button,
-.controls #print-exec button {
-    width: auto;
-    margin: 1px;
-    text-align: center;
-}
-
-.controls #info {
-    min-width: 120px;
-}
-
-.controls #info .legend {
-    min-width: 120px;
-}
-
-.controls #info .legend .entry {
-    margin: 12px 8px;
 }
 
 .w-1\/2 {
