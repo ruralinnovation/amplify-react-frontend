@@ -64,10 +64,11 @@
   --amplify-internal-button-background-color: #07353F;
 }
 
+
 .amplify-sign-out {
   float: right;
-  margin-top: -66px;
-  margin-right: 56px;
+  margin-top: -56px;
+  margin-right: 6px;
 }
 
 @media (max-height: 859px) {
@@ -76,4 +77,110 @@
     margin-right: 6px;
   }
 }
+
+
+/* ControlPanel menu */
+.control-panel {
+  position: fixed;
+  right: 0;
+}
+
+.menu-toggle__control {
+  float: right;
+  margin-top: -56px;
+  margin-right: 6px;;
+}
+
+@media (max-height: 859px) {
+  .menu-toggle__control {
+    margin-top: -6px;
+    margin-right: 6px;
+  }
+}
+
+.hamburger-control__inner {
+  background-color: transparent;
+}
+
+.hamburger-control__inner .hamburger-control__open {
+  background-color: transparent;
+}
+
+.hamburger-control__inner .hamburger-control__open .menu g {
+  fill: #16343E;
+}
+
+/* THEME: Light on Dark */
+*.Light-on-Dark .hamburger-control__inner .hamburger-control__open .menu g {
+  fill: #fffff9 !important;
+}
+*.Light-on-Dark  .hamburger-control__inner .hamburger-control__close .menu g {
+  fill: #fffff9 !important;
+}
+
+/**.hamburger-control__close {*/
+/*  display: none;*/
+/*}*/
+
+.site-header__menu-section .menu .menu-item {
+  align-items: stretch;
+  display: flex;
+}
+
+.site-header__row #primary-navigation > li {
+  padding: 0 !important;
+  margin: 0 12px;
+}
+
+.site-header__row #primary-navigation > li a {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.site-header__primary-menu .top-level-nav-link {
+  padding: 0 10px 0 10px;
+}
+
+
+/*--------------------------------------------------------------
+# Accessibility
+--------------------------------------------------------------*/
+/* Text meant only for screen readers. */
+.screen-reader-text:not(:focus):not(:active),
+.sr-dropdown-button {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important; /* Many screen reader and browser combinations announce broken words as they would appear visually. */
+}
+
+.screen-reader-text:focus {
+  clip: auto !important;
+  clip-path: none;
+  display: block;
+  font-size: 0.875rem;
+  font-weight: bold;
+  height: auto;
+  left: 5px;
+  line-height: normal;
+  padding: 15px 23px 14px;
+  text-decoration: none;
+  top: 5px;
+  width: auto;
+  z-index: 100000;
+  /* Above WP toolbar. */
+}
+
+.skip-link {
+  position: absolute;
+  width: 100%;
+  max-width: calc(100vw - 5px);
+}
+
 
