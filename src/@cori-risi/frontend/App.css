@@ -55,7 +55,6 @@
   --amplify-internal-button-border-color: rgb(0, 85, 102);
   --amplify-internal-button-background-color:  rgb(0, 85, 102);
   color: var( --amplify-components-button-primary-color );
-  width: 196px;
 }
 
 .amplify-button:hover, .amplify-button--primary:hover {
@@ -76,9 +75,11 @@
 
 
 .amplify-sign-out {
-  float: right;
+  /*float: right;*/
   margin-top: -44px;
   margin-right: 6px;
+  min-width: max-content;
+  width: 100%;
 }
 
 @media (max-height: 859px) {
