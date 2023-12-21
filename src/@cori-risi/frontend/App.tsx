@@ -12,15 +12,16 @@ import '@aws-amplify/ui-react/styles.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import './App.css';
+// import {AuthUser} from "../models/AuthUser";
 
 function App({ content }: { content: () => HTMLElement }): ReactElement {
     let content_loaded = false;
     
-    const [ windowWidth, setWidth ]   = useState(0);
-    const [ windowHeight, setHeight ] = useState(0);
-    const [ windowRatio, setRatio ] = useState(0);
+    const [ windowWidth, setWidth ]   = useState<number>(0);
+    const [ windowHeight, setHeight ] = useState<number>(0);
+    const [ windowRatio, setRatio ] = useState<number>(0);
     
-    const [ count, setCount ] = useState(0);
+    const [ count, setCount ] = useState<number>(0);
     
     const [ controlPanelOpen, setControlPanelOpen ] = useState(false);
     
@@ -49,12 +50,9 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
                 const app_content = (typeof content === 'function') ?
                     content() :
                     { childNodes: [] };
-                // console.logapp_first_child);
-                // console.logapp_content.childNodes);
                 setTimeout((container) => {
                     // container.append(app_content.childNodes);
                     app_content.childNodes.forEach(c => {
-                        // console.logc);
                         container.insertBefore(c, app_first_child)
                     });
                 }, 53, app_container);
@@ -157,37 +155,43 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
     )
 }
 
-function SignOutButton ({ signOut }) {
-    return <Button title="Sign Out" onClick={signOut}>Sign Out</Button>;
+function SignOutButton ({ signOut }: { signOut: Function }) {
+    return <Button className={"amplify-sign-out"} title="Sign Out" onClick={() => { signOut(); }}>Sign Out</Button>;
 }
 
-function ControlPanel (props) {
-    const { signOut } = (props.hasOwnProperty("signOut")) ? { signOut: props["signOut"] }: useAuthenticator();
-    const [ open, setOpen ] = useState((props.hasOwnProperty("isOpen")) ? props["isOpen"] : true);
-    const toggle = (props.hasOwnProperty("toggleCallback")) ? props["toggleCallback"] : () => {};
-    const user = (props.hasOwnProperty("user")) ? props["user"] : null;
+function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function | null, signOut?: Function | null }) {
+    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ? { signOut: props.signOut } : useAuthenticator();
+    const [ open, setOpen ] = useState<boolean>((props.hasOwnProperty("isOpen") && props.isOpen !== null) ? props.isOpen : true);
+    const toggle: Function = (props.hasOwnProperty("toggleCallback") && props.toggleCallback !== null) ? props.toggleCallback : () => true;
+    // const user: AuthUser | null = (props.hasOwnProperty("user")) ? props["user"] : null;
     
-    useEffect(() => {
-        console.log("Current user: ", props.user);
-    }, [ props.user ]);
+    function showPrintOptions() {
+        try {
+            const print_config_form = document.getElementById("print-config")!;
+            print_config_form.className = "show";
+            const print_config_button = document.getElementById("print-config-btn")!;
+            print_config_button.className = "amplify-button hide";
+        } catch (e: unknown) {}
+    }
     
     return (
         <div className={open ? "control-panel": "control-panel closed"}>
             <div className="menu-toggle col">
                 <a className="menu-toggle__control js-menu-control js-open-main-menu" role="button" >
                     <span id="mm-label" className="hamburger-control__label">
-                      <span className="hamburger-control__open-label" aria-hidden={ !open } style={{ display: open ? "none" : "block" }} >
+                      <span className="hamburger-control__open-label" aria-hidden={ (!open) } style={{ display: open ? "none" : "block" }} >
                         <span className="screen-reader-text">Site Menu</span>
                       </span>
                       <span className="hamburger-control__close-label" aria-hidden={ open }>
-                        <span className="screen-reader-text" onClick={() => { setOpen(!open); return toggle() }}>Close Menu</span>
+                        <span className="screen-reader-text"
+                              onClick={() => { setOpen(!open); return !!toggle() }}>Close Menu</span>
                       </span>
                     </span>
                     <span className="hamburger-control" aria-hidden={ !open }>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__open" aria-hidden={ !open }
-                              onClick={() => { setOpen(!open); return toggle() }}
+                              onClick={() => { setOpen(!open); return !!toggle() }}
                               style={{ display: open ? "none" : "block"  }} >
                             <svg className="menu" width="20" height="18" viewBox="0 0 20 18" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -227,24 +231,23 @@ function ControlPanel (props) {
                      overflow: "hidden"
                  }}>
         
-                {(user !== null) ? (
-                <h5>{
-                        (user.hasOwnProperty("signInUserSession") && user.signInUserSession.hasOwnProperty("idToken") && user.signInUserSession.idToken.hasOwnProperty("payload")) ? (
-                                (user.signInUserSession.idToken.payload.hasOwnProperty("name") && !!user.signInUserSession.idToken.payload.name) ?
-                                    user.signInUserSession.idToken.payload.name :
-                                    (user.signInUserSession.idToken.payload.hasOwnProperty("email") && !!user.signInUserSession.idToken.payload.email) ?
-                                        user.signInUserSession.idToken.payload.email :
-                                        user.username
-                            ) :
-                            (user.hasOwnProperty("email") && !!user.email) ?
-                                user.email :
-                                user.username
-                    }</h5>
-
-                ) : (
-                    <div />
-                )}
-    
+                {/*{(user !== null) ? (*/}
+                {/*<h5>{*/}
+                {/*        (user.hasOwnProperty("signInUserSession") && user.signInUserSession.hasOwnProperty("idToken") && user.signInUserSession.idToken.hasOwnProperty("payload")) ? (*/}
+                {/*                (user.signInUserSession.idToken.payload.hasOwnProperty("name") && !!user.signInUserSession.idToken.payload.name) ?*/}
+                {/*                    user.signInUserSession.idToken.payload.name :*/}
+                {/*                    (user.signInUserSession.idToken.payload.hasOwnProperty("email") && !!user.signInUserSession.idToken.payload.email) ?*/}
+                {/*                        user.signInUserSession.idToken.payload.email :*/}
+                {/*                        user.username*/}
+                {/*            ) :*/}
+                {/*            (user.hasOwnProperty("email") && !!user.email) ?*/}
+                {/*                user.email :*/}
+                {/*                user.username*/}
+                {/*    }</h5>*/}
+                
+                {/*) : (*/}
+                {/*    <div />*/}
+                {/*)}*/}
     
                 <br />
 
@@ -253,7 +256,7 @@ function ControlPanel (props) {
                 <div id={"print-exec"} className="row">
                     <Button type="submit"  id={"print-config-btn"}
                             className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"}
-                            onClick={() => { document.getElementById("print-config").className = "show";  document.getElementById("print-config-btn").className = "amplify-button hide"; }}>
+                            onClick={showPrintOptions}>
                         Show print options</Button>
                     {/* */}
                     {/* Print config form */}
@@ -365,7 +368,7 @@ function ControlPanel (props) {
                 </a>
 
                 <div id={"auth-control"} className="row show">
-                    {(signOut !== null) ? (
+                    {(signOut !== null && typeof signOut === "function") ? (
                         // <button id={"sign-out"} className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} onClick={() => { autoSignIn(); signOut(); }}>Sign out</button>
                         <SignOutButton signOut={signOut} />
                     ) : (
