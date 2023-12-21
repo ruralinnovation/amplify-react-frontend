@@ -1,70 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link href="/favicon.ico" rel="shortcut icon" />
+    <meta name="theme-color" content="#07353F" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#000000" />
-    <title>Vite + React</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/favicon.ico" />
 
-    <!--[if lte IE 8]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <![endif]-->
-
+    <link href="src/preflight.css"  rel="stylesheet" type="text/css" />
     <link href="src/bundle.css"  rel="stylesheet" type="text/css" />
-    <link href="src/fonts.css"  rel="stylesheet" type="text/css" />
+    <link href="src/styles.css"  rel="stylesheet" type="text/css" />
 
-    <!-- Resources provided by Shiny server: -->
-    <!-- headContent() gets defined when UI is built from this template,
-      -- so it's not directly available as a function exported by shiny
-      -->
-    {{ headContent() }}{{ use_tracking() }}
-
+    <title>Vite + React + TS</title>
     <script>
-        const isBrowser = () => typeof window !== 'undefined';
-        const isGlobal = () => typeof global !== 'undefined';
-        if (!isGlobal() && isBrowser()) {
-            var global = window;
-            var root = window;
-        }
-
-        if (typeof Shiny === 'object') {
-          console.log("ShinyJS is loaded");
-
-          $(document).on('shiny:connected', function(evt) {
-              console.log("ShinyJS is connected to the server");
-          });
-
-          $(document).on("shiny:sessioninitialized", (evt) => {
-            console.log(evt);
-
-            const render_trigger = Object.create(evt);
-            render_trigger.target = document.body;
-            render_trigger.target.data = {
-              action: "render",
-              path: ('target' in evt && 'hash' in evt.target ) ?
-                      evt.target.hash :
-                      ""
-            };
-            setTimeout(render_trigger.target.dispatchEvent(new CustomEvent("cori.apps:init", render_trigger)), 53);
-          });
-        }
+      window.global = window;
+      window.process = {
+        env: { DEBUG: undefined },
+      };
+      const exports = {};
     </script>
   </head>
   <body>
+    <div id="risi-header" light_on_dark="true" title="Vite + React + TS"></div>
 
-    <nav id="cori-header" style="margin-bottom: 2px;" title="Frontend"></nav>
-
-    <div id="react-app"></div>
+    <div class="dashboard flex flex-wrap">
+      <div id="react-app">
+        <!--<div id="test-component" >Embedded Content</div>-->
+      </div>
+    </div>
 
     <div id="sidebar">
-      <div id="about" class="modal-content">
-        <p style="max-width: 75vh; margin-left: auto; margin-right: auto">
-          {{ about_doc }}
-        </p>
-      </div>
 
-      <br />
+      <div id="about" class="modal-content prose max-w-none row">
+        <div style="overflow-y: scroll">
+          <b>About the Tool</b>
+          <br />
+          <br />
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat
+            sed cras ornare arcu dui. Duis aute irure dolor in reprehenderit in
+            voluptate velit esse.
+            <a href="" target="_blank">
+              Link to document</a>. </p>
+          <br />
+          <br />
+        </div>
+      </div>
 
     </div>
 
