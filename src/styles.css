@@ -3,7 +3,6 @@ body {
     flex-direction: column;
     font-size: 12pt;
     margin: 0;
-    place-items: center;
     min-width: 320px;
     min-height: 100vh;
 }

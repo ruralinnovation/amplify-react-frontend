@@ -9,7 +9,9 @@ import {
     useAuthenticator
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import amplifyLogo from './assets/amplify.svg';
 import reactLogo from './assets/react.svg';
+import reduxLogo from './assets/redux.svg';
 import viteLogo from './assets/vite.svg';
 import './App.css';
 // import {AuthUser} from "../models/AuthUser";
@@ -88,7 +90,7 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
     
     (function init () {
         // Check access to react/vite environment variables
-        // console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION);
+        console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION);
         // console.log(aws_config);
     }());
     
@@ -98,7 +100,7 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
                   justifyContent="space-between" >
                 
                 <Flex direction="column" flex={(controlPanelOpen)? "initial" : "auto"}>
-                    <h1 style={{textAlign: "center"}}>Vite + React + TS</h1>
+                    <h1 style={{textAlign: "center"}}>Amplify + Redux + React (TS) + Vite</h1>
                     <br />
                     <Flex
                         direction={{ base: 'column', large: 'row' }}
@@ -131,25 +133,31 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
                         
                         </Flex>
                     </Flex>
-                    <div className="card" style={{textAlign: "center"}}>
+                    <div className="card" style={{ textAlign: "center" }}>
                         <p>
-                            Edit <code>src/App.tsx</code> and save to test HMR
+                            Edit <code>App.tsx</code> and save to test HMR
                         </p>
-                        <a href="https://vitejs.dev" target="_blank">
-                            <img src={viteLogo} className="logo" alt="Vite logo" />
+                        <a href="https://docs.amplify.aws/react/tools/libraries/" target="_blank">
+                            <img src={amplifyLogo} className="logo" alt="AWS Amplify" />
+                        </a>
+                        <a href="https://redux-toolkit.js.org/" target="_blank">
+                            <img src={reduxLogo} className="logo redux" alt="Redux logo" />
                         </a>
                         <a href="https://react.dev" target="_blank">
                             <img src={reactLogo} className="logo react" alt="React logo" />
                         </a>
+                        <a href="https://vitejs.dev" target="_blank">
+                            <img src={viteLogo} className="logo" alt="Vite logo" />
+                        </a>
                     </div>
-                    <p className="read-the-docs" style={{textAlign: "center"}}>
-                        Click on the Vite and React logos to learn more
+                    <p className="read-the-docs" style={{ textAlign: "center" }}>
+                        Click on the AWS Amplify, Redux, React and Vite logos to learn more
                     </p>
                 </Flex>
-    
+                
                 <ControlPanel isOpen={controlPanelOpen} toggleCallback={toggleControlPanel} />
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}
-                
+            
             </Flex>
         </>
     )
@@ -218,7 +226,7 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                     </span>
                 </a>
             </div>
-    
+            
             <div className={open ? "controls open": "controls"}
                  style={open ? {
                      maxWidth: "min-content",
@@ -230,7 +238,7 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                      padding: "0px",
                      overflow: "hidden"
                  }}>
-        
+                
                 {/*{(user !== null) ? (*/}
                 {/*<h5>{*/}
                 {/*        (user.hasOwnProperty("signInUserSession") && user.signInUserSession.hasOwnProperty("idToken") && user.signInUserSession.idToken.hasOwnProperty("payload")) ? (*/}
@@ -248,11 +256,9 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                 {/*) : (*/}
                 {/*    <div />*/}
                 {/*)}*/}
-    
-                <br />
-
+                
                 <p id="info">&nbsp;</p>
-    
+                
                 <div id={"print-exec"} className="row">
                     <Button type="submit"  id={"print-config-btn"}
                             className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"}
@@ -358,15 +364,15 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                             </div>
                         </fieldset>
                     </form>
-                
+                    
                     <button type="submit" className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} id={"generate-btn"}>Print report</button>
                     <div id='spinner' />
                 </div>
-
+                
                 <a id={"data-download-link"} className="row">
                     <button type="submit" className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} id={"data-download-btn"}>Download data</button>
                 </a>
-
+                
                 <div id={"auth-control"} className="row show">
                     {(signOut !== null && typeof signOut === "function") ? (
                         // <button id={"sign-out"} className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} onClick={() => { autoSignIn(); signOut(); }}>Sign out</button>
@@ -375,7 +381,7 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                         <button>No Auth Controls</button>
                     )}
                 </div>
-                
+            
             </div>
         </div>
     );

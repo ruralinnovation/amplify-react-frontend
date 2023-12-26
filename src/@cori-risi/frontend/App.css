@@ -28,9 +28,24 @@
   }
 }
 
+@keyframes logo-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+  .logo.react {
     animation: logo-spin infinite 20s linear;
+  }
+  .logo.redux {
+    animation: logo-float infinite 3s ease-in-out;
   }
 }
 
@@ -94,7 +109,7 @@
 .control-panel {
   position: fixed;
   right: 0;
-  padding: 6px;
+  padding: 12px 6px;
   background-color: var(--main-bg-color);
 }
 
@@ -201,9 +216,11 @@
   padding: 0 10px 0 10px;
 }
 
-/*.controls * .form-group {*/
-/*  display: inline-flex;*/
-/*}*/
+.controls * .form-group,
+.controls * .form-group label {
+  display: initial;
+  margin: 2px 2px 2px 8px;
+}
 
 #print-exec #print-config {
   display: none;
