@@ -1,15 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Amplify } from "aws-amplify";
+import { AuthConfig } from "@aws-amplify/core";
+import { getCurrentUser} from "@aws-amplify/auth/cognito";
+import { GetCurrentUserOutput } from "@aws-amplify/auth/cognito";
 import App from './@cori-risi/frontend/App.tsx';
-// import configureStore from "./@cori-risi/frontend/configureStore";
 import PropTypes from "prop-types";
+// import configureStore from "./@cori-risi/frontend/configureStore";
 
 // import aws_config from "./aws-config";
 // import aws_config from '@/amplifyconfiguration.json';
 import aws_config from '../amplifyconfiguration.json';
+import {User} from "./@cori-risi/models/User";
 
 Amplify.configure(aws_config);
+
+const auth: AuthConfig = Amplify.getConfig().Auth!; //?.Cognito;
 
 function OfflineNotification (props: HTMLElement) {
     console.log(`VITE_OFFLINE_NOTIFICATION: ${import.meta.env.VITE_OFFLINE_NOTIFICATION}`)
@@ -67,6 +73,11 @@ const initMain = (evt: Event) => {
     react_app_container.id = 'react-app';
     const root_content: HTMLElement = document.createElement("div");
     // const store = configureStore();
+    const user: Promise<User> = getCurrentUser();
+    
+    console.log("AWS Auth config: ", auth);
+
+    console.log("AWS Cognito config:", auth?.Cognito);
     
     console.log(evt);
     
@@ -91,7 +102,7 @@ const initMain = (evt: Event) => {
             {/*    <ReduxProvider store={store}>*/}
             {/*        <Router>*/}
             {/*            <ApiContextProvider aws_config={aws_config}>*/}
-                            <App content={() => root_content} />
+                            <App content={() => root_content} user={user} />
             {/*                <App />*/}
             {/*            </ApiContextProvider>*/}
             {/*        </Router>*/}

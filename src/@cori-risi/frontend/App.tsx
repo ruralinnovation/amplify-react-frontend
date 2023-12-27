@@ -1,4 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
+import { AuthConfig } from "@aws-amplify/core";
+import { getCurrentUser, GetCurrentUserOutput } from "@aws-amplify/auth/cognito";
 import {
     Button,
     Flex,
@@ -6,7 +8,8 @@ import {
     Image,
     Text,
     withAuthenticator,
-    useAuthenticator
+    useAuthenticator,
+    UseAuthenticator
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import amplifyLogo from './assets/amplify.svg';
@@ -14,35 +17,29 @@ import reactLogo from './assets/react.svg';
 import reduxLogo from './assets/redux.svg';
 import viteLogo from './assets/vite.svg';
 import './App.css';
-// import {AuthUser} from "../models/AuthUser";
 
-function App({ content }: { content: () => HTMLElement }): ReactElement {
+import { User } from "../models/User";
+
+function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
+
+    (function init () {
+        // Check access to react/vite environment variables
+        console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION);
+        // console.log(aws_config);
+    }());
+
+    const allowMenuToBeClosed = false;
+
+    const [ controlPanelOpen, setControlPanelOpen ] = useState(!allowMenuToBeClosed);
+
     let content_loaded = false;
-    
+
     const [ windowWidth, setWidth ]   = useState<number>(0);
     const [ windowHeight, setHeight ] = useState<number>(0);
     const [ windowRatio, setRatio ] = useState<number>(0);
-    
+
     const [ count, setCount ] = useState<number>(0);
-    
-    const [ controlPanelOpen, setControlPanelOpen ] = useState(false);
-    
-    let toggleControlPanel = function() {
-        if (!controlPanelOpen) {
-            setControlPanelOpen(true);
-            return false;
-        } else {
-            setControlPanelOpen(false);
-            return true;
-        }
-    };
-    
-    function updateCartBy (quantity: number) {
-        setCount(count + quantity);
-        alert('Added item to cart!')
-        return count;
-    }
-    
+
     function addContentToCurrentComponent () {
         if (!content_loaded) {
             // Anything in here is fired on component mount.
@@ -62,9 +59,9 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
             }
         }
     }
-    
+
     useEffect( addContentToCurrentComponent , []);
-    
+
     function updateWindowDimensions () {
         if (!!window &&
             window.hasOwnProperty("innerWidth") &&
@@ -81,24 +78,34 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
             });
         }
     }
-    
+
     useEffect(() => {
         window.addEventListener("load", updateWindowDimensions);
         window.addEventListener("resize", updateWindowDimensions);
         return () => window.removeEventListener("resize", updateWindowDimensions);
     }, []);
-    
-    (function init () {
-        // Check access to react/vite environment variables
-        console.log("Welcome to Amplify React app version:", import.meta.env.VITE_APP_VERSION);
-        // console.log(aws_config);
-    }());
-    
+
+    let toggleControlPanel = function() {
+        if (!controlPanelOpen) {
+            setControlPanelOpen(true);
+            return false;
+        } else {
+            setControlPanelOpen(false);
+            return true;
+        }
+    };
+
+    function updateCartBy (quantity: number) {
+        setCount(count + quantity);
+        alert('Added item to cart!')
+        return count;
+    }
+
     return (
         <>
             <Flex direction="row"
                   justifyContent="space-between" >
-                
+
                 <Flex direction="column" flex={(controlPanelOpen)? "initial" : "auto"}>
                     <h1 style={{textAlign: "center"}}>Amplify + Redux + React (TS) + Vite</h1>
                     <br />
@@ -130,7 +137,7 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
                             >
                                 Add to Cart {count}
                             </Button>
-                        
+
                         </Flex>
                     </Flex>
                     <div className="card" style={{ textAlign: "center" }}>
@@ -154,24 +161,51 @@ function App({ content }: { content: () => HTMLElement }): ReactElement {
                         Click on the AWS Amplify, Redux, React and Vite logos to learn more
                     </p>
                 </Flex>
-                
-                <ControlPanel isOpen={controlPanelOpen} toggleCallback={toggleControlPanel} />
+
+                <ControlPanel showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel} />
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}
-            
+
             </Flex>
         </>
-    )
+    );
 }
 
-function SignOutButton ({ signOut }: { signOut: Function }) {
-    return <Button className={"amplify-sign-out"} title="Sign Out" onClick={() => { signOut(); }}>Sign Out</Button>;
-}
+function ControlPanel (props: {
+    showMenuButton?: boolean | null,
+    toggleCallback?: Function | null,
+    signOut?: Function | null,
+    user?: Promise<User> | null
+}) {
+    const authenticator: UseAuthenticator = useAuthenticator();
+    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ? { signOut: props.signOut } : authenticator;
+    const [ open, setOpen ] = useState<boolean>((props.hasOwnProperty("showMenuButton") && props.showMenuButton !== null) ? !props.showMenuButton : false);
+    const toggle: Function = (props.hasOwnProperty("toggleCallback") && !!props.toggleCallback && props.toggleCallback !== null) ? props.toggleCallback : () => true;
+    const [ userState, setUserState ] = useState<User | null>(null);
+    const user: Promise<User> = (props.hasOwnProperty("user") && !!props.user && props.user !== null) ?  Promise.resolve(props.user) : getCurrentUser();
 
-function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function | null, signOut?: Function | null }) {
-    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ? { signOut: props.signOut } : useAuthenticator();
-    const [ open, setOpen ] = useState<boolean>((props.hasOwnProperty("isOpen") && props.isOpen !== null) ? props.isOpen : true);
-    const toggle: Function = (props.hasOwnProperty("toggleCallback") && props.toggleCallback !== null) ? props.toggleCallback : () => true;
-    // const user: AuthUser | null = (props.hasOwnProperty("user")) ? props["user"] : null;
+    user.then(u => {
+        if (userState === null) {
+            console.log("AWS cognito user:", u);
+            setUserState(u);
+        }
+    });
+
+    function getUserLabel (u: User) {
+        return (u.hasOwnProperty("signInUserSession")
+            && !!u.signInUserSession
+            && u.signInUserSession.hasOwnProperty("idToken")
+            && u.signInUserSession?.idToken.hasOwnProperty("payload")
+        ) ? (
+                (u.signInUserSession?.idToken.payload.hasOwnProperty("name") && !!u.signInUserSession?.idToken.payload.name) ?
+                    u.signInUserSession?.idToken.payload.name :
+                    (u.signInUserSession?.idToken.payload.hasOwnProperty("email") && !!u.signInUserSession?.idToken.payload.email) ?
+                        u.signInUserSession?.idToken.payload.email :
+                        u.username
+            ) :
+            (u.hasOwnProperty("email") && !!u.email) ?
+                u.email :
+                u.username
+    }
     
     function showPrintOptions() {
         try {
@@ -184,8 +218,13 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
     
     return (
         <div className={open ? "control-panel": "control-panel closed"}>
-            <div className="menu-toggle col">
-                <a className="menu-toggle__control js-menu-control js-open-main-menu" role="button" >
+
+            {(props.hasOwnProperty("showMenuButton") && props.showMenuButton !== null && !props.showMenuButton) ? (
+                <div style={{ display: "none" }} />
+            ): (
+
+                <div className="menu-toggle col">
+                    <a className="menu-toggle__control js-menu-control js-open-main-menu" role="button" >
                     <span id="mm-label" className="hamburger-control__label">
                       <span className="hamburger-control__open-label" aria-hidden={ (!open) } style={{ display: open ? "none" : "block" }} >
                         <span className="screen-reader-text">Site Menu</span>
@@ -195,7 +234,7 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                               onClick={() => { setOpen(!open); return !!toggle() }}>Close Menu</span>
                       </span>
                     </span>
-                    <span className="hamburger-control" aria-hidden={ !open }>
+                        <span className="hamburger-control" aria-hidden={ !open }>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__open" aria-hidden={ !open }
@@ -224,8 +263,9 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                             </svg>
                         </span>
                     </span>
-                </a>
-            </div>
+                    </a>
+                </div>
+            )}
             
             <div className={open ? "controls open": "controls"}
                  style={open ? {
@@ -239,23 +279,11 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
                      overflow: "hidden"
                  }}>
                 
-                {/*{(user !== null) ? (*/}
-                {/*<h5>{*/}
-                {/*        (user.hasOwnProperty("signInUserSession") && user.signInUserSession.hasOwnProperty("idToken") && user.signInUserSession.idToken.hasOwnProperty("payload")) ? (*/}
-                {/*                (user.signInUserSession.idToken.payload.hasOwnProperty("name") && !!user.signInUserSession.idToken.payload.name) ?*/}
-                {/*                    user.signInUserSession.idToken.payload.name :*/}
-                {/*                    (user.signInUserSession.idToken.payload.hasOwnProperty("email") && !!user.signInUserSession.idToken.payload.email) ?*/}
-                {/*                        user.signInUserSession.idToken.payload.email :*/}
-                {/*                        user.username*/}
-                {/*            ) :*/}
-                {/*            (user.hasOwnProperty("email") && !!user.email) ?*/}
-                {/*                user.email :*/}
-                {/*                user.username*/}
-                {/*    }</h5>*/}
-                
-                {/*) : (*/}
-                {/*    <div />*/}
-                {/*)}*/}
+                {(userState !== null) ? (
+                    <h5>{ getUserLabel(userState)}</h5>
+                ) : (
+                    <div style={{ display: "none" }} />
+                )}
                 
                 <p id="info">&nbsp;</p>
                 
@@ -385,6 +413,10 @@ function ControlPanel (props: { isOpen: boolean | null, toggleCallback: Function
             </div>
         </div>
     );
+}
+
+function SignOutButton ({ signOut }: { signOut: Function }) {
+    return <Button className={"amplify-sign-out"} title="Sign Out" onClick={() => { signOut(); }}>Sign Out</Button>;
 }
 
 // export default App;

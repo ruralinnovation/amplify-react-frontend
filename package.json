@@ -4,6 +4,8 @@
   "version": "0.0.2",
   "type": "module",
   "dependencies": {
+    "@aws-amplify/auth": "^6.0.9",
+    "@aws-amplify/core": "^6.0.9",
     "@aws-amplify/ui-react": "^6.0.7",
     "@cori-risi/cori.data.api": "github:ruralinnovation/cori.data.api",
     "@reduxjs/toolkit": "^2.0.1",
