@@ -1,7 +1,9 @@
 {
   "name": "frontend",
-  "private": true,
   "version": "0.0.2",
+  "author": "Rural Innovation Strategies, Inc.",
+  "description": "Amplify Redux React Vite TS template",
+  "private": true,
   "type": "module",
   "dependencies": {
     "@aws-amplify/auth": "^6.0.9",
