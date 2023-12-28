@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { userReducer } from "../../features";
 import { counterReducer } from "../features";
 import AppState from "./AppState";
 
 const store =  configureStore({
     reducer: {
+        user: userReducer,
         counter: counterReducer
     }
 });

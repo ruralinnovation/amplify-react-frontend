@@ -19,13 +19,14 @@ import reduxLogo from './assets/redux.svg';
 import viteLogo from './assets/vite.svg';
 
 import { User } from "../models/User";
+import { selectUser } from "../features";
 import {
     decrement,
     increment,
     incrementByAmount,
     incrementByAmountAsync,
     selectCount
-} from "./features/counter/counterSlice";
+} from "./features";
 
 function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
@@ -46,6 +47,9 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowRatio, setRatio ] = useState<number>(0);
 
     const [ bid, setBid ] = useState<number>(0);
+
+    const userState: User = useSelector(selectUser);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (bid > 0.0) {
@@ -164,7 +168,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                     </p>
                 </Flex>
 
-                <ControlPanel showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel}>
+                <ControlPanel showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel} user={Promise.resolve(userState)}>
                     <ApplicationMenu />
                 </ControlPanel>
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}

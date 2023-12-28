@@ -1,8 +1,16 @@
 import counterReducer, {
-    incrementByAmountAsync
+    decrement,
+    increment,
+    incrementByAmount,
+    incrementByAmountAsync,
+    selectCount
 } from "./counter/counterSlice";
 
 export {
     counterReducer,
-    incrementByAmountAsync
+    decrement,
+    increment,
+    incrementByAmount,
+    incrementByAmountAsync,
+    selectCount
 };
