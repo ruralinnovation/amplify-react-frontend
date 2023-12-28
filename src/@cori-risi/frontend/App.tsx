@@ -186,13 +186,13 @@ function Counter (props: {
         <div className={"row"}>
             <Button className={"button"}
                     aria-label={"Increment bid"}
-                    onClick={() => (dispatch as Function)({ type: "counter/increment" })} >
+                    onClick={() => (dispatch as Function)(increment())} >
                 +
             </Button>
             <span className={"value"}>${count}</span>
             <Button className={"button"}
                     aria-label={"Decrement bid"}
-                    onClick={() => (dispatch as Function)({ type: "counter/decrement" })} >
+                    onClick={() => (dispatch as Function)(decrement())} >
                 -
             </Button>
             <Button
