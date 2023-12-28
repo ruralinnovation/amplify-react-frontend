@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from "react-redux";
 import { Amplify } from "aws-amplify";
+import { AuthConfig } from "@aws-amplify/core";
+import { getCurrentUser } from "@aws-amplify/auth/cognito";
 import App from './@cori-risi/frontend/App.tsx';
-// import configureStore from "./@cori-risi/frontend/configureStore";
 import PropTypes from "prop-types";
+// import configureStore from "./@cori-risi/frontend/configureStore";
 
 // import aws_config from "./aws-config";
 // import aws_config from '@/amplifyconfiguration.json';
 import aws_config from '../amplifyconfiguration.json';
+import store from "./@cori-risi/frontend/app/store";
+import { User } from "./@cori-risi/models/User";
 
 Amplify.configure(aws_config);
 
-function OfflineNotification (props: HTMLElement) {
+const auth: AuthConfig = Amplify.getConfig().Auth!; //?.Cognito;
+
+function OfflineNotification (props: { children?: ReactElement }) {
     console.log(`VITE_OFFLINE_NOTIFICATION: ${import.meta.env.VITE_OFFLINE_NOTIFICATION}`)
     if (import.meta.env.VITE_OFFLINE_NOTIFICATION !== "false") {
         return <div className="offline-notification"
@@ -67,6 +74,11 @@ const initMain = (evt: Event) => {
     react_app_container.id = 'react-app';
     const root_content: HTMLElement = document.createElement("div");
     // const store = configureStore();
+    const user: Promise<User> = getCurrentUser();
+    
+    console.log("AWS Auth config: ", auth);
+
+    console.log("AWS Cognito config:", auth?.Cognito);
     
     console.log(evt);
     
@@ -87,16 +99,16 @@ const initMain = (evt: Event) => {
     // );
     root.render(
         <React.StrictMode>
-            {/*<OfflineNotification>*/}
-            {/*    <ReduxProvider store={store}>*/}
-            {/*        <Router>*/}
-            {/*            <ApiContextProvider aws_config={aws_config}>*/}
-                            <App content={() => root_content} />
-            {/*                <App />*/}
-            {/*            </ApiContextProvider>*/}
-            {/*        </Router>*/}
-            {/*    </ReduxProvider>*/}
-            {/*</OfflineNotification>*/}
+            <OfflineNotification>
+                <Provider store={store}>
+                    {/*<Router>*/}
+                    {/*    <ApiContextProvider aws_config={aws_config}>*/}
+                    {/*        <App />*/}
+                            <App content={() => root_content} user={user} />
+                    {/*    </ApiContextProvider>*/}
+                    {/*</Router>*/}
+                </Provider>
+            </OfflineNotification>
         </React.StrictMode>
     );
 

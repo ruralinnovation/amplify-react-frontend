@@ -1,9 +1,13 @@
 {
   "name": "frontend",
-  "private": true,
   "version": "0.0.2",
+  "author": "Rural Innovation Strategies, Inc.",
+  "description": "Amplify Redux React Vite TS template",
+  "private": true,
   "type": "module",
   "dependencies": {
+    "@aws-amplify/auth": "^6.0.9",
+    "@aws-amplify/core": "^6.0.9",
     "@aws-amplify/ui-react": "^6.0.7",
     "@cori-risi/cori.data.api": "github:ruralinnovation/cori.data.api",
     "@reduxjs/toolkit": "^2.0.1",
@@ -20,6 +24,7 @@
     "@testing-library/user-event": "^14.2.5",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "@types/react-redux": "^7.1.33",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
