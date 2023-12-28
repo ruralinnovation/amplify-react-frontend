@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { AuthConfig } from "@aws-amplify/core";
-import { getCurrentUser, GetCurrentUserOutput } from "@aws-amplify/auth/cognito";
+import { useSelector, useDispatch } from "react-redux";
+import { getCurrentUser } from "@aws-amplify/auth/cognito";
 import {
     Button,
     Flex,
@@ -12,13 +12,20 @@ import {
     UseAuthenticator
 } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import './App.css';
 import amplifyLogo from './assets/amplify.svg';
 import reactLogo from './assets/react.svg';
 import reduxLogo from './assets/redux.svg';
 import viteLogo from './assets/vite.svg';
-import './App.css';
 
 import { User } from "../models/User";
+import {
+    decrement,
+    increment,
+    incrementByAmount,
+    incrementByAmountAsync,
+    selectCount
+} from "./features/counter/counterSlice";
 
 function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
@@ -28,7 +35,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
         // console.log(aws_config);
     }());
 
-    const allowMenuToBeClosed = false;
+    const allowMenuToBeClosed = true;
 
     const [ controlPanelOpen, setControlPanelOpen ] = useState(!allowMenuToBeClosed);
 
@@ -38,7 +45,13 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowHeight, setHeight ] = useState<number>(0);
     const [ windowRatio, setRatio ] = useState<number>(0);
 
-    const [ count, setCount ] = useState<number>(0);
+    const [ bid, setBid ] = useState<number>(0);
+
+    useEffect(() => {
+        if (bid > 0.0) {
+            alert(`Thank you for your bid of $${bid}!`);
+        }
+    }, [ bid ])
 
     function addContentToCurrentComponent () {
         if (!content_loaded) {
@@ -95,12 +108,6 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
         }
     };
 
-    function updateCartBy (quantity: number) {
-        setCount(count + quantity);
-        alert('Added item to cart!')
-        return count;
-    }
-
     return (
         <>
             <Flex direction="row"
@@ -131,12 +138,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                                 sed cras ornare arcu dui. Duis aute irure dolor in reprehenderit in
                                 voluptate velit esse.
                             </Text>
-                            <Button
-                                variation="primary"
-                                onClick={() =>  updateCartBy(1)}
-                            >
-                                Add to Cart {count}
-                            </Button>
+                            <Counter setBid={setBid} />
 
                         </Flex>
                     </Flex>
@@ -172,6 +174,37 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     );
 }
 
+
+
+function Counter (props: {
+    setBid: Function
+}) {
+    const count = useSelector(selectCount);
+    const dispatch = useDispatch();
+
+    return (
+        <div className={"row"}>
+            <Button className={"button"}
+                    aria-label={"Increment bid"}
+                    onClick={() => (dispatch as Function)({ type: "counter/increment" })} >
+                +
+            </Button>
+            <span className={"value"}>${count}</span>
+            <Button className={"button"}
+                    aria-label={"Decrement bid"}
+                    onClick={() => (dispatch as Function)({ type: "counter/decrement" })} >
+                -
+            </Button>
+            <Button
+                onClick={ () => props.setBid(count) }
+                variation="primary"
+            >
+                Bid ${count} on this item
+            </Button>
+        </div>
+    );
+}
+
 function ApplicationMenu() {
 
     function showPrintOptions() {
@@ -195,7 +228,7 @@ function ApplicationMenu() {
                 {/* */}
                 <form id={"print-config"}>
                     <fieldset id="config-fields">
-                        <div className="row">
+                        <div>
                             <div className="col-sm-4">
                                 <div className="form-group">
                                     <label>Unit</label><br />
@@ -240,7 +273,7 @@ function ApplicationMenu() {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
+                        <div>
                             <div className="col-sm-2">
                                 <div className="form-group" id="widthGroup">
                                     <label htmlFor="widthInput">Width</label>
@@ -263,7 +296,7 @@ function ApplicationMenu() {
                                 </div>
                             </div>
                             <div className="col-sm-5">
-                                <div className="row">
+                                <div>
                                     <div className="col-sm-4">
                                         <div className="form-group" id="latGroup">
                                             <label htmlFor="latInput">Latitude</label>
@@ -295,7 +328,7 @@ function ApplicationMenu() {
                 <div id='spinner' />
             </div>
 
-            <a id={"data-download-link"} className="row">
+            <a id={"data-download-link"}>
                 <button type="submit" className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} id={"data-download-btn"}>Download data</button>
             </a>
         </div>
