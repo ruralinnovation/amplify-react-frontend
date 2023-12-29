@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from "../../app/AppState";
 
-console.log("Full state available in counterSlice: ", initialState);
+// console.log("Full state available in counterSlice: ", initialState);
 
 export const counterSlice = createSlice({ //! DO NOT ADD EXPLICIT TYPES FOR createSlice definition
     initialState: initialState.counter, // <- Only provide relevant *part* of state

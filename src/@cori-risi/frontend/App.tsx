@@ -21,6 +21,7 @@ import viteLogo from './assets/vite.svg';
 import { User } from "../models/User";
 import { selectUser } from "../features";
 import {
+    selectCollection,
     decrement,
     increment,
     incrementByAmount,
@@ -46,16 +47,28 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowHeight, setHeight ] = useState<number>(0);
     const [ windowRatio, setRatio ] = useState<number>(0);
 
-    const [ bid, setBid ] = useState<number>(0);
-
     const userState: User = useSelector(selectUser);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (bid > 0.0) {
-            alert(`Thank you for your bid of $${bid}!`);
-        }
-    }, [ bid ])
+    // const [ artCollection, setArtCollection ] = useState<[any]>([
+    //     {
+    //         "id": "photo-1500462918059-b1a0cb512f1d",
+    //         "title": "Hallway",
+    //         "artist": "Efe Kurnaz",
+    //         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat sed cras ornare arcu dui. Ac feugiat sed lectus vestibulum.",
+    //         "altTitle": "Abstract art",
+    //         "height": "21rem",
+    //         "objectFit": "cover",
+    //         "src": "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987",
+    //         "mininmumBid": 1,
+    //         "inStock": true,
+    //         "readyForPickup": true,
+    //         "sold": false,
+    //         "finalBid": null
+    //     }
+    // ]);
+
+    const artCollection = useSelector(selectCollection);
 
     function addContentToCurrentComponent () {
         if (!content_loaded) {
@@ -120,32 +133,17 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                 <Flex direction="column" flex={(controlPanelOpen)? "initial" : "auto"}>
                     <h1 style={{textAlign: "center"}}>Amplify + Redux + React (TS) + Vite</h1>
                     <br />
-                    <Flex
-                        direction={{ base: 'column', large: 'row' }}
-                        justifyContent="center"
-                        padding="1rem"
-                        width="100%"
-                    >
-                        <Image
-                            alt="Abstract art"
-                            height="21rem"
-                            objectFit="cover"
-                            src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987"
-                        />
-                        <Flex direction="column"
-                              justifyContent="space-between"
-                              maxWidth="32rem">
-                            <Heading level={3}>Abstract art</Heading>
-                            <Text>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat
-                                sed cras ornare arcu dui. Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse.
-                            </Text>
-                            <Counter setBid={setBid} />
 
-                        </Flex>
-                    </Flex>
+                    {
+                        artCollection.map((piece) => {
+                            console.log("piece:", piece);
+                            return (piece.hasOwnProperty("id") && !!piece["id"]) ?
+                                <ArtPiece key={piece["id"]} piece={piece}/> :
+                                <div/>
+
+                        })
+                    }
+
                     <div className="card" style={{ textAlign: "center" }}>
                         <p>
                             Edit <code>App.tsx</code> and save to test HMR
@@ -178,7 +176,43 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     );
 }
 
+function ArtPiece(props: { piece: any }) {
 
+    const [ bid, setBid ] = useState<number>(0);
+
+    useEffect(() => {
+        if (bid > 0.0) {
+            alert(`Thank you for your bid of $${bid}!`);
+        }
+    }, [ bid ]);
+
+    return (
+
+        <Flex
+            direction={{ base: 'column', large: 'row' }}
+            justifyContent="center"
+            padding="1rem"
+            width="100%"
+        >
+            <Image
+                alt={props.piece!.altTitle || props.piece!.title!}
+                height={props.piece!.height!}
+                objectFit={props.piece!.objectFit!}
+                src={props.piece!.src!}
+            />
+            <Flex direction="column"
+                  justifyContent="space-between"
+                  maxWidth="32rem">
+                <Heading level={3}>{props.piece!.title!}</Heading>
+                <Text>
+                    {props.piece!.description!}
+                </Text>
+                <Counter setBid={setBid} />
+
+            </Flex>
+        </Flex>
+    );
+}
 
 function Counter (props: {
     setBid: Function

@@ -1,3 +1,7 @@
+import collectionReducer, {
+    selectCollection
+} from "./collection/collectionSlice";
+
 import counterReducer, {
     decrement,
     increment,
@@ -7,6 +11,8 @@ import counterReducer, {
 } from "./counter/counterSlice";
 
 export {
+    collectionReducer,
+    selectCollection,
     counterReducer,
     decrement,
     increment,

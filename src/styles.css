@@ -12,8 +12,10 @@ body {
 body>div.dashboard {
     width: 100%;
     height: calc(100vh - 44px);
-    align-items: center;
+    align-items: start;
     justify-content: center;
+    margin: 76px 0;
+    padding: 0;
     overflow-x: hidden;
 }
 
