@@ -28,6 +28,7 @@ import {
     incrementByAmountAsync,
     selectCount
 } from "./features";
+import {updateUser} from "../features/user/userSlice";
 
 function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
@@ -39,7 +40,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
 
     const allowMenuToBeClosed = true;
 
-    const [ controlPanelOpen, setControlPanelOpen ] = useState(!allowMenuToBeClosed);
+    const [ controlPanelOpen, setControlPanelOpen ] = useState(true);
 
     let content_loaded = false;
 
@@ -47,26 +48,23 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowHeight, setHeight ] = useState<number>(0);
     const [ windowRatio, setRatio ] = useState<number>(0);
 
-    const userState: User = useSelector(selectUser);
-    const dispatch = useDispatch();
-
-    // const [ artCollection, setArtCollection ] = useState<[any]>([
-    //     {
-    //         "id": "photo-1500462918059-b1a0cb512f1d",
-    //         "title": "Hallway",
-    //         "artist": "Efe Kurnaz",
-    //         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat sed cras ornare arcu dui. Ac feugiat sed lectus vestibulum.",
-    //         "altTitle": "Abstract art",
-    //         "height": "21rem",
-    //         "objectFit": "cover",
-    //         "src": "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987",
-    //         "mininmumBid": 1,
-    //         "inStock": true,
-    //         "readyForPickup": true,
-    //         "sold": false,
-    //         "finalBid": null
+    // const userState: User = useSelector(selectUser);
+    // const dispatch = useDispatch();
+    //
+    // useEffect(() => {
+    //     console.log("user type:", user.constructor.name);
+    //     try {
+    //         const u = user as User;
+    //         // user.then(u => {
+    //         if (!!u.userId && !!u.username) {
+    //             console.log("Update userState:", u);
+    //             dispatch(updateUser(u));
+    //         }
+    //         // })
+    //     } catch (e: Error) {
+    //         console.error(e);
     //     }
-    // ]);
+    // }, [ user ]);
 
     const artCollection = useSelector(selectCollection);
 
@@ -166,7 +164,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                     </p>
                 </Flex>
 
-                <ControlPanel showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel} user={Promise.resolve(userState)}>
+                <ControlPanel openOnInit={controlPanelOpen} showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel} user={user}>
                     <ApplicationMenu />
                 </ControlPanel>
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}
@@ -375,6 +373,7 @@ function ApplicationMenu() {
 
 function ControlPanel (props: {
     children?: ReactElement,
+    openOnInit?: boolean | null,
     showMenuButton?: boolean | null,
     toggleCallback?: Function | null,
     signOut?: Function | null,
@@ -382,7 +381,13 @@ function ControlPanel (props: {
 }) {
     const authenticator: UseAuthenticator = useAuthenticator();
     const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ? { signOut: props.signOut } : authenticator;
-    const [ open, setOpen ] = useState<boolean>((props.hasOwnProperty("showMenuButton") && props.showMenuButton !== null) ? !props.showMenuButton : false);
+    const [ open, setOpen ] = useState<boolean>(
+        (props.hasOwnProperty("openOnInit") && typeof props.openOnInit === "boolean") ?
+            props.openOnInit :
+            (props.hasOwnProperty("showMenuButton") && typeof props.showMenuButton === "boolean") ?
+                !props.showMenuButton :
+                false
+    );
     const toggle: Function = (props.hasOwnProperty("toggleCallback") && !!props.toggleCallback && props.toggleCallback !== null) ? props.toggleCallback : () => true;
     const [ userState, setUserState ] = useState<User | null>(null);
     const user: Promise<User> = (props.hasOwnProperty("user") && !!props.user && props.user !== null) ?  Promise.resolve(props.user) : getCurrentUser();

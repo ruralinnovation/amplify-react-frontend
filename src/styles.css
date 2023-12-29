@@ -16,7 +16,6 @@ body>div.dashboard {
     justify-content: center;
     margin: 76px 0;
     padding: 0;
-    overflow-x: hidden;
 }
 
 @media (max-height: 859px) {
