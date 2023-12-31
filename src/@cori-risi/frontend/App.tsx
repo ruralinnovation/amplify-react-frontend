@@ -39,8 +39,8 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     }());
 
     const allowMenuToBeClosed = true;
-
-    const [ controlPanelOpen, setControlPanelOpen ] = useState(true);
+    const [ controlPanelOpen, setControlPanelOpen ] = useState<boolean>(!allowMenuToBeClosed);
+    const [ showMenuButton, setShowMenuButton ] = useState<boolean>(!!allowMenuToBeClosed);
 
     let content_loaded = false;
 
@@ -48,7 +48,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowHeight, setHeight ] = useState<number>(0);
     const [ windowRatio, setRatio ] = useState<number>(0);
 
-    // const userState: User = useSelector(selectUser);
+    const userState: User = useSelector(selectUser);
     // const dispatch = useDispatch();
     //
     // useEffect(() => {
@@ -95,15 +95,26 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
             window.hasOwnProperty("innerWidth") &&
             window.hasOwnProperty("innerHeight")
         ) {
-            // console.log("Update width to: " + window.innerWidth)
+            console.log("Update width to: " + window.innerWidth);
             setWidth(window.innerWidth);
-            // console.log("Update height to: " + window.innerHeight)
+            console.log("Update height to: " + window.innerHeight);
             setHeight(window.innerHeight);
-            // console.log("Update height/width ratio to: " + window.innerHeight/window.innerWidth);
+            console.log("Update height/width ratio to: " + window.innerHeight/window.innerWidth);
             setRatio(window.innerHeight/window.innerWidth);
             setTimeout(() => {
                 console.log({windowWidth, windowHeight, windowRatio})
             });
+
+            if (window.innerWidth < 960) {
+                setShowMenuButton(true);
+
+            } else if (!!allowMenuToBeClosed) {
+                setShowMenuButton(true);
+
+            } else {
+                setControlPanelOpen(true);
+                setShowMenuButton(false);
+            }
         }
     }
 
@@ -113,15 +124,10 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
         return () => window.removeEventListener("resize", updateWindowDimensions);
     }, []);
 
-    let toggleControlPanel = function() {
-        if (!controlPanelOpen) {
-            setControlPanelOpen(true);
-            return false;
-        } else {
-            setControlPanelOpen(false);
-            return true;
-        }
-    };
+
+    function toggleControlPanel () {
+        setControlPanelOpen(!controlPanelOpen);
+    }
 
     return (
         <>
@@ -164,7 +170,11 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                     </p>
                 </Flex>
 
-                <ControlPanel openOnInit={controlPanelOpen} showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel} user={user}>
+                <ControlPanel
+                    open={controlPanelOpen}
+                    showMenuButton={showMenuButton}
+                    toggleFunction={toggleControlPanel}
+                    user={Promise.resolve(userState)}>
                     <ApplicationMenu />
                 </ControlPanel>
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}
@@ -253,7 +263,7 @@ function ApplicationMenu() {
     }
 
     return (
-        <div id={"application-menu"}>
+        <div id={"application-menu"} style={{ minWidth: "254px" }}>
             <div id={"print-exec"} className="row">
                 <Button type="submit"  id={"print-config-btn"}
                         className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"}
@@ -373,24 +383,34 @@ function ApplicationMenu() {
 
 function ControlPanel (props: {
     children?: ReactElement,
-    openOnInit?: boolean | null,
+    open?: boolean | true,
     showMenuButton?: boolean | null,
-    toggleCallback?: Function | null,
+    toggleFunction?: Function | null,
     signOut?: Function | null,
     user?: Promise<User> | null
 }) {
     const authenticator: UseAuthenticator = useAuthenticator();
-    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ? { signOut: props.signOut } : authenticator;
-    const [ open, setOpen ] = useState<boolean>(
-        (props.hasOwnProperty("openOnInit") && typeof props.openOnInit === "boolean") ?
-            props.openOnInit :
+    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ?
+        { signOut: props.signOut } :
+        authenticator;
+    const [ open, setOpen ] = (props.hasOwnProperty("open") && typeof props.open === "boolean") ?
+        [ props.open, (v: boolean) => v ] :
+        useState<boolean>(
             (props.hasOwnProperty("showMenuButton") && typeof props.showMenuButton === "boolean") ?
                 !props.showMenuButton :
                 false
-    );
-    const toggle: Function = (props.hasOwnProperty("toggleCallback") && !!props.toggleCallback && props.toggleCallback !== null) ? props.toggleCallback : () => true;
+        );
+    const toggle: Function = (props.hasOwnProperty("toggleFunction") && props.toggleFunction !== null && !!props.toggleFunction) ?
+        props.toggleFunction :
+        () => {
+            setOpen(!open);
+        };
     const [ userState, setUserState ] = useState<User | null>(null);
-    const user: Promise<User> = (props.hasOwnProperty("user") && !!props.user && props.user !== null) ?  Promise.resolve(props.user) : getCurrentUser();
+    const user: Promise<User> = (props.hasOwnProperty("user") && props.user !== null && !!props.user) ?
+        (props.hasOwnProperty("then")) ?
+            props.user :
+            Promise.resolve(props.user) :
+        getCurrentUser();
 
     user.then(u => {
         if (userState === null) {
@@ -415,11 +435,11 @@ function ControlPanel (props: {
                 u.email :
                 u.username
     }
-    
+
     return (
         <div className={open ? "control-panel": "control-panel closed"}>
 
-            {(props.hasOwnProperty("showMenuButton") && props.showMenuButton !== null && !props.showMenuButton) ? (
+            {(props.hasOwnProperty("showMenuButton") && !props.showMenuButton) ? (
                 <div style={{ display: "none" }} />
             ): (
 
@@ -427,18 +447,19 @@ function ControlPanel (props: {
                     <a className="menu-toggle__control js-menu-control js-open-main-menu" role="button" >
                     <span id="mm-label" className="hamburger-control__label">
                       <span className="hamburger-control__open-label" aria-hidden={ (!open) } style={{ display: open ? "none" : "block" }} >
-                        <span className="screen-reader-text">Site Menu</span>
+                        <span className="screen-reader-text"
+                              onClick={() => toggle() }>Site Menu</span>
                       </span>
                       <span className="hamburger-control__close-label" aria-hidden={ open }>
                         <span className="screen-reader-text"
-                              onClick={() => { setOpen(!open); return !!toggle() }}>Close Menu</span>
+                              onClick={() => toggle() }>Close Menu</span>
                       </span>
                     </span>
                         <span className="hamburger-control" aria-hidden={ !open }>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__open" aria-hidden={ !open }
-                              onClick={() => { setOpen(!open); return !!toggle() }}
+                              onClick={() => toggle() }
                               style={{ display: open ? "none" : "block"  }} >
                             <svg className="menu" width="20" height="18" viewBox="0 0 20 18" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -452,7 +473,7 @@ function ControlPanel (props: {
                             </svg>
                         </span>
                         <span className="hamburger-control__close" aria-hidden={ open }
-                              onClick={() => { setOpen(!open); return toggle() }}
+                              onClick={() => toggle() }
                               style={{ display: open ? "block" : "none"  }} >
                             <svg className="menu-close" width="22" height="22" viewBox="0 0 22 22" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +487,7 @@ function ControlPanel (props: {
                     </a>
                 </div>
             )}
-            
+
             <div className={open ? "controls open": "controls"}
                  style={open ? {
                      maxWidth: "min-content",
@@ -478,17 +499,17 @@ function ControlPanel (props: {
                      padding: "0px",
                      overflow: "hidden"
                  }}>
-                
+
                 {(userState !== null) ? (
                     <h5>{ getUserLabel(userState)}</h5>
                 ) : (
                     <div style={{ display: "none" }} />
                 )}
-                
+
                 <p id="info">&nbsp;</p>
 
                 { props.children }
-                
+
                 <div id={"auth-control"} className="row show">
                     {(signOut !== null && typeof signOut === "function") ? (
                         // <button id={"sign-out"} className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} onClick={() => { autoSignIn(); signOut(); }}>Sign out</button>
@@ -497,7 +518,7 @@ function ControlPanel (props: {
                         <button>No Auth Controls</button>
                     )}
                 </div>
-            
+
             </div>
         </div>
     );
