@@ -1,5 +1,4 @@
 import ArtPiece from "./ArtPiece";
-import User from "../../models";
 
 export default class ArtPieceBid extends ArtPiece {
     id: string;
@@ -16,7 +15,6 @@ export default class ArtPieceBid extends ArtPiece {
     sold: boolean;
     finalBid: number | null;
     userBid: number;
-    winner: User | null;
 
     constructor(piece: ArtPiece, bid: number) {
         super();
@@ -34,6 +32,5 @@ export default class ArtPieceBid extends ArtPiece {
         this.sold = piece.sold;
         this.finalBid = piece.finalBid;
         this.userBid = bid;
-        this.winner = null;
     }
 }

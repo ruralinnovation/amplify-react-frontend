@@ -265,16 +265,21 @@ function BidCounter (props: {
             </Button>
             <Button
                 onClick={() => {
+                    console.log("Submit bid on artPiece");
                     props.setBid(count);
                     console.log(props.piece);
                     const artPieceBid: ArtPieceBid = new ArtPieceBid(props.piece, count);
                     const userBid: UserBid = new UserBid([artPieceBid]);
-                    // dispatch(addUserBid((userBid as any)));
-                    // TODO: How do I serialize the following from ^ userBid of type UserBid?
-
+                    // // TODO: How do I serialize the following from ^ userBid of type UserBid?
+                    // dispatch(addUserBid({
+                    //     ...(userBid as any),
+                    //     bidItems: [
+                    //         ...(userBid.bidItems as [any]) // <- serialize from [ArtPieceBid] to [any]
+                    //     ]
+                    // }));
                     dispatch(addUserBid(({
-                        "bidId": "bid-123",
-                        "bidTotal": count,
+                        "bidId": "169625",
+                        "bidTotal": 3,
                         "bidItems": [
                             {
                                 "id": "photo-1500462918059-b1a0cb512f1d",
@@ -290,8 +295,7 @@ function BidCounter (props: {
                                 "readyForPickup": true,
                                 "sold": false,
                                 "finalBid": null,
-                                "userBid": count,
-                                "winner": null
+                                "userBid": 3
                             }
                         ]
                     } as any)));
@@ -341,7 +345,7 @@ function ApplicationMenu () {
                 <h4>Bids for { getUserLabel(userState) }:</h4>
                 {(userBids.hasOwnProperty("current") && userBids.current !== null) ?
                     <div className={"user-bid-info"}>
-                        Bid 1: ${ (userBids.current as UserBid).bidTotal! }
+                        Bid #{ (userBids.current as UserBid).bidId! }: ${ (userBids.current as UserBid).bidTotal! }
                     </div> :
                     <div className={"user-bid-info"}>&nbsp;</div>
                 }
