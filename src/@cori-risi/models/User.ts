@@ -1,7 +1,7 @@
 import { AuthUser, GetCurrentUserOutput } from "@aws-amplify/auth/cognito";
 // import { CognitoAuthSignInDetails } from "@aws-amplify/auth/src/providers/cognito/types/models";
 
-export interface User extends AuthUser, GetCurrentUserOutput {
+export default interface User extends AuthUser, GetCurrentUserOutput {
   userId: string;
   username: string;
   userType?: string;

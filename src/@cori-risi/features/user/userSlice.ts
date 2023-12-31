@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "../../app/initialState.json";
 
-console.log("Full state available in userSlice: ", initialState);
+console.log("Initial state available in userSlice: ", initialState);
 
 export const userSlice = createSlice({
     initialState: initialState.user,
@@ -13,6 +13,7 @@ export const userSlice = createSlice({
                 && typeof action.payload.username === "string" ) {
                 user_state = action.payload;
             }
+            return user_state;
         }
     }
 });

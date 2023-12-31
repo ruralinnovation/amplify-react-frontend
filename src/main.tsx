@@ -9,9 +9,10 @@ import PropTypes from "prop-types";
 // import aws_config from "./aws-config";
 // import aws_config from '@/amplifyconfiguration.json';
 import aws_config from '../amplifyconfiguration.json';
+
+import { User } from "./@cori-risi/models";
 import App from './@cori-risi/frontend/App.tsx';
 import store from "./@cori-risi/frontend/app/store";
-import { User } from "./@cori-risi/models/User";
 
 Amplify.configure(aws_config);
 

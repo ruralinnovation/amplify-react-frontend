@@ -119,7 +119,7 @@
 }
 
 
-/* ControlPanel menu */
+/* ControlPanel */
 .control-panel {
   position: fixed;
   right: 0;
@@ -231,6 +231,11 @@
 
 .site-header__primary-menu .top-level-nav-link {
   padding: 0 10px 0 10px;
+}
+
+/* ApplicationMenu */
+#user-bids {
+  padding: 20px;
 }
 
 .controls * .form-group,

@@ -18,9 +18,16 @@ import reactLogo from './assets/react.svg';
 import reduxLogo from './assets/redux.svg';
 import viteLogo from './assets/vite.svg';
 
-import { User } from "../models/User";
-import { selectUser } from "../features";
+import User from '../models/User';
 import {
+    updateUserId,
+    updateUserName,
+    selectUser
+} from "../features";
+import {
+    addUserBid,
+    updateAllUserBids,
+    selectUserBids,
     selectCollection,
     decrement,
     increment,
@@ -28,7 +35,9 @@ import {
     incrementByAmountAsync,
     selectCount
 } from "./features";
-import {updateUser} from "../features/user/userSlice";
+import UserBid from "./models/UserBid";
+import ArtPieceBid from "./models/ArtPieceBid";
+import Piece from "./models/ArtPiece";
 
 function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
@@ -49,22 +58,34 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowRatio, setRatio ] = useState<number>(0);
 
     const userState: User = useSelector(selectUser);
-    // const dispatch = useDispatch();
-    //
-    // useEffect(() => {
-    //     console.log("user type:", user.constructor.name);
-    //     try {
-    //         const u = user as User;
-    //         // user.then(u => {
-    //         if (!!u.userId && !!u.username) {
-    //             console.log("Update userState:", u);
-    //             dispatch(updateUser(u));
-    //         }
-    //         // })
-    //     } catch (e: Error) {
-    //         console.error(e);
-    //     }
-    // }, [ user ]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log("Initial userState:", userState);
+        console.log("user type:", user.constructor.name);
+        function updateUser (u: User) {
+            try {
+                if (!!u.userId) {
+                    console.log("Update userId:", u.userId);
+                    dispatch(updateUserId(u.userId));
+                }
+                if (!!u.userId && !!u.username) {
+                    console.log("Update username:", u.username);
+                    dispatch(updateUserName(u.username));
+                }
+            } catch (e: any) {
+                console.error(e);
+            }
+        }
+        if (user.hasOwnProperty("then")) {
+            user.then(u => updateUser(u));
+        } else {
+            const u = (user as unknown) as User;
+            updateUser(u)
+        }
+    }, [ user ]);
+
+    // const userBids = useSelector(selectUserBids);
 
     const artCollection = useSelector(selectCollection);
 
@@ -174,7 +195,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                     open={controlPanelOpen}
                     showMenuButton={showMenuButton}
                     toggleFunction={toggleControlPanel}
-                    user={Promise.resolve(userState)}>
+                    user={user}>
                     <ApplicationMenu />
                 </ControlPanel>
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}
@@ -184,7 +205,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     );
 }
 
-function ArtPiece(props: { piece: any }) {
+function ArtPiece(props: { piece: Piece }) {
 
     const [ bid, setBid ] = useState<number>(0);
 
@@ -215,14 +236,15 @@ function ArtPiece(props: { piece: any }) {
                 <Text>
                     {props.piece!.description!}
                 </Text>
-                <Counter setBid={setBid} />
+                <BidCounter piece={props.piece!} setBid={setBid} />
 
             </Flex>
         </Flex>
     );
 }
 
-function Counter (props: {
+function BidCounter (props: {
+    piece: Piece,
     setBid: Function
 }) {
     const count = useSelector(selectCount);
@@ -242,7 +264,38 @@ function Counter (props: {
                 -
             </Button>
             <Button
-                onClick={ () => props.setBid(count) }
+                onClick={() => {
+                    props.setBid(count);
+                    console.log(props.piece);
+                    const artPieceBid: ArtPieceBid = new ArtPieceBid(props.piece, count);
+                    const userBid: UserBid = new UserBid([artPieceBid]);
+                    // dispatch(addUserBid((userBid as any)));
+                    // TODO: How do I serialize the following from ^ userBid of type UserBid?
+
+                    dispatch(addUserBid(({
+                        "bidId": "bid-123",
+                        "bidTotal": count,
+                        "bidItems": [
+                            {
+                                "id": "photo-1500462918059-b1a0cb512f1d",
+                                "title": "Hallway",
+                                "artist": "Efe Kurnaz",
+                                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat sed cras ornare arcu dui. Ac feugiat sed lectus vestibulum.",
+                                "altTitle": "Abstract art",
+                                "height": "21rem",
+                                "objectFit": "cover",
+                                "src": "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987",
+                                "mininmumBid": 1,
+                                "inStock": true,
+                                "readyForPickup": true,
+                                "sold": false,
+                                "finalBid": null,
+                                "userBid": count,
+                                "winner": null
+                            }
+                        ]
+                    } as any)));
+                }}
                 variation="primary"
             >
                 Bid ${count} on this item
@@ -251,7 +304,27 @@ function Counter (props: {
     );
 }
 
-function ApplicationMenu() {
+function ApplicationMenu () {
+
+    const userState: User = useSelector(selectUser);
+    const userBids = useSelector(selectUserBids);
+
+    function getUserLabel (u: User) {
+        return (u.hasOwnProperty("signInUserSession")
+            && !!u.signInUserSession
+            && u.signInUserSession.hasOwnProperty("idToken")
+            && u.signInUserSession?.idToken.hasOwnProperty("payload")
+        ) ? (
+                (u.signInUserSession?.idToken.payload.hasOwnProperty("name") && !!u.signInUserSession?.idToken.payload.name) ?
+                    u.signInUserSession?.idToken.payload.name :
+                    (u.signInUserSession?.idToken.payload.hasOwnProperty("email") && !!u.signInUserSession?.idToken.payload.email) ?
+                        u.signInUserSession?.idToken.payload.email :
+                        u.username
+            ) :
+            (u.hasOwnProperty("email") && !!u.email) ?
+                u.email :
+                u.username
+    }
 
     function showPrintOptions() {
         try {
@@ -264,6 +337,15 @@ function ApplicationMenu() {
 
     return (
         <div id={"application-menu"} style={{ minWidth: "254px" }}>
+            <div id={"user-bids"} className="row" >
+                <h4>Bids for { getUserLabel(userState) }:</h4>
+                {(userBids.hasOwnProperty("current") && userBids.current !== null) ?
+                    <div className={"user-bid-info"}>
+                        Bid 1: ${ (userBids.current as UserBid).bidTotal! }
+                    </div> :
+                    <div className={"user-bid-info"}>&nbsp;</div>
+                }
+            </div>
             <div id={"print-exec"} className="row">
                 <Button type="submit"  id={"print-config-btn"}
                         className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"}
