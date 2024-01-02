@@ -26,14 +26,14 @@ import {
 } from "../features";
 import {
     addUserBid,
-    updateAllUserBids,
+    // updateAllUserBids,
     selectUserBids,
     selectCollection,
-    decrement,
-    increment,
-    incrementByAmount,
-    incrementByAmountAsync,
-    selectCount
+    // decrement,
+    // increment,
+    // incrementByAmount,
+    // incrementByAmountAsync,
+    // selectCount
 } from "./features";
 import UserBid from "./models/UserBid";
 import ArtPieceBid from "./models/ArtPieceBid";
@@ -81,7 +81,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
             user.then(u => updateUser(u));
         } else {
             const u = (user as unknown) as User;
-            updateUser(u)
+            updateUser(u);
         }
     }, [ user ]);
 
