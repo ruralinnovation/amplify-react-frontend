@@ -18,14 +18,26 @@ import reactLogo from './assets/react.svg';
 import reduxLogo from './assets/redux.svg';
 import viteLogo from './assets/vite.svg';
 
-import { User } from "../models/User";
+import User from '../models/User';
 import {
+    updateUserId,
+    updateUserName,
+    selectUser
+} from "../features";
+import {
+    addUserBid,
+    updateAllUserBids,
+    selectUserBids,
+    selectCollection,
     decrement,
     increment,
     incrementByAmount,
     incrementByAmountAsync,
     selectCount
-} from "./features/counter/counterSlice";
+} from "./features";
+import UserBid from "./models/UserBid";
+import ArtPieceBid from "./models/ArtPieceBid";
+import ArtPiece from "./models/ArtPiece";
 
 function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
@@ -36,8 +48,8 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     }());
 
     const allowMenuToBeClosed = true;
-
-    const [ controlPanelOpen, setControlPanelOpen ] = useState(!allowMenuToBeClosed);
+    const [ controlPanelOpen, setControlPanelOpen ] = useState<boolean>(!allowMenuToBeClosed);
+    const [ showMenuButton, setShowMenuButton ] = useState<boolean>(!!allowMenuToBeClosed);
 
     let content_loaded = false;
 
@@ -45,13 +57,37 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     const [ windowHeight, setHeight ] = useState<number>(0);
     const [ windowRatio, setRatio ] = useState<number>(0);
 
-    const [ bid, setBid ] = useState<number>(0);
+    const userState: User = useSelector(selectUser);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (bid > 0.0) {
-            alert(`Thank you for your bid of $${bid}!`);
+        console.log("Initial userState:", userState);
+        console.log("user type:", user.constructor.name);
+        function updateUser (u: User) {
+            try {
+                if (!!u.userId) {
+                    console.log("Update userId:", u.userId);
+                    dispatch(updateUserId(u.userId));
+                }
+                if (!!u.userId && !!u.username) {
+                    console.log("Update username:", u.username);
+                    dispatch(updateUserName(u.username));
+                }
+            } catch (e: any) {
+                console.error(e);
+            }
         }
-    }, [ bid ])
+        if (user.hasOwnProperty("then")) {
+            user.then(u => updateUser(u));
+        } else {
+            const u = (user as unknown) as User;
+            updateUser(u)
+        }
+    }, [ user ]);
+
+    // const userBids = useSelector(selectUserBids);
+
+    const artCollection = useSelector(selectCollection);
 
     function addContentToCurrentComponent () {
         if (!content_loaded) {
@@ -80,15 +116,26 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
             window.hasOwnProperty("innerWidth") &&
             window.hasOwnProperty("innerHeight")
         ) {
-            // console.log("Update width to: " + window.innerWidth)
+            console.log("Update width to: " + window.innerWidth);
             setWidth(window.innerWidth);
-            // console.log("Update height to: " + window.innerHeight)
+            console.log("Update height to: " + window.innerHeight);
             setHeight(window.innerHeight);
-            // console.log("Update height/width ratio to: " + window.innerHeight/window.innerWidth);
+            console.log("Update height/width ratio to: " + window.innerHeight/window.innerWidth);
             setRatio(window.innerHeight/window.innerWidth);
             setTimeout(() => {
                 console.log({windowWidth, windowHeight, windowRatio})
             });
+
+            if (window.innerWidth < 960) {
+                setShowMenuButton(true);
+
+            } else if (!!allowMenuToBeClosed) {
+                setShowMenuButton(true);
+
+            } else {
+                setControlPanelOpen(true);
+                setShowMenuButton(false);
+            }
         }
     }
 
@@ -98,15 +145,10 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
         return () => window.removeEventListener("resize", updateWindowDimensions);
     }, []);
 
-    let toggleControlPanel = function() {
-        if (!controlPanelOpen) {
-            setControlPanelOpen(true);
-            return false;
-        } else {
-            setControlPanelOpen(false);
-            return true;
-        }
-    };
+
+    function toggleControlPanel () {
+        setControlPanelOpen(!controlPanelOpen);
+    }
 
     return (
         <>
@@ -116,32 +158,17 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                 <Flex direction="column" flex={(controlPanelOpen)? "initial" : "auto"}>
                     <h1 style={{textAlign: "center"}}>Amplify + Redux + React (TS) + Vite</h1>
                     <br />
-                    <Flex
-                        direction={{ base: 'column', large: 'row' }}
-                        justifyContent="center"
-                        padding="1rem"
-                        width="100%"
-                    >
-                        <Image
-                            alt="Abstract art"
-                            height="21rem"
-                            objectFit="cover"
-                            src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987"
-                        />
-                        <Flex direction="column"
-                              justifyContent="space-between"
-                              maxWidth="32rem">
-                            <Heading level={3}>Abstract art</Heading>
-                            <Text>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat
-                                sed cras ornare arcu dui. Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse.
-                            </Text>
-                            <Counter setBid={setBid} />
 
-                        </Flex>
-                    </Flex>
+                    {
+                        artCollection.map((piece) => {
+                            console.log("piece:", piece);
+                            return (piece.hasOwnProperty("id") && !!piece["id"]) ?
+                                <Piece key={piece["id"]} piece={piece}/> :
+                                <div/>
+
+                        })
+                    }
+
                     <div className="card" style={{ textAlign: "center" }}>
                         <p>
                             Edit <code>App.tsx</code> and save to test HMR
@@ -164,7 +191,11 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                     </p>
                 </Flex>
 
-                <ControlPanel showMenuButton={allowMenuToBeClosed} toggleCallback={toggleControlPanel}>
+                <ControlPanel
+                    open={controlPanelOpen}
+                    showMenuButton={showMenuButton}
+                    toggleFunction={toggleControlPanel}
+                    user={user}>
                     <ApplicationMenu />
                 </ControlPanel>
                 {/*<div className={"amplify-sign-out"}><SignOutButton /></div>*/}
@@ -174,38 +205,107 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     );
 }
 
+function Piece (props: { piece: ArtPiece }) {
 
+    const [ bid, setBid ] = useState<number>(0);
 
-function Counter (props: {
+    useEffect(() => {
+        if (bid > 0.0) {
+            alert(`Thank you for your bid of $${bid}!`);
+        }
+    }, [ bid ]);
+
+    return (
+
+        <Flex
+            direction={{ base: 'column', large: 'row' }}
+            justifyContent="center"
+            padding="1rem"
+            width="100%"
+        >
+            <Image
+                alt={props.piece!.altTitle || props.piece!.title!}
+                height={props.piece!.height!}
+                objectFit={props.piece!.objectFit!}
+                src={props.piece!.src!}
+            />
+            <Flex direction="column"
+                  justifyContent="space-between"
+                  maxWidth="32rem">
+                <Heading level={3}>{props.piece!.title!}</Heading>
+                <Text>
+                    {props.piece!.description!}
+                </Text>
+                <Bidder piece={props.piece!} setBid={setBid} />
+
+            </Flex>
+        </Flex>
+    );
+}
+
+function Bidder (props: {
+    piece: ArtPiece,
     setBid: Function
 }) {
-    const count = useSelector(selectCount);
+    // const count = useSelector(selectCount);
+    const [ amount, setAmount ] = useState<number>(1);
     const dispatch = useDispatch();
 
     return (
         <div className={"row"}>
             <Button className={"button"}
                     aria-label={"Increment bid"}
-                    onClick={() => (dispatch as Function)(increment())} >
+                    // onClick={() => (dispatch as Function)(increment())} >
+                    onClick={() => setAmount(amount + 1)} >
                 +
             </Button>
-            <span className={"value"}>${count}</span>
+            <span className={"value"}>${amount}</span>
             <Button className={"button"}
                     aria-label={"Decrement bid"}
-                    onClick={() => (dispatch as Function)(decrement())} >
+                    // onClick={() => (dispatch as Function)(decrement())} >
+                    onClick={() => setAmount(amount - 1)} >
                 -
             </Button>
             <Button
-                onClick={ () => props.setBid(count) }
+                onClick={() => {
+                    console.log("Submit bid on artPiece");
+                    props.setBid(amount);
+                    console.log(props.piece);
+                    const artPiece: ArtPiece = Object.assign(new ArtPiece(), props.piece);
+                    const artPieceBid: ArtPieceBid = new ArtPieceBid(artPiece, amount);
+                    // *Redux dispatcher: Must serialize artPieceBid ^ of type ArtPieceBid to Object (any) before passing to userBid for dispatcher
+                    const userBid: object = Object.assign({} as any, new UserBid([Object.assign({} as any, artPieceBid)]));
+                    dispatch(addUserBid(userBid));
+                }}
                 variation="primary"
             >
-                Bid ${count} on this item
+                Bid ${amount} on this item
             </Button>
         </div>
     );
 }
 
-function ApplicationMenu() {
+function ApplicationMenu () {
+
+    const userState: User = useSelector(selectUser);
+    const userBids = useSelector(selectUserBids);
+
+    function getUserLabel (u: User) {
+        return (u.hasOwnProperty("signInUserSession")
+            && !!u.signInUserSession
+            && u.signInUserSession.hasOwnProperty("idToken")
+            && u.signInUserSession?.idToken.hasOwnProperty("payload")
+        ) ? (
+                (u.signInUserSession?.idToken.payload.hasOwnProperty("name") && !!u.signInUserSession?.idToken.payload.name) ?
+                    u.signInUserSession?.idToken.payload.name :
+                    (u.signInUserSession?.idToken.payload.hasOwnProperty("email") && !!u.signInUserSession?.idToken.payload.email) ?
+                        u.signInUserSession?.idToken.payload.email :
+                        u.username
+            ) :
+            (u.hasOwnProperty("email") && !!u.email) ?
+                u.email :
+                u.username
+    }
 
     function showPrintOptions() {
         try {
@@ -217,7 +317,26 @@ function ApplicationMenu() {
     }
 
     return (
-        <div id={"application-menu"}>
+        <div id={"application-menu"} style={{ minWidth: "254px" }}>
+            <div id={"user-bids"} className="row" >
+                <h4>Bids for { getUserLabel(userState) }:</h4>
+                {/*{(userBids.hasOwnProperty("current") && userBids.current !== null) ?*/}
+                {/*    <div className={"user-bid-info"}>*/}
+                {/*        Bid #{ (userBids.current as UserBid).bidId! }: ${ (userBids.current as UserBid).bidTotal! }*/}
+                {/*    </div> :*/}
+                {/*    <div className={"user-bid-info"}>&nbsp;</div>*/}
+                {/*}*/}
+                {(userBids.hasOwnProperty("current") && userBids.all !== null) ?
+                    userBids.all.map((bid) => {
+                        return (
+                            <div key={(bid as UserBid).bidId!} className={"user-bid-info"}>
+                                Bid #{ (bid as UserBid).bidId! }: ${ (bid as UserBid).bidTotal! }
+                            </div>
+                        )
+                    }) :
+                    <div className={"user-bid-info"}>&nbsp;</div>
+                }
+            </div>
             <div id={"print-exec"} className="row">
                 <Button type="submit"  id={"print-config-btn"}
                         className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"}
@@ -337,17 +456,34 @@ function ApplicationMenu() {
 
 function ControlPanel (props: {
     children?: ReactElement,
+    open?: boolean | true,
     showMenuButton?: boolean | null,
-    toggleCallback?: Function | null,
+    toggleFunction?: Function | null,
     signOut?: Function | null,
     user?: Promise<User> | null
 }) {
     const authenticator: UseAuthenticator = useAuthenticator();
-    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ? { signOut: props.signOut } : authenticator;
-    const [ open, setOpen ] = useState<boolean>((props.hasOwnProperty("showMenuButton") && props.showMenuButton !== null) ? !props.showMenuButton : false);
-    const toggle: Function = (props.hasOwnProperty("toggleCallback") && !!props.toggleCallback && props.toggleCallback !== null) ? props.toggleCallback : () => true;
+    const { signOut } = (props.hasOwnProperty("signOut") && props.signOut !== null) ?
+        { signOut: props.signOut } :
+        authenticator;
+    const [ open, setOpen ] = (props.hasOwnProperty("open") && typeof props.open === "boolean") ?
+        [ props.open, (v: boolean) => v ] :
+        useState<boolean>(
+            (props.hasOwnProperty("showMenuButton") && typeof props.showMenuButton === "boolean") ?
+                !props.showMenuButton :
+                false
+        );
+    const toggle: Function = (props.hasOwnProperty("toggleFunction") && props.toggleFunction !== null && !!props.toggleFunction) ?
+        props.toggleFunction :
+        () => {
+            setOpen(!open);
+        };
     const [ userState, setUserState ] = useState<User | null>(null);
-    const user: Promise<User> = (props.hasOwnProperty("user") && !!props.user && props.user !== null) ?  Promise.resolve(props.user) : getCurrentUser();
+    const user: Promise<User> = (props.hasOwnProperty("user") && props.user !== null && !!props.user) ?
+        (props.hasOwnProperty("then")) ?
+            props.user :
+            Promise.resolve(props.user) :
+        getCurrentUser();
 
     user.then(u => {
         if (userState === null) {
@@ -372,11 +508,11 @@ function ControlPanel (props: {
                 u.email :
                 u.username
     }
-    
+
     return (
         <div className={open ? "control-panel": "control-panel closed"}>
 
-            {(props.hasOwnProperty("showMenuButton") && props.showMenuButton !== null && !props.showMenuButton) ? (
+            {(props.hasOwnProperty("showMenuButton") && !props.showMenuButton) ? (
                 <div style={{ display: "none" }} />
             ): (
 
@@ -384,18 +520,19 @@ function ControlPanel (props: {
                     <a className="menu-toggle__control js-menu-control js-open-main-menu" role="button" >
                     <span id="mm-label" className="hamburger-control__label">
                       <span className="hamburger-control__open-label" aria-hidden={ (!open) } style={{ display: open ? "none" : "block" }} >
-                        <span className="screen-reader-text">Site Menu</span>
+                        <span className="screen-reader-text"
+                              onClick={() => toggle() }>Site Menu</span>
                       </span>
                       <span className="hamburger-control__close-label" aria-hidden={ open }>
                         <span className="screen-reader-text"
-                              onClick={() => { setOpen(!open); return !!toggle() }}>Close Menu</span>
+                              onClick={() => toggle() }>Close Menu</span>
                       </span>
                     </span>
                         <span className="hamburger-control" aria-hidden={ !open }>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__inner"/>
                         <span className="hamburger-control__open" aria-hidden={ !open }
-                              onClick={() => { setOpen(!open); return !!toggle() }}
+                              onClick={() => toggle() }
                               style={{ display: open ? "none" : "block"  }} >
                             <svg className="menu" width="20" height="18" viewBox="0 0 20 18" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -409,7 +546,7 @@ function ControlPanel (props: {
                             </svg>
                         </span>
                         <span className="hamburger-control__close" aria-hidden={ open }
-                              onClick={() => { setOpen(!open); return toggle() }}
+                              onClick={() => toggle() }
                               style={{ display: open ? "block" : "none"  }} >
                             <svg className="menu-close" width="22" height="22" viewBox="0 0 22 22" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -423,7 +560,7 @@ function ControlPanel (props: {
                     </a>
                 </div>
             )}
-            
+
             <div className={open ? "controls open": "controls"}
                  style={open ? {
                      maxWidth: "min-content",
@@ -435,17 +572,17 @@ function ControlPanel (props: {
                      padding: "0px",
                      overflow: "hidden"
                  }}>
-                
+
                 {(userState !== null) ? (
                     <h5>{ getUserLabel(userState)}</h5>
                 ) : (
                     <div style={{ display: "none" }} />
                 )}
-                
+
                 <p id="info">&nbsp;</p>
 
                 { props.children }
-                
+
                 <div id={"auth-control"} className="row show">
                     {(signOut !== null && typeof signOut === "function") ? (
                         // <button id={"sign-out"} className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} onClick={() => { autoSignIn(); signOut(); }}>Sign out</button>
@@ -454,7 +591,7 @@ function ControlPanel (props: {
                         <button>No Auth Controls</button>
                     )}
                 </div>
-            
+
             </div>
         </div>
     );
