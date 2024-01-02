@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from "../../app/AppState";
 
+// console.log("Initial state available in counterSlice: ", initialState);
+
 export const counterSlice = createSlice({ //! DO NOT ADD EXPLICIT TYPES FOR createSlice definition
-    initialState: initialState,
+    initialState: initialState.counter, // <- Only provide relevant *part* of state
     name: "counter",
     reducers: {
         // Read the docs: https://redux.js.org/usage/structuring-reducers/immutable-update-patterns
-        increment: (state) => { state.value += 1 }, // Immer immutable update
-        decrement: (state) => { state.value -= 1 }, // <= curly braces required
-        incrementByAmount: (state, action) => {
+        increment: (counter_state) => { counter_state.value += 1 }, // Immer immutable update
+        decrement: (counter_state) => { counter_state.value -= 1 }, // <= curly braces required
+        incrementByAmount: (counter_state, action) => {
             console.log("Add ", action.payload);
-            state.value += (typeof action.payload === 'number') ? action.payload : 1;
+            counter_state.value += (typeof action.payload === 'number') ? action.payload : 1;
         },
     }
 });
@@ -29,8 +31,8 @@ export const incrementByAmountAsync = (amount: number) => (dispatch: Function, /
     }, 533);
 };
 
-export const selectCount = (appState: any) => {
-    const state = appState.counter;  // <= What?!
-    console.log("Return state.value", state.value);
-    return state.value;
+export const selectCount = (state: (typeof initialState)) => {
+    console.log("AppState in selectCount:", state);
+    console.log("Return state.counter.value:", state.counter.value);
+    return state.counter.value;
 }

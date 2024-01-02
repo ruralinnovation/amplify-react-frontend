@@ -1,8 +1,32 @@
+import userBidsReducer, {
+    addUserBid,
+    updateAllUserBids,
+    selectUserBids
+} from "./bids/userBidsSlice";
+
+import collectionReducer, {
+    selectCollection
+} from "./collection/collectionSlice";
+
 import counterReducer, {
-    incrementByAmountAsync
+    decrement,
+    increment,
+    incrementByAmount,
+    incrementByAmountAsync,
+    selectCount
 } from "./counter/counterSlice";
 
 export {
+    userBidsReducer,
+    addUserBid,
+    updateAllUserBids,
+    selectUserBids,
+    collectionReducer,
+    selectCollection,
     counterReducer,
-    incrementByAmountAsync
+    decrement,
+    increment,
+    incrementByAmount,
+    incrementByAmountAsync,
+    selectCount
 };

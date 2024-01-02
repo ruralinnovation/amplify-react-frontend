@@ -4,15 +4,15 @@ import { Provider } from "react-redux";
 import { Amplify } from "aws-amplify";
 import { AuthConfig } from "@aws-amplify/core";
 import { getCurrentUser } from "@aws-amplify/auth/cognito";
-import App from './@cori-risi/frontend/App.tsx';
 import PropTypes from "prop-types";
-// import configureStore from "./@cori-risi/frontend/configureStore";
 
 // import aws_config from "./aws-config";
 // import aws_config from '@/amplifyconfiguration.json';
 import aws_config from '../amplifyconfiguration.json';
+
+import { User } from "./@cori-risi/models";
+import App from './@cori-risi/frontend/App.tsx';
 import store from "./@cori-risi/frontend/app/store";
-import { User } from "./@cori-risi/models/User";
 
 Amplify.configure(aws_config);
 
@@ -73,7 +73,6 @@ const initMain = (evt: Event) => {
     const react_app_container: HTMLElement = document.getElementById(react_app_id) || document.createElement("div");
     react_app_container.id = 'react-app';
     const root_content: HTMLElement = document.createElement("div");
-    // const store = configureStore();
     const user: Promise<User> = getCurrentUser();
     
     console.log("AWS Auth config: ", auth);
@@ -92,11 +91,6 @@ const initMain = (evt: Event) => {
     }
 
     const root = ReactDOM.createRoot(react_app_container!);
-    // root.render(
-    //     <React.StrictMode>
-    //         <App content={ () => root_content } />
-    //     </React.StrictMode>
-    // );
     root.render(
         <React.StrictMode>
             <OfflineNotification>

@@ -1,9 +1,24 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { counterReducer } from "../features";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import {
+    userIdReducer,
+    userNameReducer
+} from "../../features";
+import {
+    userBidsReducer,
+    collectionReducer,
+    counterReducer
+} from "../features";
 import AppState from "./AppState";
 
 const store =  configureStore({
     reducer: {
+        user: combineReducers({
+            userId: userIdReducer,
+            username: userNameReducer,
+            bids: userBidsReducer
+        }),
+        // user: userBidsReducer,
+        collection: collectionReducer,
         counter: counterReducer
     }
 });
