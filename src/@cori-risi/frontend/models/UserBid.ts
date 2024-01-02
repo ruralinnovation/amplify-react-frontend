@@ -3,7 +3,7 @@ import ArtPieceBid from "./ArtPieceBid";
 export default class UserBid {
     bidId: string;
     bidTotal: number;
-    bidItems: [ArtPieceBid];
+    bidItems: [any];
 
     constructor (items: [ArtPieceBid]) {
         const minId = 100000,

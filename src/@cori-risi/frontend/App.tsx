@@ -37,7 +37,7 @@ import {
 } from "./features";
 import UserBid from "./models/UserBid";
 import ArtPieceBid from "./models/ArtPieceBid";
-import Piece from "./models/ArtPiece";
+import ArtPiece from "./models/ArtPiece";
 
 function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
@@ -163,7 +163,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                         artCollection.map((piece) => {
                             console.log("piece:", piece);
                             return (piece.hasOwnProperty("id") && !!piece["id"]) ?
-                                <ArtPiece key={piece["id"]} piece={piece}/> :
+                                <Piece key={piece["id"]} piece={piece}/> :
                                 <div/>
 
                         })
@@ -205,7 +205,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     );
 }
 
-function ArtPiece(props: { piece: Piece }) {
+function Piece (props: { piece: ArtPiece }) {
 
     const [ bid, setBid ] = useState<number>(0);
 
@@ -236,73 +236,50 @@ function ArtPiece(props: { piece: Piece }) {
                 <Text>
                     {props.piece!.description!}
                 </Text>
-                <BidCounter piece={props.piece!} setBid={setBid} />
+                <Bidder piece={props.piece!} setBid={setBid} />
 
             </Flex>
         </Flex>
     );
 }
 
-function BidCounter (props: {
-    piece: Piece,
+function Bidder (props: {
+    piece: ArtPiece,
     setBid: Function
 }) {
-    const count = useSelector(selectCount);
+    // const count = useSelector(selectCount);
+    const [ amount, setAmount ] = useState<number>(1);
     const dispatch = useDispatch();
 
     return (
         <div className={"row"}>
             <Button className={"button"}
                     aria-label={"Increment bid"}
-                    onClick={() => (dispatch as Function)(increment())} >
+                    // onClick={() => (dispatch as Function)(increment())} >
+                    onClick={() => setAmount(amount + 1)} >
                 +
             </Button>
-            <span className={"value"}>${count}</span>
+            <span className={"value"}>${amount}</span>
             <Button className={"button"}
                     aria-label={"Decrement bid"}
-                    onClick={() => (dispatch as Function)(decrement())} >
+                    // onClick={() => (dispatch as Function)(decrement())} >
+                    onClick={() => setAmount(amount - 1)} >
                 -
             </Button>
             <Button
                 onClick={() => {
                     console.log("Submit bid on artPiece");
-                    props.setBid(count);
+                    props.setBid(amount);
                     console.log(props.piece);
-                    const artPieceBid: ArtPieceBid = new ArtPieceBid(props.piece, count);
-                    const userBid: UserBid = new UserBid([artPieceBid]);
-                    // // TODO: How do I serialize the following from ^ userBid of type UserBid?
-                    // dispatch(addUserBid({
-                    //     ...(userBid as any),
-                    //     bidItems: [
-                    //         ...(userBid.bidItems as [any]) // <- serialize from [ArtPieceBid] to [any]
-                    //     ]
-                    // }));
-                    dispatch(addUserBid(({
-                        "bidId": "169625",
-                        "bidTotal": 3,
-                        "bidItems": [
-                            {
-                                "id": "photo-1500462918059-b1a0cb512f1d",
-                                "title": "Hallway",
-                                "artist": "Efe Kurnaz",
-                                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat sed cras ornare arcu dui. Ac feugiat sed lectus vestibulum.",
-                                "altTitle": "Abstract art",
-                                "height": "21rem",
-                                "objectFit": "cover",
-                                "src": "https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987",
-                                "mininmumBid": 1,
-                                "inStock": true,
-                                "readyForPickup": true,
-                                "sold": false,
-                                "finalBid": null,
-                                "userBid": 3
-                            }
-                        ]
-                    } as any)));
+                    const artPiece: ArtPiece = Object.assign(new ArtPiece(), props.piece);
+                    const artPieceBid: ArtPieceBid = new ArtPieceBid(artPiece, amount);
+                    // *Redux dispatcher: Must serialize artPieceBid ^ of type ArtPieceBid to Object (any) before passing to userBid for dispatcher
+                    const userBid: object = Object.assign({} as any, new UserBid([Object.assign({} as any, artPieceBid)]));
+                    dispatch(addUserBid(userBid));
                 }}
                 variation="primary"
             >
-                Bid ${count} on this item
+                Bid ${amount} on this item
             </Button>
         </div>
     );
@@ -343,10 +320,20 @@ function ApplicationMenu () {
         <div id={"application-menu"} style={{ minWidth: "254px" }}>
             <div id={"user-bids"} className="row" >
                 <h4>Bids for { getUserLabel(userState) }:</h4>
-                {(userBids.hasOwnProperty("current") && userBids.current !== null) ?
-                    <div className={"user-bid-info"}>
-                        Bid #{ (userBids.current as UserBid).bidId! }: ${ (userBids.current as UserBid).bidTotal! }
-                    </div> :
+                {/*{(userBids.hasOwnProperty("current") && userBids.current !== null) ?*/}
+                {/*    <div className={"user-bid-info"}>*/}
+                {/*        Bid #{ (userBids.current as UserBid).bidId! }: ${ (userBids.current as UserBid).bidTotal! }*/}
+                {/*    </div> :*/}
+                {/*    <div className={"user-bid-info"}>&nbsp;</div>*/}
+                {/*}*/}
+                {(userBids.hasOwnProperty("current") && userBids.all !== null) ?
+                    userBids.all.map((bid) => {
+                        return (
+                            <div key={(bid as UserBid).bidId!} className={"user-bid-info"}>
+                                Bid #{ (bid as UserBid).bidId! }: ${ (bid as UserBid).bidTotal! }
+                            </div>
+                        )
+                    }) :
                     <div className={"user-bid-info"}>&nbsp;</div>
                 }
             </div>
