@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from "react-redux";
 import { Amplify } from "aws-amplify";
@@ -9,10 +9,14 @@ import PropTypes from "prop-types";
 // import aws_config from "./aws-config";
 // import aws_config from '@/amplifyconfiguration.json';
 import aws_config from '../amplifyconfiguration.json';
-
-import { User } from "./@cori-risi/models";
 import App from './@cori-risi/frontend/App.tsx';
 import store from "./@cori-risi/frontend/app/store";
+import User from "./@cori-risi/models/User";
+
+import mapboxgl, {Map} from 'mapbox-gl';
+import {MapRef} from "react-map-gl";
+
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 Amplify.configure(aws_config);
 
@@ -39,7 +43,7 @@ OfflineNotification.propTypes = { children: PropTypes.node };
 const initHeader = (evt: Event) => {
     const header_id = 'react-header';
     const header: HTMLElement | null = document.getElementById(header_id);
-    
+
     if (header !== null && header.constructor.name === "HTMLDivElement") {
         ReactDOM.createRoot(header)
             .render(
@@ -74,21 +78,41 @@ const initMain = (evt: Event) => {
     react_app_container.id = 'react-app';
     const root_content: HTMLElement = document.createElement("div");
     const user: Promise<User> = getCurrentUser();
-    
+
     console.log("AWS Auth config: ", auth);
 
     console.log("AWS Cognito config:", auth?.Cognito);
-    
+
     console.log(evt);
-    
+
     initHeader(evt);
-    
+
     for (const elm of react_app_container.childNodes) {
-        const innerElm = elm;
+        const innerElm: HTMLElement = elm as HTMLElement;
         if (elm.nodeType === 1) {
+            // console.log("Found embedded content:", innerElm);
+
+            if (innerElm.id === "map") {
+                //
+                // MapBox test map
+                //
+                const map: Map = new mapboxgl.Map({
+                    container: 'map', // container ID
+                    style: 'mapbox://styles/ruralinno/clhgnms6802i701qn0c9y0pow', // style URL
+                    center: [-74.5, 40], // starting position [lng, lat]
+                    zoom: 9 // starting zoom
+                });
+
+                (map as { [key: string]: any })["map"] = map;
+
+                (window as { [key: string]: any })["map"] = (map as unknown) as MapRef;
+            }
+
             root_content.appendChild(innerElm);
         }
     }
+
+    console.log("Found embedded content:", root_content);
 
     const root = ReactDOM.createRoot(react_app_container!);
     root.render(
@@ -98,7 +122,7 @@ const initMain = (evt: Event) => {
                     {/*<Router>*/}
                     {/*    <ApiContextProvider aws_config={aws_config}>*/}
                     {/*        <App />*/}
-                            <App content={() => root_content} user={user} />
+                    <App app_id={react_app_id} content={() => root_content} user={user} />
                     {/*    </ApiContextProvider>*/}
                     {/*</Router>*/}
                 </Provider>
