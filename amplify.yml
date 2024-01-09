@@ -11,6 +11,7 @@ frontend:
     preBuild:
       commands:
         - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
+        - npm install --package-lock-only
         - npm ci
     build:
       commands:
