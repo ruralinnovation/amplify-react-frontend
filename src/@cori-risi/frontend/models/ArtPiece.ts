@@ -11,5 +11,5 @@ export default class ArtPiece {
     inStock: boolean;
     readyForPickup: boolean;
     sold: boolean;
-    finalBid: number | null
+    finalBid: number | null;
 }

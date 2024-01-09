@@ -119,13 +119,19 @@
 }
 
 
-/* ControlPanel */
+/* ControlPanel menu */
 .control-panel {
   position: fixed;
   right: 0;
   margin-top: -44px;
   padding: 12px 6px;
   background-color: var(--main-bg-color);
+}
+
+@media print {
+  * .control-panel {
+    display: none !important;
+  }
 }
 
 .control-panel .controls {
@@ -233,11 +239,6 @@
   padding: 0 10px 0 10px;
 }
 
-/* ApplicationMenu */
-#user-bids {
-  padding: 20px;
-}
-
 .controls * .form-group,
 .controls * .form-group label {
   display: initial;
@@ -295,3 +296,26 @@
 }
 
 
+#map {
+  position: relative;
+  width: 50vw !important;
+  height: 100%;
+}
+
+.mapboxgl-map {
+  /*width: calc(100vw - 32px) !important;*/
+  max-width: 100vw !important;
+}
+
+.mapboxgl-canvas-container {
+  position: relative;
+  max-width: 50vw !important;
+  width: 100%;
+  min-height: 360px;
+  height: 100%;
+}
+
+.mapboxgl-canvas-container .mapboxgl-canvas {
+  top: 0;
+  right: 0px;
+}

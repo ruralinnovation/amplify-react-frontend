@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser } from "@aws-amplify/auth/cognito";
 import {
     Button,
+    Card,
     Flex,
     Heading,
     Image,
@@ -26,20 +27,22 @@ import {
 } from "../features";
 import {
     addUserBid,
-    updateAllUserBids,
+    // updateAllUserBids,
     selectUserBids,
     selectCollection,
-    decrement,
-    increment,
-    incrementByAmount,
-    incrementByAmountAsync,
-    selectCount
+    // decrement,
+    // increment,
+    // incrementByAmount,
+    // incrementByAmountAsync,
+    // selectCount
 } from "./features";
 import UserBid from "./models/UserBid";
 import ArtPieceBid from "./models/ArtPieceBid";
 import ArtPiece from "./models/ArtPiece";
+import {MDADownloader} from "../components/MDADownloader";
+import {MDAPrinter} from "../components/MDAPrinter";
 
-function App({ content, user }: { content: () => HTMLElement, user: Promise<User> }): ReactElement {
+function App ({ app_id, content, user }: { app_id: string, content: () => HTMLElement, user: Promise<User> }): ReactElement {
 
     (function init () {
         // Check access to react/vite environment variables
@@ -81,7 +84,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
             user.then(u => updateUser(u));
         } else {
             const u = (user as unknown) as User;
-            updateUser(u)
+            updateUser(u);
         }
     }, [ user ]);
 
@@ -92,16 +95,19 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
     function addContentToCurrentComponent () {
         if (!content_loaded) {
             // Anything in here is fired on component mount.
-            const app_container = document.getElementsByClassName("embedded-app")[0];
+            const app_container = document.getElementById(app_id) ;
             if (!!app_container) {
-                const app_first_child = app_container.childNodes[0] || null;
                 const app_content = (typeof content === 'function') ?
                     content() :
                     { childNodes: [] };
                 setTimeout((container) => {
+                    // console.log("Will append content: ", app_content);
                     // container.append(app_content.childNodes);
-                    app_content.childNodes.forEach(c => {
-                        container.insertBefore(c, app_first_child)
+                    app_content.childNodes.forEach((c: ChildNode) => {
+                        if (c.nodeType === 1) {
+                            const element: HTMLElement = c as HTMLElement;
+                            container.insertAdjacentElement('beforeend', element);
+                        }
                     });
                 }, 53, app_container);
                 content_loaded = true;
@@ -317,7 +323,8 @@ function ApplicationMenu () {
     }
 
     return (
-        <div id={"application-menu"} style={{ minWidth: "254px" }}>
+        <Card id={"application-menu"} style={{ minWidth: "254px" }}>
+
             <div id={"user-bids"} className="row" >
                 <h4>Bids for { getUserLabel(userState) }:</h4>
                 {/*{(userBids.hasOwnProperty("current") && userBids.current !== null) ?*/}
@@ -337,120 +344,13 @@ function ApplicationMenu () {
                     <div className={"user-bid-info"}>&nbsp;</div>
                 }
             </div>
-            <div id={"print-exec"} className="row">
-                <Button type="submit"  id={"print-config-btn"}
-                        className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"}
-                        onClick={showPrintOptions}>
-                    Show print options</Button>
-                {/* */}
-                {/* Print config form */}
-                {/* */}
-                <form id={"print-config"}>
-                    <fieldset id="config-fields">
-                        <div>
-                            <div className="col-sm-4">
-                                <div className="form-group">
-                                    <label>Unit</label><br />
-                                    <label className="radio-inline">
-                                        <input type="radio" name="unitOptions" value="in" id="inUnit" checked readOnly /> Inch
-                                    </label>
-                                    <label className="radio-inline">
-                                        <input type="radio" name="unitOptions" value="mm" id="mmUnit" readOnly /> Millimeter
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="col-sm-3">
-                                <div className="form-group">
-                                    <label>Output format</label><br />
-                                    <label className="radio-inline">
-                                        <input type="radio" name="outputOptions" value="png" checked readOnly /> PNG
-                                    </label>
-                                    <label className="radio-inline">
-                                        <input type="radio" name="outputOptions" value="pdf" readOnly /> PDF
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="col-sm-5">
-                                <div className="form-group">
-                                    <label htmlFor="styleSelect">Map style</label>
-                                    <select id="styleSelect" className="form-control">
-                                        <option value="mapbox://styles/mapbox/light-v9">Mapbox Light</option>
-                                        <option value="mapbox://styles/mapbox/streets-v10">Mapbox Streets</option>
-                                        <option value="https://tiles.stadiamaps.com/styles/alidade_smooth.json">Stadia Maps
-                                            Alidade Smooth
-                                        </option>
-                                        <option value="https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json">Stadia
-                                            Maps Alidade Smooth Dark
-                                        </option>
-                                        <option value="https://tiles.stadiamaps.com/styles/outdoors.json">Stadia Maps
-                                            Outdoors
-                                        </option>
-                                        <option value="https://tiles.stadiamaps.com/styles/osm_bright.json">Stadia Maps OSM
-                                            Bright
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div className="col-sm-2">
-                                <div className="form-group" id="widthGroup">
-                                    <label htmlFor="widthInput">Width</label>
-                                    <input type="text" className="form-control" id="widthInput" autoComplete="off"
-                                           readOnly value="8" />
-                                </div>
-                            </div>
-                            <div className="col-sm-2">
-                                <div className="form-group" id="heightGroup">
-                                    <label htmlFor="heightInput">Height</label>
-                                    <input type="text" className="form-control" id="heightInput" autoComplete="off"
-                                           readOnly value="6" />
-                                </div>
-                            </div>
-                            <div className="col-sm-3">
-                                <div className="form-group" id="dpiGroup">
-                                    <label htmlFor="dpiInput">DPI</label>
-                                    <input type="text" className="form-control" id="dpiInput" autoComplete="off"
-                                           readOnly value="300" />
-                                </div>
-                            </div>
-                            <div className="col-sm-5">
-                                <div>
-                                    <div className="col-sm-4">
-                                        <div className="form-group" id="latGroup">
-                                            <label htmlFor="latInput">Latitude</label>
-                                            <input type="text" className="form-control" id="latInput" autoComplete="off"
-                                                   readOnly value="" />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <div className="form-group" id="lonGroup">
-                                            <label htmlFor="lonInput">Longitude</label>
-                                            <input type="text" className="form-control" id="lonInput" autoComplete="off"
-                                                   readOnly value="" />
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <div className="form-group" id="zoomGroup">
-                                            <label htmlFor="zoomInput">Zoom</label>
-                                            <input type="text" className="form-control" id="zoomInput" autoComplete="off"
-                                                   readOnly value="" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
 
-                <button type="submit" className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} id={"generate-btn"}>Print report</button>
-                <div id='spinner' />
-            </div>
+            <br />
 
-            <a id={"data-download-link"}>
-                <button type="submit" className={"amplify-button amplify-field-group__control amplify-button--primary amplify-button--fullwidth btn btn-primary btn-lg"} id={"data-download-btn"}>Download data</button>
-            </a>
-        </div>
+            <MDADownloader />
+
+            <MDAPrinter />
+        </Card>
     );
 }
 
