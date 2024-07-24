@@ -64,6 +64,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "render:readme": "quarto render README.qmd --to gfm --output README.md",
     "start": "vite --open",
     "start-local": "vite --config ../vite.config.local.js",
     "test": "jest --no-cache",
