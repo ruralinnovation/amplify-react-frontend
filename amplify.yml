@@ -12,8 +12,9 @@ frontend:
       commands:
         - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
         - npm install --package-lock-only
+        - npm install @rollup/rollup-linux-x64-gnu --save-optional
         - npm ci
-    dist:
+    build:
       commands:
         - echo "VITE_AMP_BACKEND_API=${AMP_BACKEND_API}" >> .env
         - echo "VITE_CORI_DATA_API=${CORI_DATA_API}" >> .env
@@ -23,7 +24,7 @@ frontend:
         - echo "VITE_REGION=${REGION}" >> .env
         - echo "VITE_COGNITO_REDIRECT_SIGNIN=${COGNITO_REDIRECT_SIGNIN}" >> .env
         - echo "VITE_COGNITO_REDIRECT_SIGNOUT=${COGNITO_REDIRECT_SIGNOUT}" >> .env
-        - npm run dist
+        - npm run build
   artifacts:
     baseDirectory: dist
     files:
