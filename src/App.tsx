@@ -6,7 +6,6 @@ import { HexagonLayer } from '@deck.gl/aggregation-layers';
 import { ScatterplotLayer } from '@deck.gl/layers';
 import { MapboxOverlay } from '@deck.gl/mapbox';
 
-import { ApiContextProvider } from '@cori-risi/cori.data.api';
 import ControlPanel from "./@cori-risi/components/ContorlPanel";
 import GeocoderControl from "./@cori-risi/components/GeocoderControl";
 
@@ -66,34 +65,32 @@ export default function App() {
     }
 
     return (
-        <ApiContextProvider>
-            <>
-                <Map
-                    mapboxAccessToken={MAPBOX_TOKEN}
-                    mapStyle="mapbox://styles/mapbox/streets-v9"
+        <>
+            <Map
+                mapboxAccessToken={MAPBOX_TOKEN}
+                mapStyle="mapbox://styles/mapbox/streets-v9"
+                initialViewState={{
+                    longitude: 0.44,
+                    latitude: 51.50,
+                    pitch: 40.5,
+                    zoom: 10.75
+                }}
+                onMove={onMove}
+            >
+                <DeckGLOverlay
                     initialViewState={{
-                        longitude: 0.44,
-                        latitude: 51.50,
-                        pitch: 40.5,
-                        zoom: 10.75
+                        longitude: -79.4512,
+                        latitude: 43.6568,
+                        zoom: 13
                     }}
-                    onMove={onMove}
-                >
-                    <DeckGLOverlay
-                        initialViewState={{
-                            longitude: -79.4512,
-                            latitude: 43.6568,
-                            zoom: 13
-                        }}
-                        layers={layers}/>
-                    <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-left" />
-                    <GeolocateControl position="top-left" />
-                    <NavigationControl position="top-left" />
-                    <ScaleControl  position="bottom-left"
-                                   unit={"imperial"} />
-                </Map>
-                <ControlPanel />
-            </>
-        </ApiContextProvider>
+                    layers={layers}/>
+                <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-left" />
+                <GeolocateControl position="top-left" />
+                <NavigationControl position="top-left" />
+                <ScaleControl  position="bottom-left"
+                               unit={"imperial"} />
+            </Map>
+            {/*<ControlPanel />*/}
+        </>
     );
 }
