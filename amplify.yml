@@ -1,7 +1,7 @@
 version: 1
 #backend:
 #  phases:
-#    build:
+#    dist:
 #      commands:
 #        - nvm use 18
 #        - npm ci
@@ -11,10 +11,11 @@ frontend:
     preBuild:
       commands:
         - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
+        - npm install --package-lock-only
+        - npm install @rollup/rollup-linux-x64-gnu --save-optional
         - npm ci
     build:
       commands:
-        - echo "VITE_APP_VERSION=1" >> .env
         - echo "VITE_AMP_BACKEND_API=${AMP_BACKEND_API}" >> .env
         - echo "VITE_CORI_DATA_API=${CORI_DATA_API}" >> .env
         - echo "VITE_USER_POOL_ID=${USER_POOL_ID}" >> .env
@@ -25,7 +26,7 @@ frontend:
         - echo "VITE_COGNITO_REDIRECT_SIGNOUT=${COGNITO_REDIRECT_SIGNOUT}" >> .env
         - npm run build
   artifacts:
-    baseDirectory: build
+    baseDirectory: dist
     files:
       - '**/*'
   cache:

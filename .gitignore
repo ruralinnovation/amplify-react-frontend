@@ -23,3 +23,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# R files
+.Rproj
+.Rproj.user
+.Rhistory
+
+data/
+_targets/
+*.csv
+*.xlsx

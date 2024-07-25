@@ -7,11 +7,7 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
-    <link href="src/preflight.css"  rel="stylesheet" type="text/css" />
-    <link href="src/bundle.css"  rel="stylesheet" type="text/css" />
-    <link href="src/styles.css"  rel="stylesheet" type="text/css" />
-
-    <title>Amplify + Redux + React (TS) + Vite</title>
+    <title>Frontend App | CORI/RISI</title>
     <script>
       window.global = window;
       window.process = {
@@ -19,38 +15,24 @@
       };
       const exports = {};
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
+
+    <link href="src/preflight.css"  rel="stylesheet" type="text/css" />
+    <link href="src/fonts.css"  rel="stylesheet" type="text/css" />
+    <link href="src/styles.css"  rel="stylesheet" type="text/css" />
+
   </head>
   <body>
-    <div id="risi-header" light_on_dark="true" title="Amplify + Redux + React (TS) + Vite"></div>
-
-    <div class="dashboard flex flex-wrap">
-      <div id="react-app">
-        <!--<div id="test-component" >Embedded Content</div>-->
-      </div>
-    </div>
-
-    <div id="sidebar">
-
-      <div id="about" class="modal-content prose max-w-none row">
-        <div style="overflow-y: scroll">
-          <b>About the Tool</b>
-          <br />
-          <br />
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat
-            sed cras ornare arcu dui. Duis aute irure dolor in reprehenderit in
-            voluptate velit esse.
-            <a href="" target="_blank">
-              Link to document</a>. </p>
-          <br />
-          <br />
-        </div>
-      </div>
-
-    </div>
-
-    <script src="src/bundle.js" type="module"></script>
-    <script src="src/main.tsx" type="module"></script>
-
+    <div id="map"></div><!-- <= "map" is a special identifier that makes DeckGl/Mapbox work! -->
+    <script type="module" type="text/javascript">
+      import {renderToDom} from "./src/main.tsx";
+      renderToDom(document.getElementById("map"));
+    </script>
   </body>
 </html>

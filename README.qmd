@@ -1,0 +1,32 @@
+---
+title: "Amplify / React Frontend Minimal Application"
+author: "John Hall"
+execute:
+  echo: true
+  output: true
+  message: false
+  warning: false
+format:
+  gfm:
+    toc: false
+---
+
+## Configuration
+
+Assuming that you are using [amplify-react-frontend](https://github.com/ruralinnovation/amplify-react-frontend) as a template (via the ["Use this template"](https://github.com/new?template_name=amplify-react-frontend&template_owner=ruralinnovation&owner=ruralinnovation) button in Github) for a new application, clone the resulting repo to your local environment. The first file you should update is `package.json`. Change the value of the "name" property to reflect your project name and then run `npm install` to install dependencies (which will also automatically run the `postinstall` npm script).
+
+For local development, copy the `.env` file to a file called `.env.development.local`. Update the value for the environment variables in `.env.development.local` as needed .
+
+
+## Running Code
+
+Run `npm run dev` to run the frontend React dev server.
+
+```
+
+    VITE v3.0.5  ready in 3189 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+
+```

@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
+# Amplify / React Frontend Minimal Application
+John Hall
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Configuration
 
-Currently, two official plugins are available:
+Assuming that you are using
+[amplify-react-frontend](https://github.com/ruralinnovation/amplify-react-frontend)
+as a template (via the [“Use this
+template”](https://github.com/new?template_name=amplify-react-frontend&template_owner=ruralinnovation&owner=ruralinnovation)
+button in Github) for a new application, clone the resulting repo to
+your local environment. The first file you should update is
+`package.json`. Change the value of the “name” property to reflect your
+project name and then run `npm install` to install dependencies (which
+will also automatically run the `postinstall` npm script).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+For local development, copy the `.env` file to a file called
+`.env.development.local`. Update the value for the environment variables
+in `.env.development.local` as needed .
 
-## Expanding the ESLint configuration
+## Running Code
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Run `npm run dev` to run the frontend React dev server.
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+        VITE v3.0.5  ready in 3189 ms
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+      ➜  Local:   http://localhost:5173/
+      ➜  Network: use --host to expose
