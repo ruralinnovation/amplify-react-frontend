@@ -1,6 +1,6 @@
 {
   "name": "@cori-risi/frontend",
-  "version": "0.0.3",
+  "version": "1.0.1",
   "author": "Rural Innovation Strategies, Inc.",
   "description": "Amplify Redux React Vite TS template",
   "private": true,
