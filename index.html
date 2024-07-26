@@ -8,13 +8,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
 
     <title>Frontend App | CORI/RISI</title>
-    <script>
-      window.global = window;
-      window.process = {
-        env: { DEBUG: undefined },
-      };
-      const exports = {};
-    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
@@ -27,10 +21,18 @@
     <link href="src/fonts.css"  rel="stylesheet" type="text/css" />
     <link href="src/styles.css"  rel="stylesheet" type="text/css" />
 
+    <script>
+      window.global = window;
+      window.process = {
+        env: { DEBUG: undefined },
+      };
+      const exports = {};
+    </script>
+
   </head>
   <body>
     <div id="map"></div><!-- <= "map" is a special identifier that makes DeckGl/Mapbox work! -->
-    <script type="module" type="text/javascript">
+    <script type="module">
       import {renderToDom} from "./src/main.tsx";
       renderToDom(document.getElementById("map"));
     </script>
