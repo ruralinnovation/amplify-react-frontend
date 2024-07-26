@@ -14,7 +14,7 @@ const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const UBER_DATA_URL: string = "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv";
 
-function DeckGLOverlay(props: DeckProps) {
+function DeckGLOverlay (props: DeckProps) {
     const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
     overlay.setProps(props);
     return null;
@@ -76,13 +76,7 @@ export default function App() {
                 }}
                 onMove={onMove}
             >
-                <DeckGLOverlay
-                    initialViewState={{
-                        longitude: -79.4512,
-                        latitude: 43.6568,
-                        zoom: 13
-                    }}
-                    layers={layers}/>
+                <DeckGLOverlay layers={layers}/>
                 <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-left" />
                 <GeolocateControl position="top-left" />
                 <NavigationControl position="top-left" />
