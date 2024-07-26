@@ -6,7 +6,6 @@ import { HexagonLayer } from '@deck.gl/aggregation-layers';
 import { ScatterplotLayer } from '@deck.gl/layers';
 import { MapboxOverlay } from '@deck.gl/mapbox';
 
-import ControlPanel from "./@cori-risi/components/ContorlPanel";
 import GeocoderControl from "./@cori-risi/components/GeocoderControl";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
