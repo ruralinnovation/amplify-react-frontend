@@ -6,16 +6,19 @@ import { HexagonLayer } from '@deck.gl/aggregation-layers';
 import { ScatterplotLayer } from '@deck.gl/layers';
 import { MapboxOverlay } from '@deck.gl/mapbox';
 
-import ControlPanel from "./@cori-risi/components/ContorlPanel";
+import { ApiContextProvider, coriLightMapStyle } from "@cori-risi/cori.data.api";
+
 import GeocoderControl from "./@cori-risi/components/GeocoderControl";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+const DATA_API_URL = "https://cori-risi-apps.s3.amazonaws.com/";
+
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-const UBER_DATA_URL: string = "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv";
+const UBER_DATA_URL: string = "https://cori-risi-apps.s3.amazonaws.com/examples/3d-heatmap/heatmap-data.csv";
 
-function DeckGLOverlay(props: DeckProps) {
+function DeckGLOverlay (props: DeckProps) {
     const overlay = useControl<MapboxOverlay>(() => new MapboxOverlay(props));
     overlay.setProps(props);
     return null;
@@ -65,25 +68,18 @@ export default function App() {
     }
 
     return (
-        <>
-            <Map
-                mapboxAccessToken={MAPBOX_TOKEN}
-                mapStyle="mapbox://styles/mapbox/streets-v9"
-                initialViewState={{
-                    longitude: 0.44,
-                    latitude: 51.50,
-                    pitch: 40.5,
-                    zoom: 10.75
-                }}
-                onMove={onMove}
+        <ApiContextProvider baseURL={DATA_API_URL}>
+            <Map mapboxAccessToken={MAPBOX_TOKEN}
+                 mapStyle={{...coriLightMapStyle}}
+                 initialViewState={{
+                     longitude: 0.44,
+                     latitude: 51.50,
+                     pitch: 40.5,
+                     zoom: 10.75
+                 }}
+                 onMove={onMove}
             >
-                <DeckGLOverlay
-                    initialViewState={{
-                        longitude: -79.4512,
-                        latitude: 43.6568,
-                        zoom: 13
-                    }}
-                    layers={layers}/>
+                <DeckGLOverlay layers={layers}/>
                 <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-left" />
                 <GeolocateControl position="top-left" />
                 <NavigationControl position="top-left" />
@@ -91,6 +87,6 @@ export default function App() {
                                unit={"imperial"} />
             </Map>
             {/*<ControlPanel />*/}
-        </>
+        </ApiContextProvider>
     );
 }
