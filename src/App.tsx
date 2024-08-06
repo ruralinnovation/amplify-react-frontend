@@ -214,7 +214,7 @@ export default function App() {
     return (
         <ApiContextProvider baseURL={DATA_API_URL}><>
             <SlippyMap dataFilter={placeFilter} />
-            <ControlPanel setFilterState={setPlaceFilter} title={"Build-To-Scale Propensity"} />
+            <ControlPanel setFilterState={setPlaceFilter} />
         </></ApiContextProvider>
     );
 }
