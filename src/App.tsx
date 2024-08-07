@@ -159,7 +159,7 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
                                         if (!!d.value) {
                                             console.log(d.value.NAME + ", " + d.value.STUSPS);
                                             return {
-                                                value: a.value + d.value.NAME + ", " + d.value.STUSPS + ";"
+                                                value: a.value + d.value.NAME + ", " + d.value.STUSPS + "; "
                                             };
                                         } else
                                             return a;
@@ -265,10 +265,10 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
         <Map mapboxAccessToken={MAPBOX_TOKEN}
              mapStyle={{...coriLightMapStyle}}
              initialViewState={{
-                 latitude: 40,
-                 longitude: -100,
+                 latitude: 39,
+                 longitude: -97.5,
                  pitch: 45,
-                 zoom: 3.5
+                 zoom: 4.15
              }}
              onMove={(event: any) => {
                  // console.log("new map view state:", event["viewState"]);
@@ -277,10 +277,10 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
             {(apiContext !== null) &&
                 <DeckGLOverlay layers={layers}/>
             }
-            <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-left" />
-            <GeolocateControl position="top-left" />
-            <NavigationControl position="top-left" />
-            <ScaleControl  position="bottom-left"
+            <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-right" />
+            <GeolocateControl position="top-right" />
+            <NavigationControl position="top-right" />
+            <ScaleControl  position="bottom-right"
                            unit={"imperial"} />
         </Map>
     );
