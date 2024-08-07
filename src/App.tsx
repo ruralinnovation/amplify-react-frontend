@@ -11,7 +11,7 @@ export default function App() {
     return (
         <ApiContextProvider baseURL={DATA_API_URL}>
             <div style={{position: "absolute", zIndex: 2}}>
-                <h3>Frontend UI (React) template</h3>
+                <h3>Amplify / React Frontend application template</h3>
             </div>
         </ApiContextProvider>
     );

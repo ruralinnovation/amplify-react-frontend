@@ -1,5 +1,5 @@
 ---
-title: "Amplify / React Frontend Minimal Application"
+title: "Amplify / React Frontend App template"
 author: "John Hall"
 execute:
   echo: true
