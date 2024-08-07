@@ -1,4 +1,4 @@
-# Amplify / React Frontend Minimal Application
+# Amplify / React Frontend App template
 John Hall
 
 ## Configuration
