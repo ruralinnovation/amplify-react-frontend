@@ -55,21 +55,18 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
 
     const apiContext = useContext(ApiContext);
 
-    const [ layers, setLayers ] = useState<Layer[]>([]);
-
     let fetchingPlaceData = false;
 
+    const [ layers, setLayers ] = useState<Layer[]>([]);
+
+    const layerMetric =  "prop_score_model2_min_pop_rq_2.5K";
+
     const getAggregateMaximumValue: AggregateAccessor<HexData> = (data) => {
-        return (d3.max((data as unknown as any[]).map(d => +d.value["prop_score_model2_min_pop_rq_2.5K"])) || 0.0);
+        return (d3.max((data as unknown as any[]).map(d => +d.value[layerMetric])) || 0.0);
     };
 
     const getAggregateMedianValue: AggregateAccessor<HexData> = (data) => {
-        return (d3.median((data as unknown as any[]).map(d => +d.value["prop_score_model2_min_pop_rq_2.5K"])) || 0.0);
-    };
-
-    const getAggregateSumValue: AggregateAccessor<HexData> = (data) => {
-        const sum = d3.sum((data as unknown as any[]).map(d => +d.value["prop_score_model2_min_pop_rq_2.5K"]));
-        return (sum < 1.0) ? sum : 0.0;
+        return (d3.median((data as unknown as any[]).map(d => +d.value[layerMetric])) || 0.0);
     };
 
     const updatePlaceLayer = (places: PlaceData[], range: number[], size: number ) => {
@@ -83,7 +80,7 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
                     .filter((d: PlaceData) => d.properties.b2s_flag )
                     .map((d: PlaceData) => {
                         return {
-                            value: +d.properties["prop_score_model2_min_pop_rq_2.5K"],
+                            value: +d.properties[layerMetric],
                             centroid: Float32Array.from(d.geometry.coordinates)
                         };
                     }),
@@ -131,7 +128,13 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
                     return getAggregateMaximumValue(data);
                 },
                 getElevationValue: (data) => {
-                    return getAggregateSumValue(data);
+                    // What is this calculation called in statistical terms?
+                    // Given a subset of N scores out of a total set of M scores:
+                    // (Median x N) / M
+                    const median = getAggregateMedianValue(data),
+                        n = (data as unknown as any[]).length || 0,
+                        m = places.length;
+                    return (median * n) / m;
                 },
                 getPosition: (d: HexData) => d.centroid,
                 pickable: true,
@@ -167,12 +170,12 @@ function SlippyMap (props: { dataFilter: { checked: boolean, range: number[], si
                                     values: place
                                         .sort((a: any, b: any) => (
                                             (!!a.value && !!b.value
-                                                && a.value["prop_score_model2_min_pop_rq_2.5K"] < b.value["prop_score_model2_min_pop_rq_2.5K"])
+                                                && a.value[layerMetric] < b.value[layerMetric])
                                         ))
                                         .map((d: any) => ((!!d.value) ? {
                                             name: d.value.NAME + ", " + d.value.STUSPS,
                                             b2s_flag: d.value.b2s_flag, // (!!info.object.properties.b2s_flag),
-                                            prop_score: d.value["prop_score_model2_min_pop_rq_2.5K"],
+                                            prop_score: d.value[layerMetric],
                                             prop_score_knearest_match: d.value.prop_score_knearest_match,
                                             pct_rural: d.value.pct_rural,  // (!!info.object.properties.pct_rural),
                                             pop: d.value.pop,
@@ -304,7 +307,8 @@ export default function App() {
                 <HoverInfo hoverInfo={hoverInfo}>
                     <div style={{pointerEvents: "none"}}>
                         <h3>{ hoverInfo.name }</h3>
-                        {hoverInfo.values.map((h: any) => (<>
+                        {hoverInfo.values.map((h: any) => (
+                            <div key={h.name.replace(/\s/g, "_")}>
                                 <hr></hr>
                                 <a>{ h.name }</a>
                                 <p className={'prop-score'}>
@@ -316,7 +320,7 @@ export default function App() {
                                     Percent employed: {format(".0%")(h.pct_prime_emp)}<br/>
                                     Tech share: {format(".0%")(h.tech_share)}
                                 </p>
-                            </>
+                            </div>
                         ))}
                     </div>
                 </HoverInfo> :
