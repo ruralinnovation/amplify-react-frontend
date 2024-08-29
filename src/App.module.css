@@ -1,0 +1,13 @@
+
+.slippy-map {
+    position: relative;
+    /*margin-left: 460px;*/
+    /*width: calc(100vw - 460px);*/
+    width: calc(100vw);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.slippy-map>* {
+    overflow: hidden;
+}
