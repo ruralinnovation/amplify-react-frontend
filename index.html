@@ -31,10 +31,11 @@
 
   </head>
   <body>
-    <div id="map"></div><!-- <= "map" is a special identifier that makes DeckGl/Mapbox work! -->
+    <div id="app"></div>
+
     <script type="module">
-      import {renderToDom} from "./src/main.tsx";
-      renderToDom(document.getElementById("map"));
+      import {renderToDom} from './src/main.tsx';
+      renderToDom(document.getElementById('app'));
     </script>
   </body>
 </html>

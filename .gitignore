@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-build
 node_modules
 dist
 dist-ssr
@@ -24,12 +23,15 @@ dist-ssr
 *.sln
 *.sw?
 
+*.xlsx
+*.csv
+_targets/
+
 # R files
 .Rproj
 .Rproj.user
 .Rhistory
+R/**/data
+R/**/*.geojson
 
-data/
-_targets/
-*.csv
-*.xlsx
+/data/

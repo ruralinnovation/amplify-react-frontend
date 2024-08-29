@@ -1,14 +1,19 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
+// import { ApiContextProvider } from "@cori-risi/cori.data.api";
+
 import App from './App';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import "normalize.css";
 
+// const DATA_API_URL = "https://cori-risi-apps.s3.amazonaws.com";
 
 export function renderToDom(container: HTMLElement) {
   createRoot(container).render(<React.StrictMode>
-      <App />
+      {/*<ApiContextProvider baseURL={DATA_API_URL}>*/}
+          <App />
+      {/*</ApiContextProvider>*/}
   </React.StrictMode>);
 }

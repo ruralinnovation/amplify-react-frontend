@@ -8,12 +8,9 @@
   font-weight: normal;
   font-style: normal;
   src: local('TT Hoves'),
-  url('./fonts/TypeType - TT Hoves Regular.ttf') format('truetype'),
-  url('./fonts/TTHoves-Regular/font.woff') format("woff"),
-  url('./fonts/TTHoves-Regular/font.woff2') format("woff2"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Regular.ttf') format('truetype'),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Regular/font.woff') format("woff"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Regular/font.woff2') format("woff2");
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Regular.ttf') format('truetype'),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Regular/font.woff') format("woff"),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Regular/font.woff2') format("woff2");
 }
 
 @font-face {
@@ -21,12 +18,9 @@
   font-weight: bold;
   font-style: normal;
   src: local('TT Hoves'),
-    url('./fonts/TypeType - TT Hoves Bold.ttf') format('truetype'),
-    url('./fonts/TTHoves-Bold/font.woff') format("woff"),
-    url('./fonts/TTHoves-Bold/font.woff2') format("woff2"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Bold.ttf') format('truetype'),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Bold/font.woff') format("woff"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Bold/font.woff2') format("woff2");
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Bold.ttf') format('truetype'),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Bold/font.woff') format("woff"),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Bold/font.woff2') format("woff2");
 }
 
 @font-face {
@@ -34,12 +28,9 @@
   font-weight: 500;
   font-style: normal;
   src: local('TT Hoves'),
-    url('./fonts/TypeType - TT Hoves Medium.ttf') format('truetype'),
-    url('./fonts/TTHoves-Medium/font.woff') format("woff"),
-    url('./fonts/TTHoves-Medium/font.woff2') format("woff2"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Medium.ttf') format('truetype'),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Medium/font.woff') format("woff"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Medium/font.woff2') format("woff2");
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Medium.ttf') format('truetype'),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Medium/font.woff') format("woff"),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Medium/font.woff2') format("woff2");
 }
 
 @font-face {
@@ -47,12 +38,9 @@
   font-weight: normal;
   font-style: italic;
   src: local('TT Hoves'),
-    url('./fonts/TypeType - TT Hoves Italic.ttf') format('truetype'),
-    url('./fonts/TTHoves-Italic/font.woff') format("woff"),
-    url('./fonts/TTHoves-Italic/font.woff2') format("woff2"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Italic.ttf') format('truetype'),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Italic/font.woff') format("woff"),
-    url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Italic/font.woff2') format("woff2");
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TypeType - TT Hoves Italic.ttf') format('truetype'),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Italic/font.woff') format("woff"),
+  url('https://cori-risi-apps.s3.amazonaws.com/fonts/TTHoves-Italic/font.woff2') format("woff2");
 }
 
 

@@ -1,29 +1,16 @@
 version: 1
-#backend:
-#  phases:
-#    dist:
-#      commands:
-#        - nvm use 18
-#        - npm ci
-#        - npx amplify generate config --branch main --app-id "${BACKEND_APPID}"
 frontend:
   phases:
     preBuild:
       commands:
+        - git submodule update --init --recursive
         - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
-        - npm install --package-lock-only
-        - npm install @rollup/rollup-linux-x64-gnu --save-optional
         - npm ci
     build:
       commands:
-        - echo "VITE_AMP_BACKEND_API=${AMP_BACKEND_API}" >> .env
-        - echo "VITE_CORI_DATA_API=${CORI_DATA_API}" >> .env
-        - echo "VITE_USER_POOL_ID=${USER_POOL_ID}" >> .env
-        - echo "VITE_USER_POOL_CLIENT_ID=${USER_POOL_CLIENT_ID}" >> .env
-        - echo "VITE_IDENTITY_POOL_ID=${IDENTITY_POOL_ID}" >> .env
-        - echo "VITE_REGION=${REGION}" >> .env
-        - echo "VITE_COGNITO_REDIRECT_SIGNIN=${COGNITO_REDIRECT_SIGNIN}" >> .env
-        - echo "VITE_COGNITO_REDIRECT_SIGNOUT=${COGNITO_REDIRECT_SIGNOUT}" >> .env
+        - echo "GENERATE_SOURCEMAP=false" >> .env
+        - echo "VITE_APP_VERSION=1" >> .env
+        - npm install @rollup/rollup-linux-x64-gnu --save-optional
         - npm run build
   artifacts:
     baseDirectory: dist
@@ -31,4 +18,5 @@ frontend:
       - '**/*'
   cache:
     paths:
+      - .npm/**/*
       - node_modules/**/*
