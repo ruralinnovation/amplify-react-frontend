@@ -14,6 +14,7 @@ import Map, {
 
 import style from "./App.module.css";
 import 'mapbox-gl/dist/mapbox-gl.css';
+import "@cori-risi/cori.data.api/inst/dist/cori.data.api.css";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
