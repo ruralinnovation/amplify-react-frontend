@@ -1,55 +1,58 @@
 import * as React from "react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import {
-    // ApiContext,
-    coriLightMapStyle,
-    GeocoderControl
-} from "@cori-risi/cori.data.api";
+import Map, { GeolocateControl, NavigationControl, ScaleControl } from "react-map-gl";
 
-import Map, {
-    GeolocateControl,
-    NavigationControl,
-    ScaleControl
-} from "react-map-gl";
-
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import style from "./App.module.css";
 
-import "@cori-risi/cori.data.api/inst/dist/cori.data.api.css";
-import "mapbox-gl/dist/mapbox-gl.css";
-
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+
+// const WWB2S_DATA_URL: string = "/examples/who-wins-b2s/rural_places_5000_plus.json";
+
+const theme = createTheme({
+    typography: {
+        fontFamily: 'Montserrat',
+    },
+    palette: {
+        primary: {
+            main: '#00835D',
+            light: '#A3E2B5',
+            dark: '#26535C',
+            contrastText: 'white',
+        },
+    },
+});
 
 export default function App() {
 
     // console.log("Re-rendering App component");
 
-    return (<>
-        <div className={style["slippy-map"]}>
-            <Map
-              mapboxAccessToken={MAPBOX_TOKEN}
-              mapStyle={{...coriLightMapStyle}}
-              initialViewState={{
-                latitude: 39,
-                longitude: -97.5,
-                pitch: 45,
-                zoom: 4.15
-              }}
-              onMove={(event: any) => {
-                // console.log("new map view state:", event["viewState"]);
-              }}
-            >
+    // const apiContext = useContext(ApiContext);
 
-                <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-right" />
-                <GeolocateControl position="top-right" />
-                <NavigationControl position="top-right" />
+    return (
+        <ThemeProvider theme={theme}>
 
-                <ScaleControl  position="bottom-left"
-                               unit={"imperial"} />
+            <div className={style["slippy-map"]}>
+                <Map
+                    mapboxAccessToken={MAPBOX_TOKEN}
+                    initialViewState={{
+                        longitude: -122.4,
+                        latitude: 37.8,
+                        zoom: 14
+                    }}
+                    style={{width: 600, height: 400}}
+                    mapStyle={`https://api.mapbox.com/styles/v1/mapbox/light-v9?access_token=${MAPBOX_TOKEN}`}
+                >
+                    {/*<GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-right" />*/}
+                    <GeolocateControl position="top-right" />
+                    <NavigationControl position="top-right" />
+                    <ScaleControl  position="bottom-left"
+                                   unit={"imperial"} />
+                </Map>
+            </div>
 
-            </Map>
-        </div>
-        {/*<ControlPanel/>*/}
-    </>);
+        </ThemeProvider>
+    );
 }
-
