@@ -1,0 +1,63 @@
+html, body {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    overflow: none;
+}
+
+h1 {
+font-size: 2rem; /* 40px */
+}
+
+h2 {
+font-size: 1.8rem; /* 32px */
+}
+
+h3 {
+font-size: 1.6rem; /* 28px */
+}
+
+h4 {
+font-size: 1.4rem; /* 24px */
+}
+
+h5 {
+font-size: 1.2rem; /* 20px */
+}
+
+h6 {
+font-size: 1rem; /* 16px */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+
+    margin-top: .5em; /* Adjust top margin as needed */
+    margin-bottom: .5em; /* Adjust bottom margin as needed */
+}
+
+p, a {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    line-height: 1.4;
+}
+
+
+a {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #00835d;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+    cursor: pointer
+}
+
+#map {
+    display: flex;
+}
