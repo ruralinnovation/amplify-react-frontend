@@ -1,41 +1,34 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="theme-color" content="#07353F" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="shortcut icon" href="/favicon.ico" />
+      <meta charset="UTF-8" />
+      <meta name="theme-color" content="#07353F" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="manifest" href="/manifest.json" />
+      <link rel="shortcut icon" href="/favicon.ico" />
+      <!--<link rel="stylesheet" href="./preflight.css" type="text/css" />-->
 
-    <title>Frontend App | CORI/RISI</title>
+      <title>Frontend App | CORI/RISI</title>
+      <script>
+          window.global = window;
+          window.process = {
+              env: { DEBUG: undefined },
+          };
+          if (typeof window.exports === "undefined") { const exports = {}; }
+      </script>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
-
-    <link href="src/preflight.css"  rel="stylesheet" type="text/css" />
-    <link href="src/fonts.css"  rel="stylesheet" type="text/css" />
-    <link href="src/styles.css"  rel="stylesheet" type="text/css" />
-
-    <script>
-      window.global = window;
-      window.process = {
-        env: { DEBUG: undefined },
-      };
-      const exports = {};
-    </script>
+      <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
 
   </head>
   <body>
     <div id="app"></div>
-
-    <script type="module">
-      import {renderToDom} from './src/main.tsx';
-      renderToDom(document.getElementById('app'));
-    </script>
   </body>
+  <script type="module">
+    import {renderToDom} from './src/main.tsx';
+    renderToDom(document.getElementById('app'));
+  </script>
 </html>
