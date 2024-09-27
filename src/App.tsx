@@ -2,7 +2,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { ApiContext } from "@cori-risi/cori.data.api";
+import { ApiContext, GeocoderControl } from "@cori-risi/cori.data.api";
 import Map, { GeolocateControl, NavigationControl, ScaleControl } from "react-map-gl";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -37,7 +37,7 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
 
-            <div style={{position: "absolute", zIndex: 2}}>
+            <div style={{position: "absolute", margin: "1em", zIndex: 2}}>
                 <h3>Amplify / React Frontend application template</h3>
             </div>
 
@@ -54,7 +54,7 @@ export default function App() {
                     // mapStyle={`https://api.mapbox.com/styles/v1/mapbox/light-v9?access_token=${MAPBOX_TOKEN}`}
                     mapStyle={`https://api.mapbox.com/styles/v1/ruralinno/cl010e7b7001p15pe3l0306hv?access_token=${MAPBOX_TOKEN}`}
                 >
-                    {/*<GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-right" />*/}
+                    <GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-right" />
                     <GeolocateControl position="top-right" />
                     <NavigationControl position="top-right" />
                     <ScaleControl  position="bottom-left"
