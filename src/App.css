@@ -1,13 +1,18 @@
 .slippy-map {
     position: relative;
-    margin-left: 460px;
-    width: calc(100vw - 460px);
+    /*margin-left: 460px;*/
+    /*width: calc(100vw - 460px);*/
+    width: 100vw;
     height: 100vh;
-    overflow: hidden;
 }
 
 .slippy-map>* {
     overflow: hidden;
+}
+
+.slippy-map>.mapboxgl-map {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .tooltip {

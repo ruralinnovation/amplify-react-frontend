@@ -11,7 +11,7 @@ import './index.css';
 
 const DATA_API_URL = "https://cori-risi-apps.s3.amazonaws.com";
 
-export function renderToDom(container) {
+export function renderToDom(container: HTMLElement) {
   createRoot(container).render(<React.StrictMode>
       <ApiContextProvider baseURL={DATA_API_URL}>
           <App />

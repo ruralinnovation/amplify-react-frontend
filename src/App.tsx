@@ -5,11 +5,10 @@ import Map, { GeolocateControl, NavigationControl, ScaleControl } from "react-ma
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import style from "./App.module.css";
+import "./App.css";
+// import style from "./App.module.css";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
-
-// const WWB2S_DATA_URL: string = "/examples/who-wins-b2s/rural_places_5000_plus.json";
 
 const theme = createTheme({
     typography: {
@@ -34,16 +33,18 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
 
-            <div className={style["slippy-map"]}>
+            <div className={"slippy-map"}>
                 <Map
                     mapboxAccessToken={MAPBOX_TOKEN}
                     initialViewState={{
-                        longitude: -122.4,
-                        latitude: 37.8,
-                        zoom: 14
+                        latitude: 40,
+                        longitude: -100,
+                        pitch: 45,
+                        zoom: 3.5
                     }}
                     style={{width: 600, height: 400}}
-                    mapStyle={`https://api.mapbox.com/styles/v1/mapbox/light-v9?access_token=${MAPBOX_TOKEN}`}
+                    // mapStyle={`https://api.mapbox.com/styles/v1/mapbox/light-v9?access_token=${MAPBOX_TOKEN}`}
+                    mapStyle={`https://api.mapbox.com/styles/v1/ruralinno/cl010e7b7001p15pe3l0306hv?access_token=${MAPBOX_TOKEN}`}
                 >
                     {/*<GeocoderControl mapboxAccessToken={MAPBOX_TOKEN} position="top-right" />*/}
                     <GeolocateControl position="top-right" />
