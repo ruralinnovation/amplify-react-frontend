@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import * as mapbox from 'mapbox-gl';
 import Map, { Marker, GeolocateControl, NavigationControl, ScaleControl } from "react-map-gl";
@@ -16,7 +16,7 @@ import "./App.css";
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-const WWB2S_DATA_URL: string = "/examples/who-wins-b2s/rural_places_5000_plus.json";
+const DATA_URL: string = "/examples/cori.data.rin/rin_service_areas.geojson";
 
 interface Place {
     type: string;
@@ -26,19 +26,19 @@ interface Place {
     geometry: { type: string; coordinates: number[]; };
 }
 
-const theme = createTheme({
-    typography: {
-        fontFamily: 'Montserrat',
-    },
-    palette: {
-        primary: {
-            main: '#00835D',
-            light: '#A3E2B5',
-            dark: '#26535C',
-            contrastText: 'white',
-        },
-    },
-});
+// const theme = createTheme({
+//     typography: {
+//         fontFamily: 'Montserrat',
+//     },
+//     palette: {
+//         primary: {
+//             main: '#00835D',
+//             light: '#A3E2B5',
+//             dark: '#26535C',
+//             contrastText: 'white',
+//         },
+//     },
+// });
 
 export default function App() {
 
@@ -58,6 +58,12 @@ export default function App() {
 
     let fetchingPlaceData = false;
 
+    function placeMarkers(ref: typeof markerRef, longitued: number, latitude: number, color: string, popup: any, key: string, properties: any) {
+        return (
+            <Marker ref={ref} longitude={longitued} latitude={latitude} color={color} popup={popup} key={properties[key] + "-marker"} />
+        );
+    }
+
     useEffect(() => {
 
         if (!!apiContext
@@ -67,8 +73,8 @@ export default function App() {
         ) {
 
             console.log("Initial place data fetch...");
-            // console.log(WWB2S_DATA_URL.replace(/rural_places(?:_[\d]+_plus)/, placeModel));
-            console.log(WWB2S_DATA_URL);
+            // console.log(DATA_URL.replace(/rural_places(?:_[\d]+_plus)/, placeModel));
+            console.log(DATA_URL);
 
             // ... ensures "placeData" is fetched only once (see console)
             fetchingPlaceData = true;
@@ -91,7 +97,7 @@ export default function App() {
             });
 
 
-            apiContext?.apiClient.get(WWB2S_DATA_URL)
+            apiContext?.apiClient.get(DATA_URL)
                 .then((result) => {
 
                     if (!!result && result.hasOwnProperty("data")) {
@@ -140,8 +146,8 @@ export default function App() {
     }, [ apiContext?.data ]);
 
     return (
-        <ThemeProvider theme={theme}>
-
+        // <ThemeProvider theme={theme}>
+        <>
             <div style={{position: "absolute", margin: "1em", zIndex: 2}}>
                 <h3>Amplify / React Frontend application template</h3>
             </div>
@@ -162,7 +168,39 @@ export default function App() {
                     {(!!apiContext?.data && !!apiContext?.data?.placeData  && apiContext.data.placeData.length > 0)
                         && (
                             !!markerRef && typeof markerRef !== undefined
-                            && <Marker longitude={-122.4} latitude={37.8} color="red" popup={popup} ref={markerRef} />
+                            // && <Marker longitude={-122.4} latitude={37.8} color="red" popup={popup} ref={markerRef} />
+                            && apiContext.data.placeData.map((p: Place) => {
+                                console.log(p);
+                                const longitude = (typeof p.geometry.coordinates[0] == "number")?
+                                    p.geometry.coordinates[0] : 0;
+                                const latitude = (typeof p.geometry.coordinates[1] == "number")?
+                                    p.geometry.coordinates[1] : 0;
+                                return placeMarkers(markerRef, longitude, latitude, "red", popup, "rin_community", p.properties);
+                            })
+                            // {
+                            //   "rin_community": "Pine Bluff",
+                            //   "state_abbr": "AR",
+                            //   "primary_county_name": "Jefferson",
+                            //   "geoid_co": "05069",
+                            //   "Service Area": "The City of Pine Bluff",
+                            //   "places_served": "Pine Bluff, AR",
+                            //   "geoid_primary_place": null,
+                            //   "rin_year": 2019,
+                            //   "rii_year": 2019,
+                            //   "Type": "RNTA",
+                            //   "Status": "Active",
+                            //   "STATEFP": "05",
+                            //   "COUNTYFP": "069",
+                            //   "COUNTYNS": "00066862",
+                            //   "AFFGEOID": "0500000US05069",
+                            //   "NAME": "Jefferson",
+                            //   "NAMELSAD": "Jefferson County",
+                            //   "STUSPS": "AR",
+                            //   "STATE_NAME": "Arkansas",
+                            //   "LSAD": "06",
+                            //   "ALAND": 2259419628,
+                            //   "AWATER": 113071689
+                            // }
                         )
                     }
 
@@ -186,7 +224,7 @@ export default function App() {
                 backgroundSize: "20px",
                 zIndex: 100
             }} />
-
-        </ThemeProvider>
+        </>
+        // </ThemeProvider>
     );
 }
