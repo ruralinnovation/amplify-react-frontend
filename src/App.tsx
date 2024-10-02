@@ -49,18 +49,29 @@ export default function App() {
     const markerRef = useRef<mapbox.Marker | null>(null);
 
     const popup = useMemo(() => {
-        return (new mapbox.Popup()).setText('Hello world!');
-    }, [])
-
-    const togglePopup = useCallback(() => {
-        markerRef.current?.togglePopup();
+        return (longitued: number, latitude: number, key: string, properties: any) => {
+            console.log("Set popup: ", markerRef.current);
+            const marker = (new mapbox.Popup());
+            if (properties.hasOwnProperty(key)) {
+                marker.setLngLat([longitued, latitude]);
+                marker.setText(properties[key]);
+            } else {
+                marker.setText('Hello world!');
+            }
+            return marker;
+        };
     }, []);
+
+    const togglePopup = (event: any) => {
+        console.log("Toggle popup: ", event);
+        markerRef.current?.togglePopup();
+    };
 
     let fetchingPlaceData = false;
 
     function placeMarkers(ref: typeof markerRef, longitued: number, latitude: number, color: string, popup: any, key: string, properties: any) {
         return (
-            <Marker ref={ref} longitude={longitued} latitude={latitude} color={color} popup={popup} key={properties[key] + "-marker"} />
+            <Marker ref={ref} longitude={longitued} latitude={latitude} color={color} popup={popup(longitued, latitude, key, properties)} key={properties[key] + "-marker"} />
         );
     }
 
@@ -175,7 +186,7 @@ export default function App() {
                                     p.geometry.coordinates[0] : 0;
                                 const latitude = (typeof p.geometry.coordinates[1] == "number")?
                                     p.geometry.coordinates[1] : 0;
-                                return placeMarkers(markerRef, longitude, latitude, "red", popup, "rin_community", p.properties);
+                                return placeMarkers(markerRef, longitude, latitude, "#247dc9", popup, "rin_community", p.properties);
                             })
                             // {
                             //   "rin_community": "Pine Bluff",

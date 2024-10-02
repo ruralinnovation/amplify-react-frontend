@@ -1,38 +1,32 @@
 html, body {
     font-family: "Montserrat", Arial, Helvetica, sans-serif;
-    overflow: none;
 }
 
 h1 {
-font-size: 2rem; /* 40px */
+    font-size: 2rem; /* 40px */
 }
 
 h2 {
-font-size: 1.8rem; /* 32px */
+    font-size: 1.8rem; /* 32px */
 }
 
 h3 {
-font-size: 1.6rem; /* 28px */
+    font-size: 1.6rem; /* 28px */
 }
 
 h4 {
-font-size: 1.4rem; /* 24px */
+    font-size: 1.4rem; /* 24px */
 }
 
 h5 {
-font-size: 1.2rem; /* 20px */
+    font-size: 1.2rem; /* 20px */
 }
 
 h6 {
-font-size: 1rem; /* 16px */
+    font-size: 1rem; /* 16px */
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: "Montserrat", Arial, Helvetica, sans-serif;
 
     margin-top: .5em; /* Adjust top margin as needed */
@@ -58,6 +52,38 @@ a:hover {
     cursor: pointer
 }
 
-#map {
-    display: flex;
+.control-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 320px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    padding: 12px 24px;
+    margin: 20px;
+    font-size: 13px;
+    line-height: 2;
+    color: #6b6b76;
+    text-transform: uppercase;
+    outline: none;
+    z-index: 2;
+}
+
+.mapboxgl-ctrl {
+    font-family: "Bitter", serif;
+}
+
+.mapboxgl-popup {
+    font-family: "Bitter", serif;
+}
+
+.mapboxgl-popup .mapboxgl-popup-content {
+    font-family: "Bitter", serif !important;
+    font-size: 12pt;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    padding: 12px 20px;
+    pointer-events: auto;
+    position: relative;
 }
