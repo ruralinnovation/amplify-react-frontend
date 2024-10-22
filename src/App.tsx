@@ -1,18 +1,41 @@
-import * as React from 'react';
+import * as React from "react";
+import { useContext } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { ApiContextProvider } from "@cori-risi/cori.data.api";
+import { ApiContext} from "@cori-risi/cori.data.api";
 
 import "@cori-risi/cori.data.api/inst/dist/cori.data.api.css";
 
-const DATA_API_URL = "https://cori-risi-apps.s3.amazonaws.com";
+import "./App.css";
+// import style from "./App.module.css";
+
+const theme = createTheme({
+    typography: {
+        fontFamily: 'Montserrat',
+    },
+    palette: {
+        primary: {
+            main: '#00835D',
+            light: '#A3E2B5',
+            dark: '#26535C',
+            contrastText: 'white',
+        },
+    },
+});
 
 export default function App() {
 
+    // console.log("Re-rendering App component");
+
+    const apiContext = useContext(ApiContext);
+
     return (
-        <ApiContextProvider baseURL={DATA_API_URL}>
-            <div style={{position: "absolute", zIndex: 2}}>
+        <ThemeProvider theme={theme}>
+
+            <div style={{position: "absolute", margin: "1em", zIndex: 2}}>
                 <h3>Amplify / React Frontend application template</h3>
             </div>
-        </ApiContextProvider>
+
+        </ThemeProvider>
     );
 }
