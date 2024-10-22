@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="theme-color" content="#07353F" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="shortcut icon" href="/favicon.ico" />
+      <meta charset="UTF-8" />
+      <meta name="theme-color" content="#07353F" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="manifest" href="/manifest.json" />
+      <link rel="shortcut icon" href="/favicon.ico" />
 
     <title>Frontend App | CORI/RISI</title>
 
@@ -31,10 +31,10 @@
 
   </head>
   <body>
-    <div id="map"></div><!-- <= "map" is a special identifier that makes DeckGl/Mapbox work! -->
-    <script type="module">
-      import {renderToDom} from "./src/main.tsx";
-      renderToDom(document.getElementById("map"));
-    </script>
+    <div id="app"></div>
   </body>
+  <script type="module">
+    import {renderToDom} from './src/main.tsx';
+    renderToDom(document.getElementById('app'));
+  </script>
 </html>
