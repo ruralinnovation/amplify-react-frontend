@@ -7,6 +7,8 @@ import { ApiContext} from "@cori-risi/cori.data.api";
 import "@cori-risi/cori.data.api/inst/dist/cori.data.api.css";
 
 import "./App.css";
+import Dashboard from "./@cori-risi/components/Dashboard";
+import Sidebar from "./@cori-risi/components/Sidebar";
 // import style from "./App.module.css";
 
 const theme = createTheme({
@@ -32,9 +34,13 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
 
-            <div style={{position: "absolute", margin: "1em", zIndex: 2}}>
-                <h3>Amplify / React Frontend application template</h3>
-            </div>
+            {/*<div style={{position: "absolute", margin: "1em", zIndex: 2}}>*/}
+            {/*    <h3>Amplify / React Frontend application template</h3>*/}
+            {/*</div>*/}
+
+            {/*<Dashboard />*/}
+
+            <Sidebar />
 
         </ThemeProvider>
     );
