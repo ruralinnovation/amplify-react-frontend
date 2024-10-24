@@ -6,17 +6,19 @@ export default function Sidebar() {
 
             <div id="about" className="modal-content prose max-w-none row">
                 <div style={{"overflowY": "scroll"}}>
-                    <b>About the Tool</b>
-                    <br />
-                    <br />
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    <b style={{ "position": "relative", "display": "block" }}>About the Tool</b>
+                    <br style={{ "position": "relative", "display": "block" }} />
+                    <br style={{ "position": "relative", "display": "block" }} />
+                    <p style={{ "position": "relative", "display": "block" }}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                         eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat
                         sed cras ornare arcu dui. Duis aute irure dolor in reprehenderit in
                         voluptate velit esse.
+                        <br style={{ "position": "relative", "display": "block" }} />
                         <a href="" target="_blank">
-                            Link to document</a>. </p>
-                    <br />
-                    <br />
+                            Link to document</a>.
+                    </p>
+                    <br style={{ "position": "relative", "display": "block" }} />
                 </div>
             </div>
 
