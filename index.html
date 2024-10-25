@@ -43,15 +43,15 @@
     </tableau-viz>
   </body>
   <script type="module">
-    import { renderToDom } from './src/main.tsx';
+    import { renderToDom } from "./src/main.tsx";
     renderToDom(document.getElementById('app'));
   </script>
   <script type="module">
-    import { default as sign } from "jwt-encode";
-    import * as uuid from "uuid";
+    // import { default as sign } from "jwt-encode";
+    // import * as uuid from "uuid";
 
-    import * as tableau from "https://10ax.online.tableau.com/javascripts/api/tableau.embedding.3.latest.js";
-    import { SheetType, TableauEventType } from 'https://10ax.online.tableau.com/javascripts/api/tableau.embedding.3.latest.js';
+    import * as tableau from "@tableau/embedding-api";
+    import { SheetType, TableauEventType } from "@tableau/embedding-api";
     import CryptoJS from "crypto-js";
     
     // Replace the example values below (remove the brackets).
@@ -77,6 +77,33 @@
     //     //  Add entries to this dictionary if desired.
     //     //  "[User Attribute Name]": "[User Attribute Value]",
     // };
+
+    // // First tried this function... could not authenticate with resulting JWT...
+    // function generateJwt() {
+    //
+    //   const header = {
+    //     alg: "HS256",
+    //     typ: "JWT",
+    //     kid: secretId,
+    //     iss: clientId
+    //   };
+    //
+    //   const data = {
+    //     jti: uuid.v4(),
+    //     iss: clientId,
+    //     aud: "tableau",
+    //     sub: userId,
+    //     scp: scopes,
+    //     iat: Math.floor(Date.now() / 1000),
+    //     exp: Math.floor(Date.now() / 1000) + tokenExpiryInMinutes * 60,
+    //     // ...userAttributes
+    //   };
+    //
+    //   const token = sign(data, secret, { header });
+    //   console.log(token);
+    //
+    //   return token;
+    // }
 
     function base64url(source) {
       let encodedSource = CryptoJS.enc.Base64.stringify(source);
@@ -124,6 +151,7 @@
     // See the Connected Apps documentation (https://sfdc.co/ca-direct) for more information.
     // See this repository (https://sfdc.co/ca-jwt) for samples in constious languages.
     // viz.token = window.token;
+    // viz.token = generateJwt();
     viz.token = createToken(userId, secretId, secret, clientId, scopes);
 
     // Wait for the viz to become interactive
