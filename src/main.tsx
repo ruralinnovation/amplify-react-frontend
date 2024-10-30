@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import * as tableau from "@tableau/embedding-api";
 import { SheetType, TableauEventType } from "@tableau/embedding-api";
 import CryptoJS from "crypto-js";
+
 import { ApiContextProvider } from "@cori-risi/cori.data.api";
 
 import App from './App';
@@ -106,51 +107,108 @@ function createToken (userid: string, kid: string, secret: string, iss: string, 
     return signedToken;
 }
 
-// Get the viz object from the HTML web component
-const viz = document.querySelector('tableau-viz, tableau-authoring-viz');
+export function renderToDomWithViz (react_app_id: string, tableau_viz_selector: string) {
+    const react_app_container: HTMLElement = document.getElementById(react_app_id) || document.createElement("div");
+    react_app_container.id = react_app_id;
+    const root_content: HTMLElement = document.createElement("div");
+    const viz_dom_arrangement_timeout = 333;
 
-// window.token is the JWT generated using a Connected App configured with Direct Trust.
-// The value is generated and is only available when this code executes within the Embedding Playground.
-// See the Connected Apps documentation (https://sfdc.co/ca-direct) for more information.
-// See this repository (https://sfdc.co/ca-jwt) for samples in constious languages.
-// viz.token = window.token;
-// viz.token = generateJwt();
-(viz as any).token = createToken(userId, secretId, secret, clientId, scopes);
-
-// Wait for the viz to become interactive
-new Promise<void>((resolve, reject) => {
-    // Add an event listener to verify the viz becomes interactive
-    (viz as any).addEventListener(TableauEventType.FirstInteractive, () => {
-        console.log('Viz is interactive!');
-        resolve();
-    });
-
-    (viz as any).addEventListener(TableauEventType.VizLoadError, (error: any) => {
-        const message = JSON.parse(error.detail.message);
-        const errorMessage = JSON.parse(message.errorMessage);
-
-        const displayMessage = `ca-error-${errorMessage.result.errors[0].code}`;
-        reject(displayMessage);
-    });
-}).then((res) => {
-    let dashboard;
-    let worksheet;
-    if ((viz as any).workbook.activeSheet?.sheetType === SheetType?.Dashboard) {
-        dashboard = (viz as any).workbook.activeSheet;
-
-        // Provide the name of the worksheet you want to use from the dashboard
-        worksheet = (dashboard as any)?.worksheets.find((ws: any) => ws.name === 'Replace-Name-of-Worksheet');
-    } else {
-        // Active sheet is already a worksheet
-        worksheet = (viz as any).workbook.activeSheet;
+    if (document.getElementById("loader") !== null) {
+        document.getElementById("loader")!.remove();
     }
-});
 
-export function renderToDom(container: HTMLElement) {
+    for (const elm of react_app_container.childNodes) {
+        const innerElm: HTMLElement = elm as HTMLElement;
+        if (elm.nodeType === 1) {
+            // console.log("Found embedded content:", innerElm);
 
-  createRoot(container).render(<React.StrictMode>
-      <ApiContextProvider baseURL={DATA_API_URL}>
-          <App />
-      </ApiContextProvider>
-  </React.StrictMode>);
+            // if (innerElm.id === "map") {
+            //     //
+            //     // MapBox test map
+            //     //
+            //     const map: Map = new mapboxgl.Map({
+            //         container: 'map', // container ID
+            //         style: 'mapbox://styles/ruralinno/clhgnms6802i701qn0c9y0pow', // style URL
+            //         center: [-74.5, 40], // starting position [lng, lat]
+            //         zoom: 9 // starting zoom
+            //     });
+            //
+            //     (map as { [key: string]: any })["map"] = map;
+            //
+            //     (window as { [key: string]: any })["map"] = (map as unknown) as MapRef;
+            // }
+
+            root_content.appendChild(innerElm);
+        }
+
+        setTimeout(function() {
+            if (document.querySelector(tableau_viz_selector) !== null) {
+                root_content.appendChild(document.querySelector(tableau_viz_selector) as HTMLElement);
+            }
+        }, viz_dom_arrangement_timeout);
+    }
+
+    // console.log("Found embedded content:", root_content);
+
+    createRoot(react_app_container).render(<React.StrictMode>
+        <ApiContextProvider baseURL={DATA_API_URL}>
+            <App app_id={react_app_id}
+                 content={() => {
+
+                     // Get the viz object from the HTML web component
+                     const viz = root_content.querySelector(tableau_viz_selector);
+
+                     if (viz !== null) {
+
+                         // // window.token is the JWT generated using a Connected App configured with Direct Trust.
+                         // // The value is generated and is only available when this code executes within the Embedding Playground.
+                         // // See the Connected Apps documentation (https://sfdc.co/ca-direct) for more information.
+                         // // See this repository (https://sfdc.co/ca-jwt) for samples in constious languages.
+                         // viz.token = window.token;
+                         // viz.token = generateJwt();
+                         (viz as any).token = createToken(userId, secretId, secret, clientId, scopes);
+
+                         new Promise<void>((resolve, reject) => {
+                             console.log("About to reference @tableau/embedding-api...");
+                             // Add an event listener to verify the viz becomes interactive
+                             (viz as any).addEventListener(TableauEventType.FirstInteractive, () => {
+                                 console.log('Viz is interactive!');
+                                 resolve();
+                             });
+
+                             (viz as any).addEventListener(TableauEventType.VizLoadError, (error: any) => {
+                                 const message = JSON.parse(error.detail.message);
+                                 const errorMessage = JSON.parse(message.errorMessage);
+                                 const displayMessage = `ca-error-${errorMessage.result.errors[0].code}`;
+
+                                 console.log("Error", displayMessage, message);
+
+                                 reject(displayMessage);
+                             });
+                         })
+                             .then((res) => {
+                                 let dashboard;
+                                 let worksheet;
+
+                                 if ((viz as any).workbook.activeSheet?.sheetType === SheetType?.Dashboard) {
+                                     dashboard = (viz as any).workbook.activeSheet;
+
+                                     // Provide the name of the worksheet you want to use from the dashboard
+                                     worksheet = (dashboard as any)?.worksheets.find((ws: any) => ws.name === 'Replace-Name-of-Worksheet');
+                                 } else {
+                                     // Active sheet is already a worksheet
+                                     worksheet = (viz as any).workbook.activeSheet;
+                                 }
+
+                                 console.log("Tableau Viz Dashboard: ", dashboard);
+                                 console.log("Tableau Viz Worksheet: ", worksheet);
+                             });
+                     }
+
+                     return root_content;
+                 }}
+                 timeout={viz_dom_arrangement_timeout} />
+        </ApiContextProvider>
+    </React.StrictMode>);
+
 }

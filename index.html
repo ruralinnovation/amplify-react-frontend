@@ -30,8 +30,10 @@
 
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+    </div>
 
+    <!-- The follow viz element will be moved into the react root container as a child component... -->
     <tableau-viz
             src="https://10ax.online.tableau.com/t/realcurrents/views/RINcommunitytechinvestment/RINcommunityVCfundedtech?:origin=card_share_link&:embed=n4?:origin=card_share_link"
             device="desktop"
@@ -39,12 +41,13 @@
             height="calc(100vh - 200px)"
             style="margin: 0 -24px; background-color: transparent !important;"
             hide-tabs
-            toolbar="bottom"
-    >
+            toolbar="bottom" >
     </tableau-viz>
+
   </body>
   <script type="module">
-    import { renderToDom } from "./src/main.tsx";
-    renderToDom(document.getElementById('app'));
+    import { renderToDomWithViz } from "./src/main.tsx";
+
+    renderToDomWithViz('app', 'tableau-viz, tableau-authoring-viz');
   </script>
 </html>
