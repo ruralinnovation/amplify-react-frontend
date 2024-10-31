@@ -33,16 +33,18 @@
     <div id="app">
     </div>
 
-    <!-- The follow viz element will be moved into the react root container as a child component... -->
-    <tableau-viz
-            src="https://10ax.online.tableau.com/t/realcurrents/views/RINcommunitytechinvestment/RINcommunityVCfundedtech?:origin=card_share_link&:embed=n4?:origin=card_share_link"
-            device="desktop"
-            width="600px"
-            height="calc(100vh - 200px)"
-            style="margin: 0 -24px; background-color: transparent !important;"
-            hide-tabs
-            toolbar="bottom" >
-    </tableau-viz>
+    <div class="hide tableau-viz-container" style="display: block; visibility: hidden; width: 0; height: 0">
+      <!-- The follow viz element will be moved into the react root container as a child component... -->
+      <tableau-viz
+              src="https://10ax.online.tableau.com/t/realcurrents/views/RINcommunitytechinvestment/RINcommunityVCfundedtech?:origin=card_share_link&:embed=n4?:origin=card_share_link"
+              device="desktop"
+              width="600px"
+              height="calc(100vh - 200px)"
+              style="margin: 0 -24px; background-color: transparent !important;"
+              hide-tabs
+              toolbar="bottom" >
+      </tableau-viz>
+    </div>
 
   </body>
   <script type="module">

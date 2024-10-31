@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useEffect } from "react";
+import {useContext, useEffect, useState} from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { ApiContext} from "@cori-risi/cori.data.api";
@@ -9,6 +9,8 @@ import "@cori-risi/cori.data.api/inst/dist/cori.data.api.css";
 import "./App.css";
 import Dashboard from "./@cori-risi/components/Dashboard";
 import Sidebar from "./@cori-risi/components/Sidebar";
+import TableauViz from "./@cori-risi/components/TableauViz";
+
 // import style from "./App.module.css";
 
 const theme = createTheme({
@@ -25,40 +27,53 @@ const theme = createTheme({
     },
 });
 
-function App ({ app_id, content, timeout }: { app_id: string, content: () => HTMLElement, timeout: number }) {
-
-    // console.log("Re-rendering App component");
+function App ({ app_id, attach_content = false, content, content_selector, content_timeout }: { app_id: string, attach_content?: boolean, content: () => HTMLElement, content_selector?: string | null, content_timeout?: number | null }) {
 
     const apiContext = useContext(ApiContext);
-
-    let content_loaded = false;
+    const [content_loaded, setContentLoaded] = useState(false);
 
     function addContentToCurrentComponent () {
-        setTimeout(function () {
-        if (!content_loaded) {
-            // Anything in here is fired on component mount.
-            const app_container = document.getElementById(app_id) ;
-            if (!!app_container) {
-                const app_content = (typeof content === 'function') ?
-                    content() :
-                    { childNodes: [] };
-                setTimeout((container) => {
-                    // console.log("Will append content: ", app_content);
-                    // container.append(app_content.childNodes);
-                    app_content.childNodes.forEach((c: ChildNode) => {
-                        if (c.nodeType === 1) {
-                            const element: HTMLElement = c as HTMLElement;
-                            container.insertAdjacentElement('beforeend', element);
+        if (!!content_timeout && content_timeout !== null) {
+            setTimeout(function () {
+                if (!content_loaded) {
+                    const app_container = document.getElementById(app_id);
+
+                    if (!!app_container) {
+                        const app_content: HTMLElement | null = (typeof content === 'function') ?
+                            content() :
+                            null;
+
+                        if (app_content !== null
+                            && app_content.childNodes !== null
+                            && app_content.childNodes.length > 0
+                        ) {
+                            console.log(`Will append content to ${app_id}: `, app_content);
+                            setTimeout((container) => {
+
+                                app_content.childNodes.forEach((c: ChildNode) => {
+                                    if (c.nodeType === 1) {
+                                        const element: HTMLElement = c as HTMLElement;
+                                        container.insertAdjacentElement('beforeend', element);
+                                    }
+                                });
+
+                            }, 53, app_container);
+
+                            setContentLoaded(true);
                         }
-                    });
-                }, 53, app_container);
-                content_loaded = true;
-            }
+                    }
+                }
+            }, (content_timeout + 1000));
         }
-        }, (timeout + 1000));
     }
 
-    useEffect( addContentToCurrentComponent , []);
+    useEffect( () => {
+        if (!!attach_content) {
+            addContentToCurrentComponent();
+        } else {
+            setContentLoaded(true);
+        }
+    } , []);
 
     return (
         <ThemeProvider theme={theme}>
@@ -68,6 +83,15 @@ function App ({ app_id, content, timeout }: { app_id: string, content: () => HTM
             {/*</div>*/}
 
             {/*<Dashboard />*/}
+
+            {(!!content_loaded && !!content_selector && !!content_timeout) && (
+                <TableauViz
+                    content={() => {
+                        return content();
+                    }}
+                    content_selector={content_selector}
+                    content_timeout={(content_timeout + 1000)} />
+            )}
 
             <Sidebar />
 
