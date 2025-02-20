@@ -14,6 +14,10 @@ interface ImportMetaEnv {
   readonly VITE_COGNITO_DOMAIN: string
   readonly VITE_COGNITO_REDIRECT_SIGNIN: string
   readonly VITE_COGNITO_REDIRECT_SIGNOUT: string
+  readonly VITE_TABLEAU_CLIENT_ID: string
+  readonly VITE_TABLEAU_SECRET_ID: string
+  readonly VITE_TABLEAU_SECRET_VALUE: string
+  readonly VITE_TABLEAU_USER: string
 }
 
 interface ImportMeta {
