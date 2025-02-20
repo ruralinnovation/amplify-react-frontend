@@ -12,16 +12,18 @@ frontend:
       commands:
         - npm i -g @aws-amplify/cli@${VERSION_AMPLIFY} --unsafe-perm=true
         - npm install --package-lock-only
+        - npm install git+ssh://git@github.com:ruralinnovation/cori.data.api
         - npm install @rollup/rollup-linux-x64-gnu --save-optional
         - npm ci
     build:
       commands:
-        - echo "VITE_AMP_BACKEND_API=${AMP_BACKEND_API}" >> .env
+        - echo "VITE_APP_VERSION=$(git rev-parse HEAD)" >> .env
         - echo "VITE_CORI_DATA_API=${CORI_DATA_API}" >> .env
         - echo "VITE_USER_POOL_ID=${USER_POOL_ID}" >> .env
         - echo "VITE_USER_POOL_CLIENT_ID=${USER_POOL_CLIENT_ID}" >> .env
         - echo "VITE_IDENTITY_POOL_ID=${IDENTITY_POOL_ID}" >> .env
         - echo "VITE_REGION=${REGION}" >> .env
+        - echo "VITE_COGNITO_DOMAIN=${COGNITO_DOMAIN}" >> .env
         - echo "VITE_COGNITO_REDIRECT_SIGNIN=${COGNITO_REDIRECT_SIGNIN}" >> .env
         - echo "VITE_COGNITO_REDIRECT_SIGNOUT=${COGNITO_REDIRECT_SIGNOUT}" >> .env
         - npm run build
