@@ -33,7 +33,7 @@
     <div id="app">
     </div>
 
-    <div class="hide tableau-viz-container" style="display: block; visibility: hidden; width: 0; height: 0">
+<!--    <div class="hide tableau-viz-container" style="display: block; visibility: hidden; width: 0; height: 0">-->
       <!-- The follow viz element will be moved into the react root container as a child component... -->
       <!--<tableau-viz-->
       <!--      src="https://10ax.online.tableau.com/t/realcurrents/views/RINcommunitytechinvestment/RINcommunityVCfundedtech?:origin=card_share_link&:embed=n4?:origin=card_share_link"-->
@@ -46,12 +46,13 @@
               hide-tabs
               toolbar="bottom" >
       </tableau-viz>
-    </div>
+<!--    </div>-->
 
   </body>
   <script type="module">
     import { renderToDomWithViz } from "./src/main.tsx";
 
     renderToDomWithViz('app', 'tableau-viz, tableau-authoring-viz');
+
   </script>
 </html>
