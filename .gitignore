@@ -24,8 +24,13 @@ dist-ssr
 *.sln
 *.sw?
 
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*
+
 # R files
-.Rproj
+*.Rproj
 .Rproj.user
 .Rhistory
 
