@@ -1,6 +1,8 @@
 html, body {
-    font-family: "Montserrat", Arial, Helvetica, sans-serif;
-    overflow: none;
+    font-family: "Bitter", "Montserrat", serif;
+    margin: 0;
+    overflow: hidden;
+    margin: 1em;
 }
 
 h1 {
@@ -56,6 +58,11 @@ a {
 a:hover {
     text-decoration: underline;
     cursor: pointer
+}
+
+[data-amplify-authenticator] {
+    display: grid;
+    height: 100vh;
 }
 
 #map {

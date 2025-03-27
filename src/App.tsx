@@ -32,7 +32,7 @@ export default function App() {
     return (
         <ThemeProvider theme={theme}>
 
-            <div style={{position: "absolute", margin: "1em", zIndex: 2}}>
+            <div>
                 <h3>Amplify / React Frontend application template</h3>
             </div>
 
