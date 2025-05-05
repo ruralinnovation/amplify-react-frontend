@@ -98,7 +98,15 @@ export function renderToDom(container: HTMLElement, title: string) {
                                     {/*    <a href={"https://d97d22aa2db0fb35e8a5.awsapps.com/start/#/?tab=applications"} target={"_blank"}>*/}
                                     {/*        AWS access portal</a> in a new tab and select "Sign out" from the user drop-down menu.*/}
                                     {/*</p>*/}
-                                    <button onClick={signOut}>Sign out</button>
+                                    <button onClick={() => {
+                                        setTimeout(() => {
+                                            const footerLoader: HTMLDivElement | null = document.querySelector('[data-amplify-footer]');
+                                            if (footerLoader !== null) {
+                                                footerLoader.style.background = "none";
+                                            }
+                                        }, 533);
+                                        signOut();
+                                    }}>Sign out</button>
                                 </>
                             )}
                         </Authenticator>
