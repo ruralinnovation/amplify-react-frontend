@@ -20,7 +20,11 @@
     "isolatedModules": true,
     "noEmit": true
   },
+  "exclude": [
+    "__tests__"
+  ],
   "include": [
     "src"
-  ]
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
