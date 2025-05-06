@@ -1,3 +1,7 @@
+div {
+    margin: 1em;
+}
+
 .slippy-map {
     position: relative;
     /*margin-left: 460px;*/

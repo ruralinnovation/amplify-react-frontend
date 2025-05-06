@@ -16,12 +16,12 @@ export const auth = defineAuth({
                 }
             },
             callbackUrls: [
-                'https://dev-saml-login.d14e2enocgl6n4.amplifyapp.com',
                 'http://localhost:5173',
+                'https://dev-saml-login.d14e2enocgl6n4.amplifyapp.com'
             ],
             logoutUrls: [
-                'https://dev-saml-login.d14e2enocgl6n4.amplifyapp.com/',
                 'http://localhost:5173/',
+                'https://dev-saml-login.d14e2enocgl6n4.amplifyapp.com/'
             ]
         }
     },

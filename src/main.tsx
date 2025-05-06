@@ -10,7 +10,7 @@ import {
     SSOAuthenticator
 } from "@cori-risi/cori.data.api";
 
-import outputs from "../amplify_outputs.json";
+import amplify_outputs from "../amplify_outputs.json";
 
 import App from './App';
 
@@ -24,11 +24,14 @@ import coriLogo from "./@cori-risi/assets/images/Full-Logo_CORI_Dark-Teal.svg";
 
 import './index.css';
 
-const DATA_API_URL = "https://cori-risi-apps.s3.amazonaws.com";
+Amplify.configure(amplify_outputs);
 
-// Amplify.configure(outputs);
+const DATA_API_URL = `https://${amplify_outputs["storage"]["buckets"][0]["bucket_name"]}.s3.amazonaws.com`;
 
 export function renderToDom(container: HTMLElement, title: string) {
+
+    console.log("Amplify.configure called with amplify_amplify_outputs: ", amplify_outputs);
+    console.log("... with Data API URL: ", DATA_API_URL);
 
     setTimeout(() => {
         // form data-amplify-form="" data-amplify-authenticator-signin="" method="post"
@@ -78,11 +81,11 @@ export function renderToDom(container: HTMLElement, title: string) {
     ReactDOM.createRoot(container).render(
         <React.StrictMode>
             <AmplifyContextProvider
-                domain={import.meta.env.VITE_COGNITO_DOMAIN}
-                region={import.meta.env.VITE_REGION}
-                identityPoolId={import.meta.env.VITE_IDENTITY_POOL_ID}
-                userPoolId={import.meta.env.VITE_USER_POOL_ID}
-                userPoolClientId={import.meta.env.VITE_USER_POOL_CLIENT_ID} >
+                domain={amplify_outputs["auth"]["oauth"]["domain"] || import.meta.env.VITE_COGNITO_DOMAIN}
+                region={amplify_outputs["auth"]["aws_region"]  || import.meta.env.VITE_REGION}
+                identityPoolId={amplify_outputs["auth"]["identity_pool_id"]  || import.meta.env.VITE_IDENTITY_POOL_ID}
+                userPoolId={amplify_outputs["auth"]["user_pool_id"]  || import.meta.env.VITE_USER_POOL_ID}
+                userPoolClientId={amplify_outputs["auth"]["user_pool_client_id"]  || import.meta.env.VITE_USER_POOL_CLIENT_ID} >
                 <ApiContextProvider baseURL={DATA_API_URL}>
                     {/*<SSOAuthenticator*/}
                     {/*    provider={(import.meta.env.VITE_SSO_PROVIDER || "IAMIdentityCenter")}*/}
@@ -105,7 +108,7 @@ export function renderToDom(container: HTMLElement, title: string) {
                                                 footerLoader.style.background = "none";
                                             }
                                         }, 533);
-                                        signOut();
+                                        if (typeof signOut === "function") signOut();
                                     }}>Sign out</button>
                                 </>
                             )}
