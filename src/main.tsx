@@ -96,11 +96,11 @@ export function renderToDom(container: HTMLElement, title: string) {
                             loginMechanisms={['email']} >
                             {({ signOut, user }) => (
                                 <>
-                                    <App />
-                                    {/*<p>To effectively sign out, first visit the&nbsp;*/}
-                                    {/*    <a href={"https://d97d22aa2db0fb35e8a5.awsapps.com/start/#/?tab=applications"} target={"_blank"}>*/}
-                                    {/*        AWS access portal</a> in a new tab and select "Sign out" from the user drop-down menu.*/}
-                                    {/*</p>*/}
+                                    <App user={user}/>
+                                    <p>To effectively sign out, first visit the&nbsp;
+                                        <a href={"https://d97d22aa2db0fb35e8a5.awsapps.com/start/#/?tab=applications"} target={"_blank"}>
+                                            AWS access portal</a> in a new tab and select "Sign out" from the user drop-down menu.
+                                    </p>
                                     <button onClick={() => {
                                         setTimeout(() => {
                                             const footerLoader: HTMLDivElement | null = document.querySelector('[data-amplify-footer]');

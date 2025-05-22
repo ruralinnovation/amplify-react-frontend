@@ -26,9 +26,9 @@ const theme = createTheme({
     },
 });
 
-export default function App() {
+export default function App (props: { user: any }) {
 
-    // console.log("Re-rendering App component");
+    console.log("Re-rendering App component for ", props.user);
 
     const apiContext = useContext(ApiContext);
 
@@ -66,7 +66,7 @@ export default function App() {
                         console.log('signed URL: ', linkToStorageFile.url);
                         console.log('URL expires at: ', linkToStorageFile.expiresAt);
 
-                        apiContext?.apiClient?.get(linkToStorageFile.url.toString())
+                        apiContext?.apiClient?.get("" + linkToStorageFile.url.toString())
                             .then((data) => {
                                 console.log(data);
                             });
