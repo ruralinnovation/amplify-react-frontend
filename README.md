@@ -1,28 +1,25 @@
-# Amplify / React Frontend App template
-John Hall
+## AWS Amplify React+Vite Starter Template
 
-## Configuration
+This repository provides a starter template for creating applications using React+Vite and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.
 
-Assuming that you are using
-[amplify-react-frontend](https://github.com/ruralinnovation/amplify-react-frontend)
-as a template (via the [“Use this
-template”](https://github.com/new?template_name=amplify-react-frontend&template_owner=ruralinnovation&owner=ruralinnovation)
-button in Github) for a new application, clone the resulting repo to
-your local environment. The first file you should update is
-`package.json`. Change the value of the “name” property to reflect your
-project name and then run `npm install` to install dependencies (which
-will also automatically run the `postinstall` npm script).
+## Overview
 
-For local development, copy the `.env` file to a file called
-`.env.development.local`. Update the value for the environment variables
-in `.env.development.local` as needed .
+This template equips you with a foundational React application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
 
-## Running Code
+## Features
 
-Run `npm run dev` to run the frontend React dev server.
+- **Authentication**: Setup with Amazon Cognito for secure user authentication.
+- **API**: Ready-to-use GraphQL endpoint with AWS AppSync.
+- **Database**: Real-time database powered by Amazon DynamoDB.
 
+## Deploying to AWS
 
-        VITE v3.0.5  ready in 3189 ms
+For detailed instructions on deploying your application, refer to the [deployment section](https://docs.amplify.aws/react/start/quickstart/#deploy-a-fullstack-app-to-aws) of our documentation.
 
-      ➜  Local:   http://localhost:5173/
-      ➜  Network: use --host to expose
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.

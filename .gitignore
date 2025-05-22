@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-build
 node_modules
 dist
 dist-ssr
@@ -29,12 +28,6 @@ dist-ssr
 amplify_outputs*
 amplifyconfiguration*
 
-# R files
-*.Rproj
-.Rproj.user
-.Rhistory
-
+*.bak
 data/
-_targets/
-*.csv
-*.xlsx
+

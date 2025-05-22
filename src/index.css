@@ -1,69 +1,65 @@
-html, body {
-    font-family: "Bitter", "Montserrat", serif;
-    margin: 0;
-    overflow: hidden;
+body {
+  margin: 0;
+  background: linear-gradient(180deg, rgb(117, 81, 194), rgb(255, 255, 255));
+  display: flex;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
 }
 
-h1 {
-font-size: 2rem; /* 40px */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-h2 {
-font-size: 1.8rem; /* 32px */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  color: white;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
-h3 {
-font-size: 1.6rem; /* 28px */
+ul {
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  border: 1px solid black;
+  gap: 1px;
+  background-color: black;
+  border-radius: 8px;
+  overflow: auto;
 }
 
-h4 {
-font-size: 1.4rem; /* 24px */
+li {
+  background-color: white;
+  padding: 8px;
 }
 
-h5 {
-font-size: 1.2rem; /* 20px */
+li:hover {
+  background: #dadbf9;
 }
-
-h6 {
-font-size: 1rem; /* 16px */
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: "Montserrat", Arial, Helvetica, sans-serif;
-
-    margin-top: .5em; /* Adjust top margin as needed */
-    margin-bottom: .5em; /* Adjust bottom margin as needed */
-}
-
-p, a {
-    font-family: "Montserrat", Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-}
-
 
 a {
-    margin-top: 0;
-    margin-bottom: 0;
-    color: #00835d;
-    text-decoration: underline;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-    cursor: pointer
-}
-
-[data-amplify-authenticator] {
-    display: grid;
-    height: 100vh;
-}
-
-#map {
-    display: flex;
+  font-weight: 800;
+  text-decoration: none;
 }

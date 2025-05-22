@@ -1,104 +1,46 @@
-import * as React from "react";
-import {useContext, useState} from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+import type { Schema } from "../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
+import {UseAuthenticator, useAuthenticator} from "@aws-amplify/ui-react";
 
-import { getUrl, uploadData } from 'aws-amplify/storage';
-import { StorageImage } from "@aws-amplify/ui-react-storage";
+const client = generateClient<Schema>();
 
-import { ApiContext} from "@cori-risi/cori.data.api";
+function App() {
+    const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+    const authenticator: UseAuthenticator = useAuthenticator();
+    const { user } = authenticator;
 
-import "@cori-risi/cori.data.api/inst/dist/cori.data.api.css";
+    useEffect(() => {
 
-import "./App.css";
-// import style from "./App.module.css";
+        // console.log(user);
 
-const theme = createTheme({
-    typography: {
-        fontFamily: 'Montserrat',
-    },
-    palette: {
-        primary: {
-            main: '#00835D',
-            light: '#A3E2B5',
-            dark: '#26535C',
-            contrastText: 'white',
-        },
-    },
-});
+        client.models['Todo'].observeQuery().subscribe({
+            next: (data) => setTodos([...data.items]),
+        });
+    }, [ user ]);
 
-export default function App (props: { user: any }) {
-
-    console.log("Re-rendering App component for ", props.user);
-
-    const apiContext = useContext(ApiContext);
-
-    const [ file, setFile ] = useState<File | null>(null);
-
-    const [ testPath, setTestPath ] = useState<string>("tests/pictures/john.jpg");
-    const [ testUrl, setTestURL ] = useState<string>("");
-
-    const handleChange = (event: any) => {
-        console.log(event.target.files);
-
-        setFile(event.target.files?.[0]);
-    };
-
-    const handleClick = async () => {
-        console.log(file);
-
-        if (!!file && "name" in file) {
-
-            const filePath = `tests/pictures/${file.name.toString()}`;
-
-            await uploadData({
-                // path: `tests/pictures/${file.name}`,
-                path: filePath,
-                data: file,
-            })
-
-            setTimeout(() => {
-
-                getUrl({
-                    path: filePath
-                    // Alternatively, path: ({identityId}) => `album/${identityId}/1.jpg`
-                })
-                    .then((linkToStorageFile) => {
-                        console.log('signed URL: ', linkToStorageFile.url);
-                        console.log('URL expires at: ', linkToStorageFile.expiresAt);
-
-                        apiContext?.apiClient?.get("" + linkToStorageFile.url.toString())
-                            .then((data) => {
-                                console.log(data);
-                            });
-
-                        setTestURL(linkToStorageFile.url.toString());
-                    });
-
-                setTestPath(filePath);
-
-            }, 1533);
-        } else {
-            return;
-        }
-    };
+    function createTodo() {
+        client.models['Todo'].create({ content: (global as any).prompt("Todo content") });
+    }
 
     return (
-        <ThemeProvider theme={theme}>
-
+        <main>
+            <h1>{user?.signInDetails?.loginId}'s todos</h1>
+            <button onClick={createTodo}>+ new</button>
+            <ul>
+                {(todos as any).map((todo: any) => (
+                    <li key={todo.id}>{todo.content}</li>
+                ))}
+            </ul>
             <div>
-                <h3>Amplify / React Frontend application template</h3>
-                {(testUrl !== "") ? (
-                    <img alt="Test URL" src={testUrl} />
-                ) : (
-                    <StorageImage alt="Test Path" path={testPath} />
-                )}
+                🥳 App successfully hosted. Try creating a new todo.
                 <br />
-                Choose an image to upload: <br />
-                <input type="file" onChange={handleChange} />
-                <button onClick={handleClick}>Upload</button>
-                <br /><br /><br />
+                <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
+                    Review next step of this tutorial.
+                </a>
             </div>
-
-        </ThemeProvider>
+        </main>
     );
 }
+
+export default App;
