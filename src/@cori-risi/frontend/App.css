@@ -73,10 +73,34 @@
 
 
 /** Amplify overrides **/
-:root, [data-amplify-theme] {
+:root * [data-amplify-theme] {
   font-family: TT Hoves Light,Montserrat,sans-serif;
   --amplify-internal-button-color: #FFFFFF;
   --amplify-internal-button-background-color: rgb(0, 85, 102);
+}
+
+:root * [data-amplify-authenticator] [data-amplify-container] {
+  background: #fffff9;
+}
+
+:root * [data-amplify-authenticator] [data-amplify-container] [data-amplify-router] .amplify-tabs {
+  font-family: Bitter,serif;
+  background: #fffff9;
+}
+
+:root * [data-amplify-authenticator] [data-amplify-container] [data-amplify-router] .amplify-tabs [data-amplify-authenticator-signin] {
+  font-family: Montserrat,sans-serif;
+  background: #fffff9;
+}
+
+:root * [data-amplify-authenticator] [data-amplify-container] [data-amplify-router] .amplify-tabs [data-amplify-authenticator-signup] {
+  font-family: Montserrat,sans-serif;
+  background: #fffff9;
+}
+
+:root * [data-amplify-authenticator] [data-amplify-container] [data-amplify-router] * .amplify-button {
+  font-family: Bitter, serif;
+  font-weight: bold;
 }
 
 * .amplify-button, * .amplify-button--primary {
