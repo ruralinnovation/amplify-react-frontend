@@ -50,7 +50,8 @@
 }
 
 .card {
-  padding: 2em;
+  width: 100%;
+  padding: 2em 0;
 }
 
 .read-the-docs {

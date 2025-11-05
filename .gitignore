@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-build
 node_modules
 dist
 dist-ssr
@@ -23,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*
+
+*.bak
+/data
+/docs
+
+# Claude stuff
+/*.md

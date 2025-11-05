@@ -173,7 +173,7 @@ function App({ content, user }: { content: () => HTMLElement, user: Promise<User
                         <p>
                             Edit <code>App.tsx</code> and save to test HMR
                         </p>
-                        <a href="https://docs.amplify.aws/react/tools/libraries/" target="_blank">
+                        <a href="https://docs.amplify.aws/react/" target="_blank">
                             <img src={amplifyLogo} className="logo" alt="AWS Amplify" />
                         </a>
                         <a href="https://redux-toolkit.js.org/" target="_blank">
